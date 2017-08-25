@@ -89,6 +89,7 @@
           id="time-max"
           class="input"
           type="number"
+          v-model="process.timeMax"
         >
       </div>
     </div>
@@ -129,7 +130,7 @@ export default {
   },
   methods: {
     handleSubmitForm() {
-      console.log('submit');
+      this.$emit('submit-program', this.process);
     },
   },
 };

@@ -1,20 +1,100 @@
 <template>
   <div>
-    <h1>OS Simulator</h1>
-    <process-form></process-form>
+    <div class="hero is-dark">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title is-1">OS Simulator</h1>
+          <h2 class="subtitle is-2">Practica 1</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="tile is-ancestor">
+
+          <div class="tile is-parent">
+            <div class="tile is-child box">
+              <h3 class="title">Crear Proceso</h3>
+              <process-form
+                @submit-program="handleSubmitProgram"
+              ></process-form>
+            </div>
+          </div>
+
+          <div class="tile is-parent">
+            <div class="tile is-child box">
+              <h3 class="title">Lotes</h3>
+              <process-batches
+                :batches="batches"
+              ></process-batches>
+            </div>
+          </div>
+
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import ProcessForm from '@/components/ProcessForm';
+import ProcessBatches from '@/components/ProcessBatches';
+
+class ProgramBatcher {
+  MAX_PROGRAM_PER_BARCH = 5;
+
+  constructor() {
+    this.batches = [[
+      {
+        id: '55',
+        programmerName: 'andres',
+        timeMax: '56',
+        operation: {
+          operad1: 5,
+          operator: '*',
+          operand2: 6,
+        },
+      },
+    ]];
+  }
+
+  get lastBatch() {
+    return this.batches[this.batches.length - 1];
+  }
+
+  addProgram(program) {
+    const lastBatch = this.lastBatch;
+
+
+    if (lastBatch.length + 1 < this.MAX_PROGRAM_PER_BARCH) {
+      lastBatch.push(program);
+    } else {
+      this.createBatch(program);
+    }
+  }
+
+  createBatch(...programs) {
+    this.batches.push(programs);
+  }
+}
+
+
+const batcher = new ProgramBatcher();
 
 export default {
   name: 'index',
   data() {
-    return {};
+    return {
+      batches: batcher.batches,
+    };
+  },
+  methods: {
+    handleSubmitProgram(program) {
+      batcher.addProgram(program);
+    },
   },
   components: {
     ProcessForm,
+    ProcessBatches,
   },
 };
 </script>
