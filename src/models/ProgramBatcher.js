@@ -18,7 +18,7 @@ export default class ProgramBatcher {
         programmerName: 'andres',
         timeMax: 4,
         operation: {
-          operad1: 1,
+          operand1: 1,
           operator: '/',
           operand2: 5,
         },

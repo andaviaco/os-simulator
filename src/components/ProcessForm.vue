@@ -59,7 +59,7 @@
             id="operation"
             class="input"
             type="number"
-            v-model="process.operation.operad1"
+            v-model="process.operation.operand1"
           >
         </div>
 
@@ -149,7 +149,7 @@ function initialState() {
       programmerName: '',
       timeMax: 1,
       operation: {
-        operad1: 1,
+        operand1: 1,
         operator: '+',
         operand2: 1,
       },
