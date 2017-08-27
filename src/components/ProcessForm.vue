@@ -10,12 +10,23 @@
         </label>
       </div>
       <div class="field-body">
-        <input
-          id="program_id"
-          class="input"
-          type="text"
-          v-model="process.id"
-        >
+        <div class="field">
+          <div class="control">
+            <input
+              id="program_id"
+              class="input"
+              type="text"
+              v-model="process.id"
+              @input="handleIdChange($event)"
+            >
+          </div>
+          <p
+            class="help is-danger"
+            v-show="!isCurrentIdValid"
+          >
+            El ID no está disponible.
+          </p>
+        </div>
       </div>
     </div>
 
@@ -66,13 +77,21 @@
 
         <div class="field is-narrow">
           <input
-            id="operation"
+            id="operation2"
             class="input"
             type="number"
+            name="operation2"
             v-model="process.operation.operand2"
+            v-validate="'required|numeric|min_value:1'"
           >
         </div>
       </div>
+      <p
+        class="help is-danger"
+        v-show="errors.has('operation2')"
+      >
+        {{ errors.first('operation2') }}
+      </p>
     </div>
 
     <div class="field is-horizontal">
@@ -85,12 +104,24 @@
         </label>
       </div>
       <div class="field-body">
-        <input
-          id="time-max"
-          class="input"
-          type="number"
-          v-model="process.timeMax"
-        >
+        <div class="field">
+          <div class="control">
+            <input
+            id="time-max"
+            :class="[{ 'is-danger': errors.has('time-max') }, 'input']"
+            type="number"
+            name="time-max"
+            v-model="process.timeMax"
+            v-validate="'required|numeric|min_value:1'"
+            >
+          </div>
+          <p
+            class="help is-danger"
+            v-show="errors.has('time-max')"
+          >
+            {{ errors.first('time-max') }}
+          </p>
+        </div>
       </div>
     </div>
 
@@ -106,31 +137,46 @@
         </button>
       </div>
     </div>
-
-    <pre>{{ process }}</pre>
   </form>
 </template>
 
 <script>
+function initialState() {
+  return {
+    isCurrentIdValid: true,
+    process: {
+      id: '',
+      programmerName: '',
+      timeMax: '',
+      operation: {
+        operad1: 1,
+        operator: '+',
+        operand2: 1,
+      },
+    },
+  };
+}
+
 export default {
   name: 'process-form',
   data() {
-    return {
-      process: {
-        id: '',
-        programmerName: '',
-        timeMax: '',
-        operation: {
-          operad1: 1,
-          operator: '+',
-          operand2: 1,
-        },
-      },
-    };
+    return initialState();
   },
   methods: {
-    handleSubmitForm() {
-      this.$emit('submit-program', this.process);
+    async handleSubmitForm() {
+      const formIsValid = await this.$validator.validateAll();
+
+      if (formIsValid && this.isCurrentIdValid) {
+        this.$emit('submit-program', this.process);
+
+        Object.assign(this.$data, initialState());
+      }
+    },
+    handleIdChange($event) {
+      this.$emit('id-change', $event.target.value);
+    },
+    setIdValidity(value) {
+      this.isCurrentIdValid = value;
     },
   },
 };

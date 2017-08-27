@@ -16,7 +16,9 @@
             <div class="tile is-child box">
               <h3 class="title">Crear Proceso</h3>
               <process-form
+                ref="processForm"
                 @submit-program="handleSubmitProgram"
+                @id-change="handleIdChange"
               ></process-form>
             </div>
           </div>
@@ -75,6 +77,13 @@ class ProgramBatcher {
   createBatch(...programs) {
     this.batches.push(programs);
   }
+
+  isIdAvailable(id) {
+    const flatPrograms = this.batches.reduce((acc, batch) => acc.concat(batch), []);
+    const takenIds = flatPrograms.map(program => program.id);
+
+    return !takenIds.find(programId => programId === id);
+  }
 }
 
 
@@ -90,6 +99,9 @@ export default {
   methods: {
     handleSubmitProgram(program) {
       batcher.addProgram(program);
+    },
+    handleIdChange(id) {
+      this.$refs.processForm.setIdValidity(batcher.isIdAvailable(id));
     },
   },
   components: {
