@@ -43,6 +43,31 @@
         </div>
       </div>
     </div>
+
+  <div class="columns">
+    <div class="column">
+      <h4 class="title is-4 has-text-centered">Lotes en ejecución</h4>
+      <ul>
+        <li v-for="program in currentBatch" :key="program.id">
+          <div class="message is-dark is-small is-primary is-marginless">
+            <div class="message-body">
+              <strong>ID: {{ program.id }}</strong> - Tiempo Maximo: {{ program.timeMax }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="column">
+      <h4 class="title is-4 has-text-centered">Proceso en ejecución</h4>
+
+    </div>
+
+    <div class="column">
+      <h4 class="title is-4 has-text-centered">Procesos terminados</h4>
+
+    </div>
+  </div>
   </div>
 </template>
 
@@ -52,9 +77,16 @@ import Stopwatch from '@/components/Stopwatch';
 export default {
   name: 'processor',
   props: ['batches'],
+  data() {
+    return {
+      currentBatch: [],
+    };
+  },
   methods: {
     handleStartClick() {
       this.$refs.timer.start();
+      this.currentBatch = this.batches.pop();
+      this.$emit('update:batches', this.batches);
     },
   },
   components: {

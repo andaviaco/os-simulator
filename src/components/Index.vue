@@ -37,7 +37,7 @@
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <article class="tile is-child box">
-            <processor :batches="batches"></processor>
+            <processor :batches.sync="batches"></processor>
           </article>
         </div>
       </div>
