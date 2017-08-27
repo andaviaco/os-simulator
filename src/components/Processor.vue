@@ -111,14 +111,22 @@ export default {
     handleStartClick() {
       this.$refs.timer.start();
 
-      this.currentBatch = [...this.batches[this.batches.length - 1]];
-      this.$emit('batch-start');
-
       this.processBatches();
     },
 
     async processBatches() {
-      const allPrograms = [...this.currentBatch];
+      const allBatches = [...this.batches];
+
+      for (const batch of allBatches) {
+        this.$emit('batch-start');
+        this.currentBatch = batch;
+
+        await this.processBatch(batch);
+      }
+    },
+
+    async processBatch(batch) {
+      const allPrograms = [...batch];
 
       for (const program of allPrograms) {
         this.currentBatch.pop();
