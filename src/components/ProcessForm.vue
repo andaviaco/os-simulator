@@ -68,7 +68,7 @@
             <select v-model="process.operation.operator">
               <option value="+">+</option>
               <option value="-">-</option>
-              <option value="x">×</option>
+              <option value="*">×</option>
               <option value="/">÷</option>
               <option value="%">mod</option>
             </select>

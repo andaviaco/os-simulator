@@ -76,6 +76,7 @@
             <div class="message-body">
               <p><strong>ID: {{ program.id }}</strong></p>
               <p>Operación: {{ `${program.operation.operand1} ${program.operation.operator} ${program.operation.operand2}` }}</p>
+              <p>Resultado: {{ program.result }}</p>
             </div>
           </div>
         </li>
@@ -87,6 +88,14 @@
 
 <script>
 import Stopwatch from '@/components/Stopwatch';
+
+const operations = {
+  '+': (a, b) => a + b,
+  '-': (a, b) => a - b,
+  '*': (a, b) => a * b,
+  '/': (a, b) => a / b,
+  '%': (a, b) => a % b,
+};
 
 export default {
   name: 'processor',
@@ -114,8 +123,9 @@ export default {
         this.currentBatch.pop();
         this.currentProcess = program;
 
-        await this.processProgram(program);
+        const result = await this.processProgram(program);
 
+        program.result = result;
         this.currentProcess = {};
         this.processedPrograms.push(program);
       }
@@ -126,7 +136,10 @@ export default {
 
       return new Promise((resolve) => {
         setTimeout(() => {
-          resolve();
+          const { operand1, operator, operand2 } = program.operation;
+          const result = operations[operator](operand1, operand2);
+
+          resolve(result);
         }, timeoutTime);
       });
     },
