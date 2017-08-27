@@ -51,7 +51,19 @@
         <li v-for="program in currentBatch" :key="program.id">
           <div class="message is-small is-primary is-marginless">
             <div class="message-body">
-              <strong>ID: {{ program.id }}</strong> - Tiempo Maximo: {{ program.timeMax }}
+              <div class="message-body">
+                <dl>
+                  <div>
+                    <dt class="is-inline"><strong>ID:</strong></dt>
+                    <dd class="is-inline"><strong>{{ program.id }}</strong></dd>
+                  </div>
+
+                  <div>
+                    <dt class="is-inline">Tiempo Maximo:</dt>
+                    <dd class="is-inline">{{ program.timeMax }}</dd>
+                  </div>
+                </dl>
+              </div>
             </div>
           </div>
         </li>
@@ -60,10 +72,29 @@
 
     <div class="column">
       <h4 class="title is-4 has-text-centered">Proceso en ejecución</h4>
-      <div class="message is-small is-warning" v-show="currentProcess.id">
+      <div class="message is-small is-warning" v-if="currentProcess.id">
         <div class="message-body">
-          <p><strong>ID: {{ currentProcess.id }}</strong></p>
-          <p>Tiempo Maximo: {{ currentProcess.timeMax }}</p>
+          <dl>
+            <div>
+              <dt class="is-inline"><strong>ID:</strong></dt>
+              <dd class="is-inline"><strong>{{ currentProcess.id }}</strong></dd>
+            </div>
+
+            <div>
+              <dt class="is-inline">Programador:</dt>
+              <dd class="is-inline">{{ currentProcess.programmerName }}</dd>
+            </div>
+
+            <div>
+              <dt class="is-inline">Operación:</dt>
+              <dd class="is-inline">{{ `${currentProcess.operation.operand1} ${currentProcess.operation.operator} ${currentProcess.operation.operand2}` }}</dd>
+            </div>
+
+            <div>
+              <dt class="is-inline">Tiempo Maximo:</dt>
+              <dd class="is-inline">{{ currentProcess.timeMax }}</dd>
+            </div>
+          </dl>
         </div>
       </div>
     </div>
@@ -74,9 +105,24 @@
         <li v-for="program in processedPrograms" :key="program.id">
           <div class="message is-small is-success is-marginless">
             <div class="message-body">
-              <p><strong>ID: {{ program.id }}</strong></p>
-              <p>Operación: {{ `${program.operation.operand1} ${program.operation.operator} ${program.operation.operand2}` }}</p>
-              <p>Resultado: {{ program.result }}</p>
+              <dl>
+                <div>
+                  <dt class="is-inline"><strong>ID:</strong></dt>
+                  <dd class="is-inline"><strong>{{ program.id }}</strong></dd>
+                </div>
+
+                <div>
+                  <dt class="is-inline">Operación:</dt>
+                  <dd class="is-inline">
+                    {{ `${program.operation.operand1} ${program.operation.operator} ${program.operation.operand2}` }}
+                  </dd>
+                </div>
+
+                <div>
+                  <dt class="is-inline">Resultado:</dt>
+                  <dd class="is-inline">{{ program.result }}</dd>
+                </div>
+              </dl>
             </div>
           </div>
         </li>
