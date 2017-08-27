@@ -70,6 +70,16 @@
 
     <div class="column">
       <h4 class="title is-4 has-text-centered">Procesos terminados</h4>
+      <ul>
+        <li v-for="program in processedPrograms" :key="program.id">
+          <div class="message is-small is-success is-marginless">
+            <div class="message-body">
+              <p><strong>ID: {{ program.id }}</strong></p>
+              <p>Operación: {{ `${program.operation.operand1} ${program.operation.operator} ${program.operation.operand2}` }}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
   </div>
@@ -85,6 +95,7 @@ export default {
     return {
       currentBatch: [],
       currentProcess: {},
+      processedPrograms: [],
     };
   },
   methods: {
@@ -104,6 +115,9 @@ export default {
         this.currentProcess = program;
 
         await this.processProgram(program);
+
+        this.currentProcess = {};
+        this.processedPrograms.push(program);
       }
     },
 
