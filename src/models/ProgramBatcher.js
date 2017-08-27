@@ -45,6 +45,10 @@ export default class ProgramBatcher {
     this.batches.push(programs);
   }
 
+  popBatch() {
+    return this.batches.pop(-1);
+  }
+
   isIdAvailable(id) {
     const flatPrograms = this.batches.reduce((acc, batch) => acc.concat(batch), []);
     const takenIds = flatPrograms.map(program => program.id);

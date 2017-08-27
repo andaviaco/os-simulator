@@ -18,7 +18,7 @@
               <h3 class="title">Crear Proceso</h3>
               <process-form
               ref="processForm"
-              @submit-program="handleSubmitProgram"
+              @submit-program="handleProgramSubmit"
               @id-change="handleIdChange"
               ></process-form>
             </article>
@@ -37,7 +37,7 @@
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <article class="tile is-child box">
-            <processor :batches.sync="batches"></processor>
+            <processor :batches="batches" @batch-start="handleBatchStart"></processor>
           </article>
         </div>
       </div>
@@ -63,11 +63,14 @@ export default {
     };
   },
   methods: {
-    handleSubmitProgram(program) {
+    handleProgramSubmit(program) {
       batcher.addProgram(program);
     },
     handleIdChange(id) {
       this.$refs.processForm.setIdValidity(batcher.isIdAvailable(id));
+    },
+    handleBatchStart() {
+      batcher.popBatch();
     },
   },
   components: {

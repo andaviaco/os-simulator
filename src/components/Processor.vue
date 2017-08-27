@@ -110,8 +110,9 @@ export default {
   methods: {
     handleStartClick() {
       this.$refs.timer.start();
-      this.currentBatch = this.batches.pop();
-      this.$emit('update:batches', this.batches);
+
+      this.currentBatch = [...this.batches[this.batches.length - 1]];
+      this.$emit('batch-start');
 
       this.processBatches();
     },
