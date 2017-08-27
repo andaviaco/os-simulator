@@ -1,5 +1,6 @@
 <template lang="html">
   <div>
+    <h3 class="title is-3">Procesamiento</h3>
     <div class="level">
         <div class="level-left">
           <div class="level-item">
