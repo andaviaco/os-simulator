@@ -49,7 +49,7 @@
       <h4 class="title is-4 has-text-centered">Lotes en ejecución</h4>
       <ul>
         <li v-for="program in currentBatch" :key="program.id">
-          <div class="message is-dark is-small is-primary is-marginless">
+          <div class="message is-small is-primary is-marginless">
             <div class="message-body">
               <strong>ID: {{ program.id }}</strong> - Tiempo Maximo: {{ program.timeMax }}
             </div>
@@ -60,12 +60,16 @@
 
     <div class="column">
       <h4 class="title is-4 has-text-centered">Proceso en ejecución</h4>
-
+      <div class="message is-small is-warning" v-show="currentProcess.id">
+        <div class="message-body">
+          <p><strong>ID: {{ currentProcess.id }}</strong></p>
+          <p>Tiempo Maximo: {{ currentProcess.timeMax }}</p>
+        </div>
+      </div>
     </div>
 
     <div class="column">
       <h4 class="title is-4 has-text-centered">Procesos terminados</h4>
-
     </div>
   </div>
   </div>
@@ -80,6 +84,7 @@ export default {
   data() {
     return {
       currentBatch: [],
+      currentProcess: {},
     };
   },
   methods: {
@@ -87,6 +92,29 @@ export default {
       this.$refs.timer.start();
       this.currentBatch = this.batches.pop();
       this.$emit('update:batches', this.batches);
+
+      this.processBatches();
+    },
+
+    async processBatches() {
+      const allPrograms = [...this.currentBatch];
+
+      for (const program of allPrograms) {
+        this.currentBatch.pop();
+        this.currentProcess = program;
+
+        await this.processProgram(program);
+      }
+    },
+
+    async processProgram(program) {
+      const timeoutTime = program.timeMax * 1000;
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, timeoutTime);
+      });
     },
   },
   components: {

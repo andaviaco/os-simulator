@@ -6,11 +6,21 @@ export default class ProgramBatcher {
       {
         id: '55',
         programmerName: 'andres',
-        timeMax: '56',
+        timeMax: 3,
         operation: {
           operad1: 5,
           operator: '*',
           operand2: 6,
+        },
+      },
+      {
+        id: '3',
+        programmerName: 'andres',
+        timeMax: 4,
+        operation: {
+          operad1: 1,
+          operator: '/',
+          operand2: 5,
         },
       },
     ]];

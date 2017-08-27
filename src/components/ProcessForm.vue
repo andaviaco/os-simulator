@@ -147,7 +147,7 @@ function initialState() {
     process: {
       id: '',
       programmerName: '',
-      timeMax: '',
+      timeMax: 1,
       operation: {
         operad1: 1,
         operator: '+',
