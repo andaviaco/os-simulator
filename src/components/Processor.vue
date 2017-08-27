@@ -108,10 +108,12 @@ export default {
     };
   },
   methods: {
-    handleStartClick() {
+    async handleStartClick() {
       this.$refs.timer.start();
 
-      this.processBatches();
+      await this.processBatches();
+
+      this.$refs.timer.stop();
     },
 
     async processBatches() {

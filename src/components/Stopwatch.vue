@@ -16,14 +16,14 @@ export default {
   },
   methods: {
     start() {
-      setInterval(() => {
+      this.interval = setInterval(() => {
         this.seconds += 1;
         this.timer = moment().hour(0).minute(0).seconds(this.seconds);
       }, 1000);
     },
 
     stop() {
-      clearInterval(this.intervalId);
+      clearInterval(this.interval);
     },
   },
 };
