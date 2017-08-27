@@ -15,11 +15,24 @@
       </button>
 
       <span class="is-pulled-right">
-        <div class="tags has-addons">
-          <span class="tag is-dark">Tiempo transcurrido:</span>
-          <span class="tag is-info">
-            <stopwatch ref="timer"></stopwatch>
-          </span>
+        <div class="field is-grouped ">
+          <div class="control">
+            <div class="tags has-addons">
+              <span class="tag is-dark">Lotes restantes:</span>
+              <span class="tag is-warning">
+                {{ this.batches.length }}
+              </span>
+            </div>
+          </div>
+
+          <div class="control">
+            <div class="tags has-addons">
+              <span class="tag is-dark">Tiempo transcurrido:</span>
+              <span class="tag is-info">
+                <stopwatch ref="timer"></stopwatch>
+              </span>
+            </div>
+          </div>
         </div>
       </span>
     </div>

@@ -27,9 +27,7 @@
           <div class="tile is-parent">
             <article class="tile is-child box">
               <h3 class="title">Lotes</h3>
-              <process-batches
-              :batches="batches"
-              ></process-batches>
+              <process-batches :batches="batches"></process-batches>
             </article>
           </div>
         </div>
@@ -39,7 +37,7 @@
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <article class="tile is-child box">
-            <processor></processor>
+            <processor :batches="batches"></processor>
           </article>
         </div>
       </div>
