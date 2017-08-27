@@ -10,28 +10,38 @@
     </div>
 
     <div class="section">
-      <div class="tile is-ancestor">
 
+      <div class="tile is-ancestor">
+        <div class="tile">
           <div class="tile is-parent">
-            <div class="tile is-child box">
+            <article class="tile is-child box">
               <h3 class="title">Crear Proceso</h3>
               <process-form
-                ref="processForm"
-                @submit-program="handleSubmitProgram"
-                @id-change="handleIdChange"
+              ref="processForm"
+              @submit-program="handleSubmitProgram"
+              @id-change="handleIdChange"
               ></process-form>
-            </div>
+            </article>
           </div>
 
           <div class="tile is-parent">
-            <div class="tile is-child box">
+            <article class="tile is-child box">
               <h3 class="title">Lotes</h3>
               <process-batches
-                :batches="batches"
+              :batches="batches"
               ></process-batches>
-            </div>
+            </article>
           </div>
+        </div>
+      </div>
 
+
+      <div class="tile is-ancestor">
+        <div class="tile is-parent">
+          <article class="tile is-child box">
+            <processor></processor>
+          </article>
+        </div>
       </div>
     </div>
   </div>
@@ -40,6 +50,7 @@
 <script>
 import ProcessForm from '@/components/ProcessForm';
 import ProcessBatches from '@/components/ProcessBatches';
+import Processor from '@/components/Processor';
 
 import ProgramBatcher from '@/models/ProgramBatcher';
 
@@ -64,6 +75,7 @@ export default {
   components: {
     ProcessForm,
     ProcessBatches,
+    Processor,
   },
 };
 </script>
