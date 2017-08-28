@@ -129,7 +129,7 @@
       <div class="field-label">
       </div>
       <div class="field-body">
-        <button class="button is-primary" type="submit">
+        <button class="button is-primary is-outlined" type="submit">
           <span class="icon is-small">
             <i class="fa fa-plus"></i>
           </span>
@@ -152,7 +152,9 @@ function initialState() {
         operand1: 1,
         operator: '+',
         operand2: 1,
+        result: 0,
       },
+      time: 0,
     },
   };
 }

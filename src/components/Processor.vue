@@ -51,19 +51,17 @@
         <li v-for="program in currentBatch" :key="program.id">
           <div class="message is-small is-primary is-marginless">
             <div class="message-body">
-              <div class="message-body">
-                <dl>
-                  <div>
-                    <dt class="is-inline"><strong>ID:</strong></dt>
-                    <dd class="is-inline"><strong>{{ program.id }}</strong></dd>
-                  </div>
+              <dl>
+                <div>
+                  <dt class="is-inline"><strong>ID:</strong></dt>
+                  <dd class="is-inline"><strong>{{ program.id }}</strong></dd>
+                </div>
 
-                  <div>
-                    <dt class="is-inline">Tiempo Maximo:</dt>
-                    <dd class="is-inline">{{ program.timeMax }}</dd>
-                  </div>
-                </dl>
-              </div>
+                <div>
+                  <dt class="is-inline">Tiempo Maximo:</dt>
+                  <dd class="is-inline">{{ program.timeMax }}</dd>
+                </div>
+              </dl>
             </div>
           </div>
         </li>
@@ -92,7 +90,17 @@
 
             <div>
               <dt class="is-inline">Tiempo Maximo:</dt>
-              <dd class="is-inline">{{ currentProcess.timeMax }}</dd>
+              <dd class="is-inline">{{ currentProcess.timeMax }} secs.</dd>
+            </div>
+
+            <div>
+              <dt class="is-inline">Tiempo Transcurrido:</dt>
+              <dd class="is-inline">{{ currentProcess.time }} secs.</dd>
+            </div>
+
+            <div>
+              <dt class="is-inline">Tiempo Restante:</dt>
+              <dd class="is-inline">{{ currentProcess.timeMax - currentProcess.time }} secs.</dd>
             </div>
           </dl>
         </div>
@@ -120,7 +128,7 @@
 
                 <div>
                   <dt class="is-inline">Resultado:</dt>
-                  <dd class="is-inline">{{ program.result }}</dd>
+                  <dd class="is-inline">{{ program.operation.result }}</dd>
                 </div>
               </dl>
             </div>
@@ -134,6 +142,9 @@
 
 <script>
 import Stopwatch from '@/components/Stopwatch';
+
+// TODO: show batches in finished processes
+// TODO: add transitions
 
 const operations = {
   '+': (a, b) => a + b,
@@ -179,10 +190,17 @@ export default {
       for (const program of allPrograms) {
         this.currentBatch.pop();
         this.currentProcess = program;
+        this.currentProcess.time = 0;
+
+        const interval = setInterval(() => {
+          this.currentProcess.time += 1;
+        }, 1000);
 
         const result = await this.processProgram(program);
 
-        program.result = result;
+        clearInterval(interval);
+
+        program.operation.result = result;
         this.currentProcess = {};
         this.processedPrograms.push(program);
       }

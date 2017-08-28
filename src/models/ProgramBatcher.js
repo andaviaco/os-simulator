@@ -11,7 +11,9 @@ export default class ProgramBatcher {
           operand1: 5,
           operator: '*',
           operand2: 6,
+          result: 0,
         },
+        time: 0,
       },
       {
         id: '3',
@@ -21,7 +23,9 @@ export default class ProgramBatcher {
           operand1: 1,
           operator: '/',
           operand2: 5,
+          result: 0,
         },
+        time: 0,
       },
     ]];
   }
