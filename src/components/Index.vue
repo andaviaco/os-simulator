@@ -51,6 +51,7 @@ import ProcessBatches from '@/components/ProcessBatches';
 import Processor from '@/components/Processor';
 
 import ProgramBatcher from '@/models/ProgramBatcher';
+import Program from '@/models/Program';
 
 
 const batcher = new ProgramBatcher();
@@ -63,7 +64,13 @@ export default {
     };
   },
   methods: {
-    handleProgramSubmit(program) {
+    handleProgramSubmit(programData) {
+      const program = new Program(
+        programData.id,
+        programData.operation,
+        programData.timeMax,
+        programData.programmerName,
+      );
       batcher.addProgram(program);
     },
     handleIdChange(id) {

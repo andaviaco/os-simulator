@@ -59,7 +59,7 @@
 
                 <div>
                   <dt class="is-inline">Tiempo Maximo:</dt>
-                  <dd class="is-inline">{{ program.timeMax }}</dd>
+                  <dd class="is-inline">{{ program.timeMax }} secs.</dd>
                 </div>
               </dl>
             </div>

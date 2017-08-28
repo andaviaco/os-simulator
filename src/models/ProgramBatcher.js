@@ -1,32 +1,32 @@
+
+import Program from '@/models/Program';
+
 export default class ProgramBatcher {
   MAX_PROGRAM_PER_BARCH = 5;
 
   constructor() {
     this.batches = [[
-      {
-        id: '55',
-        programmerName: 'andres',
-        timeMax: 3,
-        operation: {
+      new Program(
+        '55',
+        {
           operand1: 5,
           operator: '*',
           operand2: 6,
-          result: 0,
         },
-        time: 0,
-      },
-      {
-        id: '3',
-        programmerName: 'andres',
-        timeMax: 4,
-        operation: {
+        3,
+        'andres',
+      ),
+
+      new Program(
+        '3',
+        {
           operand1: 1,
           operator: '/',
           operand2: 5,
-          result: 0,
         },
-        time: 0,
-      },
+        4,
+        'andres',
+      ),
     ]];
   }
 
@@ -38,7 +38,7 @@ export default class ProgramBatcher {
     const lastBatch = this.lastBatch;
 
 
-    if (lastBatch.length + 1 < this.MAX_PROGRAM_PER_BARCH) {
+    if (lastBatch.length < this.MAX_PROGRAM_PER_BARCH) {
       lastBatch.push(program);
     } else {
       this.createBatch(program);
