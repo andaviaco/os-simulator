@@ -19,7 +19,7 @@ export default class Program {
     }, 1000);
   }
 
-  stopTime() {
+  stopTimer() {
     clearInterval(this.interval);
   }
 }
