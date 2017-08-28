@@ -31,14 +31,17 @@ export default class ProgramBatcher {
   }
 
   get lastBatch() {
-    return this.batches[this.batches.length - 1];
+    try {
+      return this.batches[this.batches.length - 1];
+    } catch (e) {
+      return null;
+    }
   }
 
   addProgram(program) {
     const lastBatch = this.lastBatch;
 
-
-    if (lastBatch.length < this.MAX_PROGRAM_PER_BARCH) {
+    if (lastBatch && lastBatch.length < this.MAX_PROGRAM_PER_BARCH) {
       lastBatch.push(program);
     } else {
       this.createBatch(program);
