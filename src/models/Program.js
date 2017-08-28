@@ -12,4 +12,14 @@ export default class Program {
     };
     this.time = 0;
   }
+
+  startTimer() {
+    this.interval = setInterval(() => {
+      this.time += 1;
+    }, 1000);
+  }
+
+  stopTime() {
+    clearInterval(this.interval);
+  }
 }

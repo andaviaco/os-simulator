@@ -192,13 +192,9 @@ export default {
         this.currentProcess = program;
         this.currentProcess.time = 0;
 
-        const interval = setInterval(() => {
-          this.currentProcess.time += 1;
-        }, 1000);
-
+        this.currentProcess.startTimer();
         const result = await this.processProgram(program);
-
-        clearInterval(interval);
+        this.currentProcess.stopTimer();
 
         program.operation.result = result;
         this.currentProcess = {};
