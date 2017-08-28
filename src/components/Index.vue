@@ -31,9 +31,9 @@
                 :batches="batches"
               >
                 <template slot="item" scope="props">
-                  <div class="message is-dark is-small is-primary is-marginless">
+                  <div class="message is-dark is-small is-primary">
                     <div class="message-body">
-                      ID: {{ props.program.id }}
+                      ID: {{ props.program.id }} - {{ props.program.programmerName }}
                     </div>
                   </div>
                 </template>

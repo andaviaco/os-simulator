@@ -46,10 +46,10 @@
 
   <div class="columns">
     <div class="column">
-      <h4 class="title is-4 has-text-centered">Lotes en ejecución</h4>
-      <ul>
-        <li v-for="program in currentBatch" :key="program.id">
-          <div class="message is-small is-primary is-marginless">
+      <h4 class="title is-4 has-text-centered">Lote en ejecución</h4>
+      <transition-group name="list" tag="ul">
+        <li class="list-item" v-for="program in currentBatch" :key="program.id">
+          <div class="message is-small is-primary">
             <div class="message-body">
               <dl>
                 <div>
@@ -65,46 +65,48 @@
             </div>
           </div>
         </li>
-      </ul>
+      </transition-group>
     </div>
 
     <div class="column">
       <h4 class="title is-4 has-text-centered">Proceso en ejecución</h4>
-      <div class="message is-small is-warning" v-if="currentProcess.id">
-        <div class="message-body">
-          <dl>
-            <div>
-              <dt class="is-inline"><strong>ID:</strong></dt>
-              <dd class="is-inline"><strong>{{ currentProcess.id }}</strong></dd>
-            </div>
+      <transition name="fade">
+        <div class="message is-small is-warning" v-if="currentProcess.id">
+          <div class="message-body">
+            <dl>
+              <div>
+                <dt class="is-inline"><strong>ID:</strong></dt>
+                <dd class="is-inline"><strong>{{ currentProcess.id }}</strong></dd>
+              </div>
 
-            <div>
-              <dt class="is-inline">Programador:</dt>
-              <dd class="is-inline">{{ currentProcess.programmerName }}</dd>
-            </div>
+              <div>
+                <dt class="is-inline">Programador:</dt>
+                <dd class="is-inline">{{ currentProcess.programmerName }}</dd>
+              </div>
 
-            <div>
-              <dt class="is-inline">Operación:</dt>
-              <dd class="is-inline">{{ `${currentProcess.operation.operand1} ${currentProcess.operation.operator} ${currentProcess.operation.operand2}` }}</dd>
-            </div>
+              <div>
+                <dt class="is-inline">Operación:</dt>
+                <dd class="is-inline">{{ `${currentProcess.operation.operand1} ${currentProcess.operation.operator} ${currentProcess.operation.operand2}` }}</dd>
+              </div>
 
-            <div>
-              <dt class="is-inline">Tiempo Maximo:</dt>
-              <dd class="is-inline">{{ currentProcess.timeMax }} secs.</dd>
-            </div>
+              <div>
+                <dt class="is-inline">Tiempo Maximo:</dt>
+                <dd class="is-inline">{{ currentProcess.timeMax }} secs.</dd>
+              </div>
 
-            <div>
-              <dt class="is-inline">Tiempo Transcurrido:</dt>
-              <dd class="is-inline">{{ currentProcess.time }} secs.</dd>
-            </div>
+              <div>
+                <dt class="is-inline">Tiempo Transcurrido:</dt>
+                <dd class="is-inline">{{ currentProcess.time }} secs.</dd>
+              </div>
 
-            <div>
-              <dt class="is-inline">Tiempo Restante:</dt>
-              <dd class="is-inline">{{ currentProcess.timeMax - currentProcess.time }} secs.</dd>
-            </div>
-          </dl>
+              <div>
+                <dt class="is-inline">Tiempo Restante:</dt>
+                <dd class="is-inline">{{ currentProcess.timeMax - currentProcess.time }} secs.</dd>
+              </div>
+            </dl>
+          </div>
         </div>
-      </div>
+      </transition>
     </div>
 
     <div class="column">
@@ -113,7 +115,7 @@
         :batches="processedBatches"
       >
         <template slot="item" scope="props">
-          <div class="message is-small is-success is-marginless">
+          <div class="message is-small is-success">
             <div class="message-body">
               <dl>
                 <div>
@@ -147,8 +149,6 @@ import Stopwatch from '@/components/Stopwatch';
 import ProcessBatches from '@/components/ProcessBatches';
 
 import ProgramBatcher from '@/models/ProgramBatcher';
-
-// TODO: add transitions
 
 const processedPrograms = new ProgramBatcher();
 
@@ -227,3 +227,27 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+.list-item:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+
+.list-enter-active, .list-leave-active {
+  transition: all .5s;
+}
+
+.list-enter, .list-leave-to  {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0
+}
+
+</style>
