@@ -109,32 +109,34 @@
 
     <div class="column">
       <h4 class="title is-4 has-text-centered">Procesos terminados</h4>
-      <ul>
-        <li v-for="program in processedPrograms" :key="program.id">
+      <process-batches
+        :batches="processedBatches"
+      >
+        <template slot="item" scope="props">
           <div class="message is-small is-success is-marginless">
             <div class="message-body">
               <dl>
                 <div>
                   <dt class="is-inline"><strong>ID:</strong></dt>
-                  <dd class="is-inline"><strong>{{ program.id }}</strong></dd>
+                  <dd class="is-inline"><strong>{{ props.program.id }}</strong></dd>
                 </div>
 
                 <div>
                   <dt class="is-inline">Operación:</dt>
                   <dd class="is-inline">
-                    {{ `${program.operation.operand1} ${program.operation.operator} ${program.operation.operand2}` }}
+                    {{ `${props.program.operation.operand1} ${props.program.operation.operator} ${props.program.operation.operand2}` }}
                   </dd>
                 </div>
 
                 <div>
                   <dt class="is-inline">Resultado:</dt>
-                  <dd class="is-inline">{{ program.operation.result }}</dd>
+                  <dd class="is-inline">{{ props.program.operation.result }}</dd>
                 </div>
               </dl>
             </div>
           </div>
-        </li>
-      </ul>
+        </template>
+      </process-batches>
     </div>
   </div>
   </div>
@@ -142,9 +144,13 @@
 
 <script>
 import Stopwatch from '@/components/Stopwatch';
+import ProcessBatches from '@/components/ProcessBatches';
 
-// TODO: show batches in finished processes
+import ProgramBatcher from '@/models/ProgramBatcher';
+
 // TODO: add transitions
+
+const processedPrograms = new ProgramBatcher();
 
 const operations = {
   '+': (a, b) => a + b,
@@ -161,7 +167,7 @@ export default {
     return {
       currentBatch: [],
       currentProcess: {},
-      processedPrograms: [],
+      processedBatches: processedPrograms.batches,
     };
   },
   methods: {
@@ -198,7 +204,7 @@ export default {
 
         program.operation.result = result;
         this.currentProcess = {};
-        this.processedPrograms.push(program);
+        processedPrograms.addProgram(program);
       }
     },
 
@@ -217,6 +223,7 @@ export default {
   },
   components: {
     Stopwatch,
+    ProcessBatches,
   },
 };
 </script>
