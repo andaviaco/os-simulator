@@ -27,7 +27,17 @@
           <div class="tile is-parent">
             <article class="tile is-child box">
               <h3 class="title">Lotes</h3>
-              <process-batches :batches="batches"></process-batches>
+              <process-batches
+                :batches="batches"
+              >
+                <template slot="item" scope="props">
+                  <div class="message is-dark is-small is-primary is-marginless">
+                    <div class="message-body">
+                      ID: {{ props.program.id }}
+                    </div>
+                  </div>
+                </template>
+              </process-batches>
             </article>
           </div>
         </div>

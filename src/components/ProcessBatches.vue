@@ -10,15 +10,16 @@
       </div>
 
       <div class="message-body">
-        <div
-          class="message is-dark is-small is-primary is-marginless"
+        <slot
+          class="message"
+          name="item"
           v-for="program in batch"
-          :key="program.id"
+          :program="program"
         >
           <div class="message-body">
             ID: {{ program.id }}
           </div>
-        </div>
+        </slot>
       </div>
     </article>
   </div>
