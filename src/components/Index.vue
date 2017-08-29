@@ -64,7 +64,29 @@ import ProgramBatcher from '@/models/ProgramBatcher';
 import Program from '@/models/Program';
 
 
-const batcher = new ProgramBatcher();
+const batcher = new ProgramBatcher([
+  new Program(
+    '55',
+    {
+      operand1: 5,
+      operator: '*',
+      operand2: 6,
+    },
+    3,
+    'Andrés',
+  ),
+
+  new Program(
+    '3',
+    {
+      operand1: 3,
+      operator: '/',
+      operand2: 6,
+    },
+    4,
+    'Andrés',
+  ),
+]);
 
 export default {
   name: 'index',

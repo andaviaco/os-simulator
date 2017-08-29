@@ -1,33 +1,12 @@
 
-import Program from '@/models/Program';
-
 export default class ProgramBatcher {
   MAX_PROGRAM_PER_BARCH = 5;
 
-  constructor() {
-    this.batches = [[
-      new Program(
-        '55',
-        {
-          operand1: 5,
-          operator: '*',
-          operand2: 6,
-        },
-        3,
-        'andres',
-      ),
+  constructor(programs = []) {
+    // TODO: remove dummy data
+    this.batches = [];
 
-      new Program(
-        '3',
-        {
-          operand1: 1,
-          operator: '/',
-          operand2: 5,
-        },
-        4,
-        'andres',
-      ),
-    ]];
+    programs.forEach(this.addProgram.bind(this));
   }
 
   get lastBatch() {
