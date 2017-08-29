@@ -54,44 +54,66 @@
         <label class="label" for="operation">Operación</label>
       </div>
       <div class="field-body">
-        <div class="field is-narrow">
-          <input
-            id="operation"
-            class="input"
-            type="number"
-            v-model="process.operation.operand1"
-          >
+        <div>
+          <div class="field is-narrow">
+            <input
+              id="operation"
+              class="input"
+              type="number"
+              v-model="process.operation.operand1"
+            >
+          </div>
         </div>
 
         <div class="control">
           <div class="select">
-            <select v-model="process.operation.operator">
+            <select
+              v-model="process.operation.operator"
+              ref="operator"
+              @input="handleOperationChange()"
+            >
               <option value="+">+</option>
               <option value="-">-</option>
               <option value="*">×</option>
               <option value="/">÷</option>
+              <option value="^">^</option>
               <option value="%">mod</option>
             </select>
           </div>
         </div>
 
-        <div class="field is-narrow">
-          <input
-            id="operation2"
-            class="input"
-            type="number"
-            name="operation2"
-            v-model="process.operation.operand2"
-            v-validate="'required|numeric|min_value:1'"
-          >
+        <div>
+          <div class="field is-narrow">
+            <input
+              id="operand2"
+              class="input"
+              type="number"
+              name="operand2"
+              ref="operand2"
+              v-model="process.operation.operand2"
+              v-validate="'required|numeric'"
+              @input="handleOperationChange()"
+            >
+          </div>
         </div>
+
       </div>
+    </div>
+
+    <div>
       <p
         class="help is-danger"
-        v-show="errors.has('operation2')"
+        v-show="errors.has('operand2')"
       >
-        {{ errors.first('operation2') }}
+        {{ errors.first('operand2') }}
       </p>
+      <p
+        class="help is-danger"
+        v-show="operationError"
+      >
+        {{ operationError }}
+      </p>
+
     </div>
 
     <div class="field is-horizontal">
@@ -144,6 +166,7 @@
 function initialState() {
   return {
     isCurrentIdValid: true,
+    operationError: null,
     process: {
       id: '',
       programmerName: '',
@@ -177,8 +200,23 @@ export default {
     handleIdChange($event) {
       this.$emit('id-change', $event.target.value);
     },
+    handleOperationChange() {
+      const operand2 = this.$refs.operand2.value;
+      const operator = this.$refs.operator.value;
+
+      this.validateOperation(operand2, operator);
+    },
     setIdValidity(value) {
       this.isCurrentIdValid = value;
+    },
+    validateOperation(operand2, operator) {
+      const isRestrictedOperator = ['/', '%'].find(op => op === operator);
+
+      if (isRestrictedOperator && operand2 <= 0) {
+        this.operationError = 'El segundo operando debe ser mayor a 0.';
+      } else {
+        this.operationError = null;
+      }
     },
   },
 };
