@@ -195,7 +195,7 @@ export default {
       const allPrograms = [...batch];
 
       for (const program of allPrograms) {
-        this.currentBatch.pop();
+        this.currentBatch.shift();
         this.currentProcess = program;
         this.currentProcess.time = 0;
 
