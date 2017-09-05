@@ -52,6 +52,32 @@
         </div>
       </div>
     </div>
+
+    <section class="section">
+      <div
+        class="message is-primary"
+        tabindex="-1"
+        @keyup.p="handleKeyup($event)"
+        @keyup.c="handleKeyup($event)"
+        @keyup.e="handleKeyup($event)"
+        @keyup.w="handleKeyup($event)"
+    >
+        <div class="message-header">
+          Comandos
+        </div>
+        <div class="message-body">
+          <div class="content">
+            <p v-show="pressedKey.key">Presionaste: <strong>{{ pressedKey.key }}</strong></p>
+            <ul>
+              <li><strong>P</strong>: Pausa</li>
+              <li><strong>C</strong>: Continuar</li>
+              <li><strong>E</strong>: Entrada/Salida</li>
+              <li><strong>W</strong>: Error</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -93,6 +119,10 @@ export default {
   data() {
     return {
       batches: batcher.batches,
+      pressedKey: {
+        key: null,
+        keyCode: null,
+      },
     };
   },
   methods: {
@@ -110,6 +140,12 @@ export default {
     },
     handleBatchStart() {
       batcher.popBatch();
+    },
+    handleKeyup($event) {
+      this.pressedKey = {
+        key: $event.key,
+        keyCode: $event.keyCode,
+      };
     },
   },
   components: {

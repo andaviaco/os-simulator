@@ -19,6 +19,12 @@ Validator.addLocale(esLocale);
 
 Vue.use(VeeValidate, veeValidateConfig);
 
+Vue.config.keyCodes = {
+  p: 80,
+  c: 67,
+  e: 69,
+  w: 87,
+};
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
