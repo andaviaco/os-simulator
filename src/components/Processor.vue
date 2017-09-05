@@ -47,25 +47,30 @@
   <div class="columns">
     <div class="column">
       <h4 class="title is-4 has-text-centered">Lote en ejecución</h4>
-      <transition-group name="list" tag="ul">
-        <li class="list-item" v-for="program in currentBatch" :key="program.id">
+      <batch :programs="currentBatch">
+        <template slot="item" scope="props">
           <div class="message is-small is-primary">
             <div class="message-body">
               <dl>
                 <div>
                   <dt class="is-inline"><strong>ID:</strong></dt>
-                  <dd class="is-inline"><strong>{{ program.id }}</strong></dd>
+                  <dd class="is-inline"><strong>{{ props.program.id }}</strong></dd>
                 </div>
 
                 <div>
                   <dt class="is-inline">Tiempo Maximo:</dt>
-                  <dd class="is-inline">{{ program.timeMax }} secs.</dd>
+                  <dd class="is-inline">{{ props.program.timeMax }} secs.</dd>
+                </div>
+
+                <div>
+                  <dt class="is-inline">Tiempo Restante:</dt>
+                  <dd class="is-inline">{{ props.program.timeMax - props.program.time }} secs.</dd>
                 </div>
               </dl>
             </div>
           </div>
-        </li>
-      </transition-group>
+        </template>
+      </batch>
     </div>
 
     <div class="column">
