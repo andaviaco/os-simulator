@@ -10,50 +10,31 @@
       </div>
 
       <div class="message-body">
-        <transition-group name="list" tag="ul">
-          <li
-            class="list-item"
-            v-for="program in batch"
-            :key="program.id"
-          >
-            <slot
-              class="message"
-              name="item"
-              :program="program"
-            >
+        <batch :programs="batch">
+          <template slot="item" scope="props">
+            <slot class="message"
+              name="program"
+              :program="props.program">
               <div class="message-body">
-                ID: {{ program.id }}
+                ID: {{ props.program.id }}
               </div>
             </slot>
-          </li>
-        </transition-group>
-
+          </template>
+        </batch>
       </div>
     </article>
   </div>
 </template>
 
 <script>
+import Batch from '@/components/Batch';
+
 export default {
   name: 'process-batches',
   props: ['batches'],
   data() { return {}; },
+  components: {
+    Batch,
+  },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-.list-item:not(:last-child) {
-  margin-bottom: 0.5rem;
-}
-
-.list-enter-active, .list-leave-active {
-  transition: all .5s;
-}
-
-.list-enter, .list-leave-to  {
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-</style>

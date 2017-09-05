@@ -114,25 +114,25 @@
       <process-batches
         :batches="processedBatches"
       >
-        <template slot="item" scope="props">
+        <template slot="program" scope="batchScope">
           <div class="message is-small is-success">
             <div class="message-body">
               <dl>
                 <div>
                   <dt class="is-inline"><strong>ID:</strong></dt>
-                  <dd class="is-inline"><strong>{{ props.program.id }}</strong></dd>
+                  <dd class="is-inline"><strong>{{ batchScope.program.id }}</strong></dd>
                 </div>
 
                 <div>
                   <dt class="is-inline">Operación:</dt>
                   <dd class="is-inline">
-                    {{ `${props.program.operation.operand1} ${props.program.operation.operator} ${props.program.operation.operand2}` }}
+                    {{ `${batchScope.program.operation.operand1} ${batchScope.program.operation.operator} ${batchScope.program.operation.operand2}` }}
                   </dd>
                 </div>
 
                 <div>
                   <dt class="is-inline">Resultado:</dt>
-                  <dd class="is-inline">{{ props.program.operation.result }}</dd>
+                  <dd class="is-inline">{{ batchScope.program.operation.result }}</dd>
                 </div>
               </dl>
             </div>
@@ -147,6 +147,7 @@
 <script>
 import Stopwatch from '@/components/Stopwatch';
 import ProcessBatches from '@/components/ProcessBatches';
+import Batch from '@/components/Batch';
 
 import ProgramBatcher from '@/models/ProgramBatcher';
 
@@ -225,6 +226,7 @@ export default {
   components: {
     Stopwatch,
     ProcessBatches,
+    Batch,
   },
 };
 </script>

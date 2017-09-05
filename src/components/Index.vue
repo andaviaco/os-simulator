@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title is-1">OS Simulator</h1>
-          <h2 class="subtitle is-2">Practica 1</h2>
+          <h2 class="subtitle is-2">Práctica 2</h2>
         </div>
       </div>
     </div>
@@ -30,10 +30,10 @@
               <process-batches
                 :batches="batches"
               >
-                <template slot="item" scope="props">
+                <template slot="program" scope="batchScope">
                   <div class="message is-dark is-small is-primary">
                     <div class="message-body">
-                      ID: {{ props.program.id }} - {{ props.program.programmerName }}
+                      ID: {{ batchScope.program.id }} - {{ batchScope.program.programmerName }}
                     </div>
                   </div>
                 </template>
