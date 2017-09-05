@@ -1,5 +1,11 @@
 <template lang="html">
-  <div>
+  <div
+    tabindex="-1"
+    @keyup.p="handlePauseKeyup"
+    @keyup.c="handleContinueKeyup"
+    @keyup.e="handleInterruptKeyup"
+    @keyup.w="handleErrorKeyup"
+  >
     <h3 class="title is-3">Procesamiento</h3>
     <div class="level">
         <div class="level-left">
@@ -226,6 +232,22 @@ export default {
           resolve(result);
         }, timeoutTime);
       });
+    },
+
+    handlePauseKeyup() {
+      console.log('pause');
+    },
+
+    handleContinueKeyup() {
+      console.log('continue');
+    },
+
+    handleInterruptKeyup() {
+      console.log('interrupt');
+    },
+
+    handleErrorKeyup() {
+      console.log('error');
     },
   },
   components: {
