@@ -117,14 +117,13 @@
 
           <div class="control">
             <button
-              class="button is-white"
+              class="button is-outlined"
               type="button"
               @click="handleRandomClick"
             >
               <span class="icon is-small">
                 <i class="fa fa-magic"></i>
               </span>
-              <span>Random</span>
             </button>
           </div>
         </div>
@@ -174,7 +173,6 @@ export default {
     },
 
     handleRandomClick() {
-      console.log('holas');
       const operators = Object.values(OPERATORS);
 
       this.process.timeMax = this.getRandom(1, 5);
