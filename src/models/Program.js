@@ -1,13 +1,14 @@
-
 import shortid from 'shortid';
 
+import { OPERATORS } from '@/const';
+
 const operations = {
-  '+': (a, b) => a + b,
-  '-': (a, b) => a - b,
-  '*': (a, b) => a * b,
-  '/': (a, b) => a / b,
-  '%': (a, b) => a % b,
-  '^': (a, b) => a ** b,
+  [OPERATORS.plus]: (a, b) => a + b,
+  [OPERATORS.minus]: (a, b) => a - b,
+  [OPERATORS.times]: (a, b) => a * b,
+  [OPERATORS.divition]: (a, b) => a / b,
+  [OPERATORS.mod]: (a, b) => a % b,
+  [OPERATORS.pow]: (a, b) => a ** b,
 };
 
 export default class Program {
