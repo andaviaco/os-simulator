@@ -23,12 +23,12 @@
               ref="operator"
               @input="handleOperationChange()"
             >
-              <option value="+">+</option>
-              <option value="-">-</option>
-              <option value="*">×</option>
-              <option value="/">÷</option>
-              <option value="^">^</option>
-              <option value="%">mod</option>
+              <option :value="getOperator('plus')">{{ getOperatorRep('plus') }}</option>
+              <option :value="getOperator('minus')">{{ getOperatorRep('minus') }}</option>
+              <option :value="getOperator('times')">{{ getOperatorRep('times') }}</option>
+              <option :value="getOperator('divition')">{{ getOperatorRep('divition') }}</option>
+              <option :value="getOperator('pow')">{{ getOperatorRep('pow') }}</option>
+              <option :value="getOperator('mod')">{{ getOperatorRep('mod') }}</option>
             </select>
           </div>
         </div>
@@ -102,18 +102,40 @@
       <div class="field-label">
       </div>
       <div class="field-body">
-        <button class="button is-primary is-outlined" type="submit">
-          <span class="icon is-small">
-            <i class="fa fa-plus"></i>
-          </span>
-          <span>Agregar</span>
-        </button>
+        <div class="field is-grouped">
+          <div class="control">
+            <button
+              class="button is-primary is-outlined"
+              type="submit"
+            >
+              <span class="icon is-small">
+                <i class="fa fa-plus"></i>
+              </span>
+              <span>Agregar</span>
+            </button>
+          </div>
+
+          <div class="control">
+            <button
+              class="button is-white"
+              type="button"
+              @click="handleRandomClick"
+            >
+              <span class="icon is-small">
+                <i class="fa fa-magic"></i>
+              </span>
+              <span>Random</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </form>
 </template>
 
 <script>
+import { OPERATORS, OPERATORS_REP } from '@/const';
+
 function initialState() {
   return {
     operationError: null,
@@ -151,6 +173,24 @@ export default {
       this.validateOperation(operand2, operator);
     },
 
+    handleRandomClick() {
+      console.log('holas');
+      const operators = Object.values(OPERATORS);
+
+      this.process.timeMax = this.getRandom(1, 5);
+      this.process.operation.operand1 = this.getRandom(1, 50);
+      this.process.operation.operator = operators[this.getRandom(0, operators.length - 1)];
+      this.process.operation.operand2 = this.getRandom(1, 50);
+    },
+
+    getOperator(op) {
+      return OPERATORS[op];
+    },
+
+    getOperatorRep(op) {
+      return OPERATORS_REP[op];
+    },
+
     validateOperation(operand2, operator) {
       const isRestrictedOperator = ['/', '%'].find(op => op === operator);
 
@@ -159,6 +199,13 @@ export default {
       } else {
         this.operationError = null;
       }
+    },
+
+    getRandom(min, max) {
+      const minCeil = Math.ceil(min);
+      const maxFloor = Math.floor(max);
+
+      return Math.floor(Math.random() * ((maxFloor - minCeil) + 1)) + minCeil;
     },
   },
 };
