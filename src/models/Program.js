@@ -1,4 +1,13 @@
 
+const operations = {
+  '+': (a, b) => a + b,
+  '-': (a, b) => a - b,
+  '*': (a, b) => a * b,
+  '/': (a, b) => a / b,
+  '%': (a, b) => a % b,
+  '^': (a, b) => a ** b,
+};
+
 export default class Program {
   constructor(id, { operand1, operand2, operator }, timeMax, programmerName = '') {
     this.id = id;
@@ -21,5 +30,34 @@ export default class Program {
 
   stopTimer() {
     clearInterval(this.interval);
+  }
+
+  solverOperation() {
+    const { operand1, operator, operand2 } = this.operation;
+
+    this.result = operations[operator](operand1, operand2);
+
+    return this.result;
+  }
+
+  processOperation() {
+    const processTime = this.timeMax - this.time;
+
+    this.startTimer();
+
+    return new Promise((resolve) => {
+      this.timeoutId = setTimeout(() => {
+        const result = this.solverOperation();
+
+        this.stopTimer();
+
+        resolve(result);
+      }, processTime * 1000);
+    });
+  }
+
+  pauseProcess() {
+    clearTimeout(this.timeoutId);
+    this.stopTimer();
   }
 }

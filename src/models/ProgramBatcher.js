@@ -31,8 +31,8 @@ export default class ProgramBatcher {
     this.batches.push(programs);
   }
 
-  popBatch() {
-    return this.batches.pop(-1);
+  dequeueBatch() {
+    return this.batches.shift();
   }
 
   isIdAvailable(id) {

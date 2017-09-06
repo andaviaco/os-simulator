@@ -139,7 +139,7 @@ export default {
       this.$refs.processForm.setIdValidity(batcher.isIdAvailable(id));
     },
     handleBatchStart() {
-      batcher.popBatch();
+      batcher.dequeueBatch();
     },
     handleKeyup($event) {
       this.pressedKey = {

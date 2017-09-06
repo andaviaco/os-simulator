@@ -164,15 +164,6 @@ import ProgramBatcher from '@/models/ProgramBatcher';
 
 const processedPrograms = new ProgramBatcher();
 
-const operations = {
-  '+': (a, b) => a + b,
-  '-': (a, b) => a - b,
-  '*': (a, b) => a * b,
-  '/': (a, b) => a / b,
-  '%': (a, b) => a % b,
-  '^': (a, b) => a ** b,
-};
-
 export default {
   name: 'processor',
   props: ['batches'],
@@ -181,65 +172,60 @@ export default {
       currentBatch: [],
       currentProcess: {},
       processedBatches: processedPrograms.batches,
+      currentTimeoutId: null,
     };
   },
   methods: {
     async handleStartClick() {
       this.$refs.timer.start();
 
-      await this.processBatches();
+      await this.loadNextBatch();
 
       this.$refs.timer.stop();
     },
 
-    async processBatches() {
-      const allBatches = [...this.batches];
-
-      for (const batch of allBatches) {
+    async loadNextBatch() {
+      if (this.batches.length > 0) {
+        this.currentBatch = this.batches[0];
         this.$emit('batch-start');
-        this.currentBatch = batch;
 
-        await this.processBatch(batch);
+        return this.processNext();
       }
+
+      return Promise.resolve();
     },
 
-    async processBatch(batch) {
-      const allPrograms = [...batch];
+    async processNext() {
+      if (this.currentBatch.length > 0) {
+        this.currentProcess = this.currentBatch.shift();
 
-      for (const program of allPrograms) {
-        this.currentBatch.shift();
-        this.currentProcess = program;
-        this.currentProcess.time = 0;
+        return this.processCurrent();
+      }
 
-        this.currentProcess.startTimer();
-        const result = await this.processProgram(program);
-        this.currentProcess.stopTimer();
+      return this.loadNextBatch();
+    },
 
-        program.operation.result = result;
+    async processCurrent() {
+      return new Promise(async (resolve) => {
+        await this.currentProcess.processOperation();
+
+        processedPrograms.addProgram(this.currentProcess);
         this.currentProcess = {};
-        processedPrograms.addProgram(program);
-      }
-    },
 
-    async processProgram(program) {
-      const timeoutTime = program.timeMax * 1000;
+        this.processNext();
 
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const { operand1, operator, operand2 } = program.operation;
-          const result = operations[operator](operand1, operand2);
-
-          resolve(result);
-        }, timeoutTime);
+        resolve();
       });
     },
 
     handlePauseKeyup() {
       console.log('pause');
+      this.currentProcess.pauseProcess();
     },
 
     handleContinueKeyup() {
       console.log('continue');
+      this.processCurrent();
     },
 
     handleInterruptKeyup() {
