@@ -1,4 +1,6 @@
 
+import shortid from 'shortid';
+
 const operations = {
   '+': (a, b) => a + b,
   '-': (a, b) => a - b,
@@ -10,7 +12,7 @@ const operations = {
 
 export default class Program {
   constructor({ operand1, operand2, operator }, timeMax = 0) {
-    this.id = 1;
+    this.id = shortid.generate();
     this.timeMax = timeMax;
     this.operation = {
       operand1,
