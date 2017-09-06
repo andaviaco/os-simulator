@@ -2,55 +2,6 @@
   <form @submit.prevent="handleSubmitForm">
     <div class="field is-horizontal">
       <div class="field-label">
-        <label
-          class="label"
-          for="program_id"
-        >
-          Num. Programa (ID)
-        </label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <input
-              id="program_id"
-              class="input"
-              type="text"
-              v-model="process.id"
-              @input="handleIdChange($event)"
-            >
-          </div>
-          <p
-            class="help is-danger"
-            v-show="!isCurrentIdValid"
-          >
-            El ID no está disponible.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="field is-horizontal">
-      <div class="field-label">
-        <label
-          class="label"
-          for="programmer-name"
-        >
-          Nombre del Programador
-        </label>
-      </div>
-      <div class="field-body">
-        <input
-          id="programmer-name"
-          class="input"
-          type="text"
-          v-model="process.programmerName"
-        >
-      </div>
-    </div>
-
-    <div class="field is-horizontal">
-      <div class="field-label">
         <label class="label" for="operation">Operación</label>
       </div>
       <div class="field-body">
@@ -165,19 +116,14 @@
 <script>
 function initialState() {
   return {
-    isCurrentIdValid: true,
     operationError: null,
     process: {
-      id: '',
-      programmerName: '',
-      timeMax: 1,
       operation: {
         operand1: 1,
         operator: '+',
         operand2: 1,
         result: 0,
       },
-      time: 0,
     },
   };
 }
@@ -191,24 +137,20 @@ export default {
     async handleSubmitForm() {
       const formIsValid = await this.$validator.validateAll();
 
-      if (formIsValid && this.isCurrentIdValid) {
+      if (formIsValid) {
         this.$emit('submit-program', this.process);
 
         Object.assign(this.$data, initialState());
       }
     },
-    handleIdChange($event) {
-      this.$emit('id-change', $event.target.value);
-    },
+
     handleOperationChange() {
       const operand2 = this.$refs.operand2.value;
       const operator = this.$refs.operator.value;
 
       this.validateOperation(operand2, operator);
     },
-    setIdValidity(value) {
-      this.isCurrentIdValid = value;
-    },
+
     validateOperation(operand2, operator) {
       const isRestrictedOperator = ['/', '%'].find(op => op === operator);
 

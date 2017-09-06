@@ -33,7 +33,7 @@
                 <template slot="program" scope="batchScope">
                   <div class="message is-dark is-small is-primary">
                     <div class="message-body">
-                      ID: {{ batchScope.program.id }} - {{ batchScope.program.programmerName }}
+                      ID: {{ batchScope.program.id }}
                     </div>
                   </div>
                 </template>
@@ -92,25 +92,21 @@ import Program from '@/models/Program';
 
 const batcher = new ProgramBatcher([
   new Program(
-    '55',
     {
       operand1: 5,
       operator: '*',
       operand2: 6,
     },
     3,
-    'Andrés',
   ),
 
   new Program(
-    '3',
     {
       operand1: 3,
       operator: '/',
       operand2: 6,
     },
     4,
-    'Andrés',
   ),
 ]);
 
@@ -128,10 +124,8 @@ export default {
   methods: {
     handleProgramSubmit(programData) {
       const program = new Program(
-        programData.id,
         programData.operation,
         programData.timeMax,
-        programData.programmerName,
       );
       batcher.addProgram(program);
     },

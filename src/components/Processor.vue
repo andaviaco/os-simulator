@@ -91,11 +91,6 @@
               </div>
 
               <div>
-                <dt class="is-inline">Programador:</dt>
-                <dd class="is-inline">{{ currentProcess.programmerName }}</dd>
-              </div>
-
-              <div>
                 <dt class="is-inline">Operación:</dt>
                 <dd class="is-inline">{{ `${currentProcess.operation.operand1} ${currentProcess.operation.operator} ${currentProcess.operation.operand2}` }}</dd>
               </div>
