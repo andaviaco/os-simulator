@@ -190,7 +190,7 @@ export default {
     },
 
     validateOperation(operand2, operator) {
-      const isRestrictedOperator = ['/', '%'].find(op => op === operator);
+      const isRestrictedOperator = [OPERATORS.divition, OPERATORS.mod].find(op => op === operator);
 
       if (isRestrictedOperator && operand2 <= 0) {
         this.operationError = 'El segundo operando debe ser mayor a 0.';
