@@ -110,6 +110,14 @@
                 <dd class="is-inline">{{ currentProcess.timeMax - currentProcess.time }} secs.</dd>
               </div>
             </dl>
+
+            <progress
+              class="progress is-primary"
+              :value="currentProcess.time"
+              :max="currentProcess.timeMax"
+            >
+              {{ currentProcess.time }} / {{ currentProcess.timeMax }}
+            </progress>
           </div>
         </div>
       </transition>
