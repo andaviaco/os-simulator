@@ -30,7 +30,7 @@
           <div class="field is-grouped ">
             <div class="control">
               <div class="tags has-addons">
-                <span class="tag is-dark">Lotes restantes:</span>
+                <span class="tag is-dark">Lotes restantes</span>
                 <span class="tag is-warning">
                   {{ this.batches.length }}
                 </span>
@@ -39,7 +39,7 @@
 
             <div class="control">
               <div class="tags has-addons">
-                <span class="tag is-dark">Tiempo transcurrido:</span>
+                <span class="tag is-dark">Tiempo transcurrido</span>
                 <span class="tag is-info">
                   <stopwatch ref="timer"></stopwatch>
                 </span>
@@ -121,8 +121,21 @@
         :batches="processedBatches"
       >
         <template slot="program" scope="batchScope">
-          <div class="message is-small is-success">
+          <div
+            class="message is-small"
+            :class="{'is-success': batchScope.program.statusIs('ok'), 'is-danger': batchScope.program.statusIs('error')}"
+          >
             <div class="message-body">
+              <div class="tags has-addons is-pulled-right">
+                <span class="tag">Status</span>
+                <span
+                  class="tag"
+                  :class="{'is-success': batchScope.program.statusIs('ok'), 'is-danger': batchScope.program.statusIs('error')}"
+                >
+                  {{ batchScope.program.status }}
+                </span>
+              </div>
+
               <dl>
                 <div>
                   <dt class="is-inline"><strong>ID:</strong></dt>
@@ -136,7 +149,7 @@
                   </dd>
                 </div>
 
-                <div>
+                <div v-if="batchScope.program.statusIs('ok')">
                   <dt class="is-inline">Resultado:</dt>
                   <dd class="is-inline">{{ batchScope.program.operation.result }}</dd>
                 </div>
@@ -157,6 +170,8 @@ import Batch from '@/components/Batch';
 
 import ProgramBatcher from '@/models/ProgramBatcher';
 
+import { PROCESOR_STATUS, PROCESS_STATUS } from '@/const';
+
 const processedPrograms = new ProgramBatcher();
 
 export default {
@@ -168,15 +183,15 @@ export default {
       currentProcess: {},
       processedBatches: processedPrograms.batches,
       currentTimeoutId: null,
+      status: PROCESOR_STATUS.paused,
     };
   },
   methods: {
     async handleStartClick() {
       this.$refs.timer.start();
 
+      this.status = PROCESOR_STATUS.processing;
       await this.loadNextBatch();
-
-      this.$refs.timer.stop();
     },
 
     async loadNextBatch() {
@@ -187,6 +202,7 @@ export default {
         return this.processNext();
       }
 
+      this.stopProcessing();
       return Promise.resolve();
     },
 
@@ -213,22 +229,50 @@ export default {
       });
     },
 
+    stopProcessing() {
+      this.$refs.timer.stop();
+      this.status = PROCESOR_STATUS.paused;
+    },
+
+    interruptCurrentProcess() {
+      this.currentProcess.pauseProcess();
+      this.currentBatch.push(this.currentProcess);
+      this.currentProcess = {};
+      this.processNext();
+    },
+
+    cancelCurrentProcess() {
+      this.currentProcess.pauseProcess();
+      this.currentProcess.status = PROCESS_STATUS.error;
+      processedPrograms.addProgram(this.currentProcess);
+      this.currentProcess = {};
+      this.processNext();
+    },
+
     handlePauseKeyup() {
       console.log('pause');
       this.currentProcess.pauseProcess();
+      this.status = PROCESOR_STATUS.paused;
     },
 
     handleContinueKeyup() {
-      console.log('continue');
-      this.processCurrent();
+      if (this.status === PROCESOR_STATUS.paused) {
+        console.log('continue');
+        this.processCurrent();
+        this.status = PROCESOR_STATUS.processing;
+      }
     },
 
     handleInterruptKeyup() {
-      console.log('interrupt');
+      if (this.status === PROCESOR_STATUS.processing) {
+        console.log('interrupt');
+        this.interruptCurrentProcess();
+      }
     },
 
     handleErrorKeyup() {
       console.log('error');
+      this.cancelCurrentProcess();
     },
   },
   components: {

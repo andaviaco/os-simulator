@@ -1,6 +1,6 @@
 import shortid from 'shortid';
 
-import { OPERATORS } from '@/const';
+import { OPERATORS, PROCESS_STATUS } from '@/const';
 
 const operations = {
   [OPERATORS.plus]: (a, b) => a + b,
@@ -22,6 +22,7 @@ export default class Program {
       result: 0,
     };
     this.time = 0;
+    this.status = PROCESS_STATUS.pending;
   }
 
   startTimer() {
@@ -37,9 +38,7 @@ export default class Program {
   solverOperation() {
     const { operand1, operator, operand2 } = this.operation;
 
-    this.result = operations[operator](operand1, operand2);
-
-    return this.result;
+    return operations[operator](operand1, operand2);
   }
 
   processOperation() {
@@ -49,11 +48,12 @@ export default class Program {
 
     return new Promise((resolve) => {
       this.timeoutId = setTimeout(() => {
-        const result = this.solverOperation();
+        this.operation.result = this.solverOperation();
 
+        this.status = PROCESS_STATUS.ok;
         this.stopTimer();
 
-        resolve(result);
+        resolve(this.operation.result);
       }, processTime * 1000);
     });
   }
@@ -61,5 +61,9 @@ export default class Program {
   pauseProcess() {
     clearTimeout(this.timeoutId);
     this.stopTimer();
+  }
+
+  statusIs(status) {
+    return this.status === PROCESS_STATUS[status];
   }
 }
