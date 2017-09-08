@@ -237,6 +237,12 @@ export default {
       });
     },
 
+    restartProcessing() {
+      this.$refs.timer.start();
+      this.processCurrent();
+      this.status = PROCESOR_STATUS.processing;
+    },
+
     stopProcessing() {
       this.$refs.timer.stop();
       this.status = PROCESOR_STATUS.paused;
@@ -260,14 +266,13 @@ export default {
     handlePauseKeyup() {
       console.log('pause');
       this.currentProcess.pauseProcess();
-      this.status = PROCESOR_STATUS.paused;
+      this.stopProcessing();
     },
 
     handleContinueKeyup() {
       if (this.status === PROCESOR_STATUS.paused) {
         console.log('continue');
-        this.processCurrent();
-        this.status = PROCESOR_STATUS.processing;
+        this.restartProcessing();
       }
     },
 
