@@ -237,7 +237,7 @@ export default {
       });
     },
 
-    restartProcessing() {
+    resumeProcessing() {
       this.$refs.timer.start();
       this.processCurrent();
       this.status = PROCESOR_STATUS.processing;
@@ -260,6 +260,7 @@ export default {
       this.currentProcess.status = PROCESS_STATUS.error;
       processedPrograms.addProgram(this.currentProcess);
       this.currentProcess = {};
+      this.$refs.timer.start();
       this.processNext();
     },
 
@@ -272,7 +273,7 @@ export default {
     handleContinueKeyup() {
       if (this.status === PROCESOR_STATUS.paused) {
         console.log('continue');
-        this.restartProcessing();
+        this.resumeProcessing();
       }
     },
 

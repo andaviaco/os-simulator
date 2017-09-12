@@ -16,14 +16,17 @@ export default {
   },
   methods: {
     start() {
-      this.interval = setInterval(() => {
-        this.seconds += 1;
-        this.timer = moment().hour(0).minute(0).seconds(this.seconds);
-      }, 1000);
+      if (!this.interval) {
+        this.interval = setInterval(() => {
+          this.seconds += 1;
+          this.timer = moment().hour(0).minute(0).seconds(this.seconds);
+        }, 1000);
+      }
     },
 
     stop() {
       clearInterval(this.interval);
+      this.interval = null;
     },
   },
 };

@@ -23,16 +23,20 @@ export default class Program {
     };
     this.time = 0;
     this.status = PROCESS_STATUS.pending;
+    this.interval = null;
   }
 
   startTimer() {
-    this.interval = setInterval(() => {
-      this.time += 1;
-    }, 1000);
+    if (!this.interval) {
+      this.interval = setInterval(() => {
+        this.time += 1;
+      }, 1000);
+    }
   }
 
   stopTimer() {
     clearInterval(this.interval);
+    this.interval = null;
   }
 
   solverOperation() {
