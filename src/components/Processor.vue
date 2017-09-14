@@ -10,9 +10,6 @@
         <div class="level-left">
           <div class="level-item">
             <h3 class="title is-3">
-              <span class="icon">
-                <i class="fa fa-flash"></i>
-              </span>
               Procesamiento
             </h3>
           </div>
@@ -36,7 +33,14 @@
 
   <div class="columns">
     <div class="column">
-      <h4 class="title is-4 has-text-centered">Cola de procesos</h4>
+      <h4 class="title is-4 has-text-centered">
+        <span class="icon has-text-info">
+          <i class="fa fa-clock-o"></i>
+        </span>
+        <span>
+          Cola de procesos
+        </span>
+      </h4>
       <batch :programs="batch">
         <template slot="item" scope="props">
           <div class="message is-small is-primary">
@@ -71,7 +75,15 @@
     </div>
 
     <div class="column">
-      <h4 class="title is-4 has-text-centered">Proceso en ejecución</h4>
+      <h4 class="title is-4 has-text-centered">
+        <span class="icon has-text-warning">
+          <i class="fa fa-bolt"></i>
+        </span>
+
+        <span>
+          Proceso en ejecución
+        </span>
+      </h4>
       <transition name="fade">
         <div class="message is-small is-warning" v-if="currentProcess.id">
           <div class="message-body">
@@ -115,7 +127,14 @@
     </div>
 
     <div class="column">
-      <h4 class="title is-4 has-text-centered">Procesos finalizados</h4>
+      <h4 class="title is-4 has-text-centered">
+        <span class="icon has-text-success">
+          <i class="fa fa-check"></i>
+        </span>
+        <span>
+          Procesos finalizados
+        </span>
+      </h4>
       <batch :programs="processedPrograms">
         <template slot="item" scope="props">
           <div
