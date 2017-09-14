@@ -2,13 +2,14 @@
   <transition-group name="list" tag="ul">
     <li
       class="list-item"
-      v-for="program in programs"
+      v-for="(program, index) in programs"
       :key="program.id"
     >
       <slot
         class="message"
         name="item"
         :program="program"
+        :index="index"
       >
         <div class="message-body">
           ID: {{ program.id }}
