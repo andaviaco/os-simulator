@@ -46,11 +46,24 @@
           <div class="message is-small is-primary">
             <div class="message-body">
               <dl>
-                <div class="tags has-addons is-pulled-right">
-                  <span class="tag">Turno</span>
-                  <span class="tag is-info" >
-                    {{ props.index + 1 }}
-                  </span>
+                <div class="field is-grouped is-pulled-right">
+                  <div class="control">
+                    <div class="tags has-addons">
+                      <span class="tag">Turno</span>
+                      <span class="tag is-info" >
+                        {{ props.index + 1 }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="control">
+                    <div class="tags has-addons">
+                      <span class="tag">Tiempo Restante</span>
+                      <span class="tag is-danger" >
+                        {{ props.program.timeMax - props.program.time }}
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
                 <div>
@@ -61,11 +74,6 @@
                 <div>
                   <dt class="is-inline">Tiempo Estimado:</dt>
                   <dd class="is-inline">{{ props.program.timeMax }} secs.</dd>
-                </div>
-
-                <div>
-                  <dt class="is-inline">Tiempo Restante:</dt>
-                  <dd class="is-inline">{{ props.program.timeMax - props.program.time }} secs.</dd>
                 </div>
               </dl>
             </div>
@@ -88,6 +96,13 @@
         <div class="message is-small is-warning" v-if="currentProcess.id">
           <div class="message-body">
             <dl>
+              <div class="tags has-addons is-pulled-right">
+                <span class="tag">Tiempo Restante</span>
+                <span class="tag is-danger" >
+                  {{ currentProcess.timeMax - currentProcess.time }}
+                </span>
+              </div>
+
               <div>
                 <dt class="is-inline"><strong>ID:</strong></dt>
                 <dd class="is-inline"><strong>{{ currentProcess.id }}</strong></dd>
@@ -106,11 +121,6 @@
               <div>
                 <dt class="is-inline">Tiempo Transcurrido:</dt>
                 <dd class="is-inline">{{ currentProcess.time }} secs.</dd>
-              </div>
-
-              <div>
-                <dt class="is-inline">Tiempo Restante:</dt>
-                <dd class="is-inline">{{ currentProcess.timeMax - currentProcess.time }} secs.</dd>
               </div>
             </dl>
 
@@ -195,6 +205,7 @@ export default {
       processedPrograms: [],
       currentTimeoutId: null,
       status: PROCESOR_STATUS.paused,
+      currentPromise: null,
     };
   },
   mounted() {
@@ -211,21 +222,57 @@ export default {
     },
 
     async applyAlgo(program) {
-      this.batch = [...this.batch, program];
+      const newRemaining = program.timeMax - program.time;
+      const currentRemaining = this.currentProcess.timeMax - this.currentProcess.time;
 
-      if (!this.isBusy()) {
+      if (this.isBusy()) {
+        if (newRemaining < currentRemaining) {
+          console.log('paused', this.currentProcess.id);
+          this.currentProcess.pauseProcess();
+
+          const lastRuning = this.currentProcess;
+          this.currentProcess = {};
+
+          this.batch = [program, ...this.batch];
+          this.batch = [...this.batch, lastRuning];
+
+          this.processNext();
+        } else {
+          this.batch = [...this.batch, program];
+        }
+
+        this.batch = this.batch.sort(this.compareRemainigTime);
+      } else {
+        this.batch = [...this.batch, program];
         await this.processNext();
       }
     },
 
+    compareRemainigTime(a, b) {
+      const aRemaining = a.timeMax - a.time;
+      const bRemaining = b.timeMax - b.time;
+
+      if (aRemaining > bRemaining) {
+        return 1;
+      } else if (aRemaining < bRemaining) {
+        return -1;
+      }
+
+      return 0;
+    },
+
+    async runNext() {
+      const nextProcess = this.batch[0];
+
+      this.currentProcess = nextProcess;
+      this.batch = this.batch.filter(program => program.id !== nextProcess.id);
+
+      await this.processCurrent();
+    },
+
     async processNext() {
       if (this.batch.length > 0) {
-        const nextProcess = this.batch[this.batch.length - 1];
-
-        this.currentProcess = nextProcess;
-        this.batch = this.batch.filter(program => program.id !== nextProcess.id);
-
-        return this.processCurrent();
+        return this.runNext();
       }
 
       this.stopProcessing();
@@ -233,16 +280,12 @@ export default {
     },
 
     async processCurrent() {
-      return new Promise(async (resolve) => {
-        await this.currentProcess.processOperation();
+      await this.currentProcess.processOperation();
 
-        this.processedPrograms.push(this.currentProcess);
-        this.currentProcess = {};
+      this.processedPrograms.push(this.currentProcess);
+      this.currentProcess = {};
 
-        this.processNext();
-
-        resolve();
-      });
+      return this.processNext();
     },
 
     resumeProcessing() {
