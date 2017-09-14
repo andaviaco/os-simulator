@@ -1,6 +1,8 @@
-import shortid from 'shortid';
+import uniqueid from 'uniqueid';
 
 import { OPERATORS, PROCESS_STATUS } from '@/const';
+
+const generateId = uniqueid('P');
 
 const operations = {
   [OPERATORS.plus]: (a, b) => a + b,
@@ -13,7 +15,7 @@ const operations = {
 
 export default class Program {
   constructor({ operand1, operand2, operator }, timeMax = 0) {
-    this.id = shortid.generate();
+    this.id = generateId();
     this.timeMax = timeMax;
     this.operation = {
       operand1,
