@@ -4,7 +4,12 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title is-1">OS Simulator</h1>
-          <h2 class="subtitle is-2">Algorithm name</h2>
+          <h2 class="subtitle is-2">
+            [Algorithm name]
+            <button class="button is-small is-info is-inverted is-outlined" @click="handleOpenModalClick">
+              <span>WTF!?</span>
+            </button>
+          </h2>
         </div>
       </div>
     </div>
@@ -63,15 +68,21 @@
       </div>
     </div>
 
-    <section class="section">
-
-    </section>
+    <modal-card ref="modal">
+      <template slot="title">
+        [Algo Name]
+      </template>
+      <template slot="body">
+        [Algo Description]
+      </template>
+    </modal-card>
   </div>
 </template>
 
 <script>
 import ProcessForm from '@/components/ProcessForm';
 import Processor from '@/components/Processor';
+import ModalCard from '@/components/ModalCard';
 
 import Program from '@/models/Program';
 
@@ -99,10 +110,14 @@ export default {
         keyCode: $event.keyCode,
       };
     },
+    handleOpenModalClick() {
+      this.$refs.modal.open();
+    },
   },
   components: {
     ProcessForm,
     Processor,
+    ModalCard,
   },
 };
 </script>
