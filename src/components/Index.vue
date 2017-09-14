@@ -5,7 +5,9 @@
         <div class="container">
           <h1 class="title is-1">OS Simulator</h1>
           <h2 class="subtitle is-2">
-            [Algorithm name]
+            <span>
+              FCFS
+            </span>
             <button class="button is-small is-info is-inverted is-outlined" @click="handleOpenModalClick">
               <span>WTF!?</span>
             </button>
@@ -70,10 +72,30 @@
 
     <modal-card ref="modal">
       <template slot="title">
-        [Algo Name]
+        FCFS (Firts-Come, First-Served)
       </template>
       <template slot="body">
-        [Algo Description]
+        <div class="content">
+          <p>
+            En esta política de planificación, el procesador ejecuta cada proceso hasta que termina, por tanto, los procesos que en cola de procesos preparados permanecerán encolados en el orden en que lleguen hasta que les toque su ejecución. Este método se conoce también como <strong>FIFO</strong> (fist input, first output, Primero en llegar primero en salir).
+          </p>
+
+          <p>
+            Se trata de una política muy simple y sencilla de llevar a la práctica, pero muy pobre en cuanto a su comportamiento.
+          </p>
+
+          <p>
+            La cantidad de tiempo de espera de cada proceso depende del número de procesos que se encuentren en la cola en el momento de su petición de ejecución y del tiempo que cada uno de ellos tenga en uso al procesador, y es independiente de las necesidades del propio proceso.
+          </p>
+
+          <strong>Características:</strong>
+          <ul>
+            <li>No apropiativa.</li>
+            <li>Es justa, aunque los procesos largos hacen esperar mucho a los cortos.</li>
+            <li>Predecible.</li>
+            <li>El tiempo medio de servicio es muy variable en función del número de procesos y su duración.</li>
+            </ul>
+        </div>
       </template>
     </modal-card>
   </div>
