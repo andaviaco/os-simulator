@@ -61,6 +61,13 @@
           <div class="message is-small is-primary">
             <div class="message-body">
               <dl>
+                <div class="tags has-addons is-pulled-right">
+                  <span class="tag">Turno</span>
+                  <span class="tag is-info" >
+                    {{ props.index + 1 }}
+                  </span>
+                </div>
+
                 <div>
                   <dt class="is-inline"><strong>ID:</strong></dt>
                   <dd class="is-inline"><strong>{{ props.program.id }}</strong></dd>
