@@ -2,6 +2,15 @@
 
 > Operative System Simulator
 
+## Screenshots
+
+### v0.1
+![First review: v0.1](/../screenshots/os-simulator-v0.1-fullpage.png?raw=true "OS-Simulator v0.1")
+
+### v0.2
+![Second review: v0.2](/../screenshots/os-simulator-v0.2-fullpage.png?raw=true "OS-Simulator v0.2")
+
+
 ## Build Setup
 
 ``` bash
