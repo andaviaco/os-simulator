@@ -6,37 +6,21 @@
     @keyup.e="handleInterruptKeyup"
     @keyup.w="handleErrorKeyup"
   >
-    <h3 class="title is-3">Procesamiento</h3>
     <div class="level">
         <div class="level-left">
           <div class="level-item">
-            <button
-              class="button is-success"
-              type="button"
-              @click="handleStartClick"
-              >
+            <h3 class="title is-3">
               <span class="icon">
                 <i class="fa fa-flash"></i>
               </span>
-              <span>
-                Procesar
-              </span>
-            </button>
+              Procesamiento
+            </h3>
           </div>
       </div>
 
       <div class="level-right">
         <div class="leve-item">
           <div class="field is-grouped ">
-            <div class="control">
-              <div class="tags has-addons">
-                <span class="tag is-dark">Lotes restantes</span>
-                <span class="tag is-warning">
-                  {{ this.batches.length }}
-                </span>
-              </div>
-            </div>
-
             <div class="control">
               <div class="tags has-addons">
                 <span class="tag is-dark">Tiempo transcurrido</span>
@@ -52,8 +36,8 @@
 
   <div class="columns">
     <div class="column">
-      <h4 class="title is-4 has-text-centered">Lote en ejecución</h4>
-      <batch :programs="currentBatch">
+      <h4 class="title is-4 has-text-centered">Cola de procesos</h4>
+      <batch :programs="batch">
         <template slot="item" scope="props">
           <div class="message is-small is-primary">
             <div class="message-body">
@@ -64,7 +48,7 @@
                 </div>
 
                 <div>
-                  <dt class="is-inline">Tiempo Maximo:</dt>
+                  <dt class="is-inline">Tiempo Estimado:</dt>
                   <dd class="is-inline">{{ props.program.timeMax }} secs.</dd>
                 </div>
 
@@ -124,48 +108,46 @@
     </div>
 
     <div class="column">
-      <h4 class="title is-4 has-text-centered">Procesos terminados</h4>
-      <process-batches
-        :batches="processedBatches"
-      >
-        <template slot="program" scope="batchScope">
+      <h4 class="title is-4 has-text-centered">Procesos finalizados</h4>
+      <batch :programs="processedPrograms">
+        <template slot="item" scope="props">
           <div
             class="message is-small"
-            :class="{'is-success': batchScope.program.statusIs('ok'), 'is-danger': batchScope.program.statusIs('error')}"
+            :class="{'is-success': props.program.statusIs('ok'), 'is-danger': props.program.statusIs('error')}"
           >
             <div class="message-body">
               <div class="tags has-addons is-pulled-right">
                 <span class="tag">Status</span>
                 <span
                   class="tag"
-                  :class="{'is-success': batchScope.program.statusIs('ok'), 'is-danger': batchScope.program.statusIs('error')}"
+                  :class="{'is-success': props.program.statusIs('ok'), 'is-danger': props.program.statusIs('error')}"
                 >
-                  {{ batchScope.program.status }}
+                  {{ props.program.status }}
                 </span>
               </div>
 
               <dl>
                 <div>
                   <dt class="is-inline"><strong>ID:</strong></dt>
-                  <dd class="is-inline"><strong>{{ batchScope.program.id }}</strong></dd>
+                  <dd class="is-inline"><strong>{{ props.program.id }}</strong></dd>
                 </div>
 
                 <div>
                   <dt class="is-inline">Operación:</dt>
                   <dd class="is-inline">
-                    {{ `${batchScope.program.operation.operand1} ${batchScope.program.operation.operator} ${batchScope.program.operation.operand2}` }}
+                    {{ `${props.program.operation.operand1} ${props.program.operation.operator} ${props.program.operation.operand2}` }}
                   </dd>
                 </div>
 
-                <div v-if="batchScope.program.statusIs('ok')">
+                <div v-if="props.program.statusIs('ok')">
                   <dt class="is-inline">Resultado:</dt>
-                  <dd class="is-inline">{{ batchScope.program.operation.result }}</dd>
+                  <dd class="is-inline">{{ props.program.operation.result }}</dd>
                 </div>
               </dl>
             </div>
           </div>
         </template>
-      </process-batches>
+      </batch>
     </div>
   </div>
   </div>
@@ -173,62 +155,62 @@
 
 <script>
 import Stopwatch from '@/components/Stopwatch';
-import ProcessBatches from '@/components/ProcessBatches';
 import Batch from '@/components/Batch';
-
-import ProgramBatcher from '@/models/ProgramBatcher';
 
 import { PROCESOR_STATUS, PROCESS_STATUS } from '@/const';
 
-const processedPrograms = new ProgramBatcher();
-
 export default {
   name: 'processor',
-  props: ['batches'],
+  props: ['initialBatch'],
   data() {
     return {
-      currentBatch: [],
+      batch: this.initialBatch || [],
       currentProcess: {},
-      processedBatches: processedPrograms.batches,
+      processedPrograms: [],
       currentTimeoutId: null,
       status: PROCESOR_STATUS.paused,
     };
   },
+  mounted() {
+    this.status = PROCESOR_STATUS.processing;
+    this.$refs.timer.start();
+  },
   methods: {
-    async handleStartClick() {
-      this.$refs.timer.start();
-
-      this.status = PROCESOR_STATUS.processing;
-      await this.loadNextBatch();
+    isBusy() {
+      return this.currentProcess.id;
     },
 
-    async loadNextBatch() {
-      if (this.batches.length > 0) {
-        this.currentBatch = this.batches[0];
-        this.$emit('batch-start');
+    addProcess(program) {
+      this.applyAlgo(program);
+    },
 
-        return this.processNext();
+    async applyAlgo(program) {
+      this.batch = [...this.batch, program];
+
+      if (!this.isBusy()) {
+        await this.processNext();
+      }
+    },
+
+    async processNext() {
+      if (this.batch.length > 0) {
+        const nextProcess = this.batch[this.batch.length - 1];
+
+        this.currentProcess = nextProcess;
+        this.batch = this.batch.filter(program => program.id !== nextProcess.id);
+
+        return this.processCurrent();
       }
 
       this.stopProcessing();
       return Promise.resolve();
     },
 
-    async processNext() {
-      if (this.currentBatch.length > 0) {
-        this.currentProcess = this.currentBatch.shift();
-
-        return this.processCurrent();
-      }
-
-      return this.loadNextBatch();
-    },
-
     async processCurrent() {
       return new Promise(async (resolve) => {
         await this.currentProcess.processOperation();
 
-        processedPrograms.addProgram(this.currentProcess);
+        this.processedPrograms.push(this.currentProcess);
         this.currentProcess = {};
 
         this.processNext();
@@ -250,7 +232,7 @@ export default {
 
     interruptCurrentProcess() {
       this.currentProcess.pauseProcess();
-      this.currentBatch.push(this.currentProcess);
+      this.batch.push(this.currentProcess);
       this.currentProcess = {};
       this.processNext();
     },
@@ -258,7 +240,7 @@ export default {
     cancelCurrentProcess() {
       this.currentProcess.pauseProcess();
       this.currentProcess.status = PROCESS_STATUS.error;
-      processedPrograms.addProgram(this.currentProcess);
+      this.processedPrograms.push(this.currentProcess);
       this.currentProcess = {};
       this.$refs.timer.start();
       this.processNext();
@@ -291,7 +273,6 @@ export default {
   },
   components: {
     Stopwatch,
-    ProcessBatches,
     Batch,
   },
 };

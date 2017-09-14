@@ -73,7 +73,7 @@
           class="label"
           for="time-max"
         >
-          Tiempo Maximo (segundos)
+          Tiempo Estimado
         </label>
       </div>
       <div class="field-body">

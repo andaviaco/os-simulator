@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title is-1">OS Simulator</h1>
-          <h2 class="subtitle is-2">Práctica 2</h2>
+          <h2 class="subtitle is-2">Algorithm name</h2>
         </div>
       </div>
     </div>
@@ -19,25 +19,35 @@
               <process-form
               ref="processForm"
               @submit-program="handleProgramSubmit"
-              @id-change="handleIdChange"
               ></process-form>
             </article>
           </div>
 
           <div class="tile is-parent">
             <article class="tile is-child box">
-              <h3 class="title">Lotes</h3>
-              <process-batches
-                :batches="batches"
-              >
-                <template slot="program" scope="batchScope">
-                  <div class="message is-dark is-small is-primary">
-                    <div class="message-body">
-                      ID: {{ batchScope.program.id }}
-                    </div>
+              <div
+                class="message is-primary"
+                tabindex="-1"
+                @keyup.p="handleKeyup($event)"
+                @keyup.c="handleKeyup($event)"
+                @keyup.e="handleKeyup($event)"
+                @keyup.w="handleKeyup($event)"
+            >
+                <div class="message-header">
+                  Comandos
+                </div>
+                <div class="message-body">
+                  <div class="content">
+                    <p v-show="pressedKey.key">Presionaste: <strong>{{ pressedKey.key }}</strong></p>
+                    <ul>
+                      <li><strong>P</strong>: Pausa</li>
+                      <li><strong>C</strong>: Continuar</li>
+                      <li><strong>E</strong>: Entrada/Salida</li>
+                      <li><strong>W</strong>: Error</li>
+                    </ul>
                   </div>
-                </template>
-              </process-batches>
+                </div>
+              </div>
             </article>
           </div>
         </div>
@@ -47,74 +57,28 @@
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <article class="tile is-child box">
-            <processor :batches="batches" @batch-start="handleBatchStart"></processor>
+            <processor ref="processor"></processor>
           </article>
         </div>
       </div>
     </div>
 
     <section class="section">
-      <div
-        class="message is-primary"
-        tabindex="-1"
-        @keyup.p="handleKeyup($event)"
-        @keyup.c="handleKeyup($event)"
-        @keyup.e="handleKeyup($event)"
-        @keyup.w="handleKeyup($event)"
-    >
-        <div class="message-header">
-          Comandos
-        </div>
-        <div class="message-body">
-          <div class="content">
-            <p v-show="pressedKey.key">Presionaste: <strong>{{ pressedKey.key }}</strong></p>
-            <ul>
-              <li><strong>P</strong>: Pausa</li>
-              <li><strong>C</strong>: Continuar</li>
-              <li><strong>E</strong>: Entrada/Salida</li>
-              <li><strong>W</strong>: Error</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+
     </section>
   </div>
 </template>
 
 <script>
 import ProcessForm from '@/components/ProcessForm';
-import ProcessBatches from '@/components/ProcessBatches';
 import Processor from '@/components/Processor';
 
-import ProgramBatcher from '@/models/ProgramBatcher';
 import Program from '@/models/Program';
-
-
-const batcher = new ProgramBatcher([
-  new Program(
-    {
-      operand1: 5,
-      operator: '*',
-      operand2: 6,
-    },
-    3,
-  ),
-
-  new Program(
-    {
-      operand1: 3,
-      operator: '/',
-      operand2: 6,
-    },
-    4,
-  ),
-]);
 
 export default {
   name: 'index',
   data() {
     return {
-      batches: batcher.batches,
       pressedKey: {
         key: null,
         keyCode: null,
@@ -127,13 +91,7 @@ export default {
         programData.operation,
         programData.timeMax,
       );
-      batcher.addProgram(program);
-    },
-    handleIdChange(id) {
-      this.$refs.processForm.setIdValidity(batcher.isIdAvailable(id));
-    },
-    handleBatchStart() {
-      batcher.dequeueBatch();
+      this.$refs.processor.addProcess(program);
     },
     handleKeyup($event) {
       this.pressedKey = {
@@ -144,7 +102,6 @@ export default {
   },
   components: {
     ProcessForm,
-    ProcessBatches,
     Processor,
   },
 };
