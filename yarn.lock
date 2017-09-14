@@ -4527,10 +4527,6 @@ shelljs@^0.7.5, shelljs@^0.7.6:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
-shortid@^2.2.8:
-  version "2.2.8"
-  resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.8.tgz#033b117d6a2e975804f6f0969dbe7d3d0b355131"
-
 sigmund@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/sigmund/-/sigmund-1.0.1.tgz#3ff21f198cad2175f9f3b781853fd94d0d19b590"
@@ -4919,6 +4915,10 @@ uniqid@^4.0.0:
 uniqs@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/uniqs/-/uniqs-2.0.0.tgz#ffede4b36b25290696e6e165d4a59edb998e6b02"
+
+uniqueid@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/uniqueid/-/uniqueid-1.0.0.tgz#e4ed178395c768c8b80a66673b81cfe11653c31d"
 
 unpipe@~1.0.0:
   version "1.0.0"
