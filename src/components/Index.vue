@@ -5,7 +5,7 @@
         <div class="container">
           <h1 class="title is-1">OS Simulator</h1>
           <h2 class="subtitle is-2">
-            [Algorithm name]
+            SRTN
             <button class="button is-small is-info is-inverted is-outlined" @click="handleOpenModalClick">
               <span>WTF!?</span>
             </button>
@@ -70,10 +70,23 @@
 
     <modal-card ref="modal">
       <template slot="title">
-        [Algo Name]
+        SRTN (Short Remaining Time First)
       </template>
       <template slot="body">
-        [Algo Description]
+        <div class="content">
+          <p>
+            Es similar al SJF, con la diferencia de que si un nuevo proceso pasa a listo se activa el dispatcher  para ver si es más corto que lo que queda por ejecutar del proceso en ejecución. Si es así, el proceso en ejecución pasa a listo y su tiempo de estimación se decremento con el tiempo que ha estado ejecutándose.
+          </p>
+
+          <ul>
+            <li>
+              Los procesos llegan a la cola y solicitan un intervalo de CPU.
+            </li>
+            <li>
+              Si dicho intervalo es inferior al que le falta al proceso en ejecución para abandonar la CPU, el nuevo proceso pasa a la CPU y el que se ejecutaba a la cola de preparados.
+            </li>
+          </ul>
+        </div>
       </template>
     </modal-card>
   </div>
