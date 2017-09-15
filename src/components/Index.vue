@@ -5,7 +5,7 @@
         <div class="container">
           <h1 class="title is-1">OS Simulator</h1>
           <h2 class="subtitle is-2">
-            SRTN
+            Round Robin
             <button class="button is-small is-info is-inverted is-outlined" @click="handleOpenModalClick">
               <span>WTF!?</span>
             </button>
@@ -53,6 +53,17 @@
                   </div>
                 </div>
               </div>
+              <div>
+                <div class="field">
+                  <label class="label">Quantum</label>
+                  <div class="control has-icons-right">
+                    <input class="input" type="number" placeholder="4" v-model.number="quantum">
+                    <span class="icon is-small is-right">
+                      <i class="fa fa-warning"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
             </article>
           </div>
         </div>
@@ -62,7 +73,7 @@
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <article class="tile is-child box">
-            <processor ref="processor"></processor>
+            <processor ref="processor" :quantum="quantum"></processor>
           </article>
         </div>
       </div>
@@ -70,22 +81,26 @@
 
     <modal-card ref="modal">
       <template slot="title">
-        SRTN (Short Remaining Time First)
+        Round Robin
       </template>
       <template slot="body">
         <div class="content">
           <p>
-            Es similar al SJF, con la diferencia de que si un nuevo proceso pasa a listo se activa el dispatcher  para ver si es más corto que lo que queda por ejecutar del proceso en ejecución. Si es así, el proceso en ejecución pasa a listo y su tiempo de estimación se decremento con el tiempo que ha estado ejecutándose.
+            Es un método para seleccionar todos los elementos en un grupo de manera equitativa y en un orden racional, normalmente comenzando por el primer elemento de la lista hasta llegar al último y empezando de nuevo desde el primer elemento.
           </p>
 
-          <ul>
-            <li>
-              Los procesos llegan a la cola y solicitan un intervalo de CPU.
-            </li>
-            <li>
-              Si dicho intervalo es inferior al que le falta al proceso en ejecución para abandonar la CPU, el nuevo proceso pasa a la CPU y el que se ejecutaba a la cola de preparados.
-            </li>
-          </ul>
+          <p>
+            Round Robin es uno de los algoritmos de planificación de procesos más complejos y difíciles, dentro de un sistema operativo asigna a cada proceso una porción de tiempo equitativa y ordenada, tratando a todos los procesos con la misma prioridad.
+          </p>
+
+          <p>
+            Se define un intervalo de tiempo denominado cuanto, cuya duración varía según el sistema. La cola de procesos se estructura como una cola circular. El planificado la recorre asignando un cuanto de tiempo a cada proceso. La organización de la cola es FIFO.
+          </p>
+
+          <figure>
+            <img src="/static/RoundRobin.gif" alt="">
+            <figcaption>Ejemplo: Round Robin</figcaption>
+          </figure>
         </div>
       </template>
     </modal-card>
@@ -103,6 +118,7 @@ export default {
   name: 'index',
   data() {
     return {
+      quantum: 4,
       pressedKey: {
         key: null,
         keyCode: null,
