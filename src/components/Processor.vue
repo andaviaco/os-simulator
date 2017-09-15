@@ -261,6 +261,14 @@ export default {
       return 0;
     },
 
+    async restTime(time = 1000) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, time);
+      });
+    },
+
     async runNext() {
       const nextProcess = this.batch[0];
 
@@ -281,6 +289,7 @@ export default {
 
     async processCurrent() {
       await this.currentProcess.processOperation();
+      await this.restTime(1000);
 
       this.processedPrograms.push(this.currentProcess);
       this.currentProcess = {};

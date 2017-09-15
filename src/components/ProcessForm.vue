@@ -175,7 +175,7 @@ export default {
     handleRandomClick() {
       const operators = Object.values(OPERATORS);
 
-      this.process.timeMax = this.getRandom(5, 8);
+      this.process.timeMax = this.getRandom(3, 15);
       this.process.operation.operand1 = this.getRandom(1, 50);
       this.process.operation.operator = operators[this.getRandom(0, operators.length - 1)];
       this.process.operation.operand2 = this.getRandom(1, 50);
