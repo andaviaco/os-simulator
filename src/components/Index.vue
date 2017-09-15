@@ -86,6 +86,11 @@
               Si dicho intervalo es inferior al que le falta al proceso en ejecución para abandonar la CPU, el nuevo proceso pasa a la CPU y el que se ejecutaba a la cola de preparados.
             </li>
           </ul>
+
+          <figure>
+            <img src="/static/Shortest_remaining_time.png" alt="">
+            <figcaption>Ejemplo de SRTN</figcaption>
+          </figure>
         </div>
       </template>
     </modal-card>
