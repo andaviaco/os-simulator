@@ -94,7 +94,12 @@
             <li>Es justa, aunque los procesos largos hacen esperar mucho a los cortos.</li>
             <li>Predecible.</li>
             <li>El tiempo medio de servicio es muy variable en función del número de procesos y su duración.</li>
-            </ul>
+          </ul>
+
+          <figure>
+            <img src="/static/fifo.png" alt="">
+            <figcaption>Ejemplo de planificación FCFS</figcaption>
+          </figure>
         </div>
       </template>
     </modal-card>

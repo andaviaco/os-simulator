@@ -4920,6 +4920,10 @@ uniqs@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/uniqs/-/uniqs-2.0.0.tgz#ffede4b36b25290696e6e165d4a59edb998e6b02"
 
+uniqueid@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/uniqueid/-/uniqueid-1.0.0.tgz#e4ed178395c768c8b80a66673b81cfe11653c31d"
+
 unpipe@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/unpipe/-/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"

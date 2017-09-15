@@ -206,6 +206,14 @@ export default {
       return this.currentProcess.id;
     },
 
+    async restTime(time = 1000) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, time);
+      });
+    },
+
     addProcess(program) {
       this.applyAlgo(program);
     },
@@ -220,7 +228,7 @@ export default {
 
     async processNext() {
       if (this.batch.length > 0) {
-        const nextProcess = this.batch[this.batch.length - 1];
+        const nextProcess = this.batch[0];
 
         this.currentProcess = nextProcess;
         this.batch = this.batch.filter(program => program.id !== nextProcess.id);
@@ -235,6 +243,7 @@ export default {
     async processCurrent() {
       return new Promise(async (resolve) => {
         await this.currentProcess.processOperation();
+        await this.restTime(1000);
 
         this.processedPrograms.push(this.currentProcess);
         this.currentProcess = {};
