@@ -47,8 +47,15 @@ export default class Program {
     return operations[operator](operand1, operand2);
   }
 
-  processOperation() {
-    const processTime = this.timeMax - this.time;
+  processOperation(availableTime) {
+    const remainigTime = this.timeMax - this.time;
+    let processTime;
+
+    if (availableTime) {
+      processTime = Math.min(availableTime, remainigTime);
+    } else {
+      processTime = remainigTime;
+    }
 
     this.startTimer();
 

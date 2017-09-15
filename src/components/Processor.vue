@@ -20,6 +20,15 @@
           <div class="field is-grouped ">
             <div class="control">
               <div class="tags has-addons">
+                <span class="tag is-dark">Quantum</span>
+                <span class="tag is-danger">
+                  {{ quantum }}
+                </span>
+              </div>
+            </div>
+
+            <div class="control">
+              <div class="tags has-addons">
                 <span class="tag is-dark">Tiempo transcurrido</span>
                 <span class="tag is-info">
                   <stopwatch ref="timer"></stopwatch>
@@ -197,7 +206,12 @@ import { PROCESOR_STATUS, PROCESS_STATUS } from '@/const';
 
 export default {
   name: 'processor',
-  props: ['initialBatch'],
+  props: {
+    quantum: {
+      type: Number,
+      default: 4,
+    },
+  },
   data() {
     return {
       batch: this.initialBatch || [],
@@ -205,7 +219,6 @@ export default {
       processedPrograms: [],
       currentTimeoutId: null,
       status: PROCESOR_STATUS.paused,
-      currentPromise: null,
     };
   },
   mounted() {
@@ -221,44 +234,16 @@ export default {
       this.applyAlgo(program);
     },
 
-    async applyAlgo(program) {
-      const newRemaining = program.timeMax - program.time;
-      const currentRemaining = this.currentProcess.timeMax - this.currentProcess.time;
-
-      if (this.isBusy()) {
-        if (newRemaining < currentRemaining) {
-          console.log('paused', this.currentProcess.id);
-          this.currentProcess.pauseProcess();
-
-          const lastRuning = this.currentProcess;
-          this.currentProcess = {};
-
-          this.batch = [program, ...this.batch];
-          this.batch = [...this.batch, lastRuning];
-
-          this.processNext();
-        } else {
-          this.batch = [...this.batch, program];
-        }
-
-        this.batch = this.batch.sort(this.compareRemainigTime);
-      } else {
-        this.batch = [...this.batch, program];
-        await this.processNext();
-      }
+    enqueue(program) {
+      this.batch = [...this.batch, program];
     },
 
-    compareRemainigTime(a, b) {
-      const aRemaining = a.timeMax - a.time;
-      const bRemaining = b.timeMax - b.time;
+    async applyAlgo(program) {
+      this.enqueue(program);
 
-      if (aRemaining > bRemaining) {
-        return 1;
-      } else if (aRemaining < bRemaining) {
-        return -1;
+      if (!this.isBusy()) {
+        await this.processNext();
       }
-
-      return 0;
     },
 
     async runNext() {
@@ -280,12 +265,32 @@ export default {
     },
 
     async processCurrent() {
-      await this.currentProcess.processOperation();
+      const processingTime = this.quantum;
 
-      this.processedPrograms.push(this.currentProcess);
+      await this.currentProcess.processOperation(processingTime);
+
+      const remainigTime = this.currentProcess.timeMax - this.currentProcess.time;
+
+      // rest time to allow the user to see the progress bar Completely full
+      await this.restTime(1000);
+
+      if (remainigTime > 0) {
+        this.enqueue(this.currentProcess);
+      } else {
+        this.processedPrograms.push(this.currentProcess);
+      }
+
       this.currentProcess = {};
 
       return this.processNext();
+    },
+
+    async restTime(time = 1000) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, time);
+      });
     },
 
     resumeProcessing() {
