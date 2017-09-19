@@ -19,25 +19,22 @@
               <process-form
               ref="processForm"
               @submit-program="handleProgramSubmit"
-              @id-change="handleIdChange"
               ></process-form>
             </article>
           </div>
 
           <div class="tile is-parent">
             <article class="tile is-child box">
-              <h3 class="title">Lotes</h3>
-              <process-batches
-                :batches="batches"
-              >
-                <template slot="program" scope="batchScope">
+              <h3 class="title">Procesos Nuevos</h3>
+              <batch :programs="batch">
+                <template slot="item" scope="props">
                   <div class="message is-dark is-small is-primary">
                     <div class="message-body">
-                      ID: {{ batchScope.program.id }}
+                      ID: {{ props.program.id }}
                     </div>
                   </div>
                 </template>
-              </process-batches>
+              </batch>
             </article>
           </div>
         </div>
@@ -47,7 +44,7 @@
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <article class="tile is-child box">
-            <processor :batches="batches" @batch-start="handleBatchStart"></processor>
+            <processor ref="processor" :pendingBatch.sync="batch"></processor>
           </article>
         </div>
       </div>
@@ -83,38 +80,16 @@
 
 <script>
 import ProcessForm from '@/components/ProcessForm';
-import ProcessBatches from '@/components/ProcessBatches';
 import Processor from '@/components/Processor';
+import Batch from '@/components/Batch';
 
-import ProgramBatcher from '@/models/ProgramBatcher';
 import Program from '@/models/Program';
-
-
-const batcher = new ProgramBatcher([
-  new Program(
-    {
-      operand1: 5,
-      operator: '*',
-      operand2: 6,
-    },
-    3,
-  ),
-
-  new Program(
-    {
-      operand1: 3,
-      operator: '/',
-      operand2: 6,
-    },
-    4,
-  ),
-]);
 
 export default {
   name: 'index',
   data() {
     return {
-      batches: batcher.batches,
+      batch: [],
       pressedKey: {
         key: null,
         keyCode: null,
@@ -127,13 +102,8 @@ export default {
         programData.operation,
         programData.timeMax,
       );
-      batcher.addProgram(program);
-    },
-    handleIdChange(id) {
-      this.$refs.processForm.setIdValidity(batcher.isIdAvailable(id));
-    },
-    handleBatchStart() {
-      batcher.dequeueBatch();
+
+      this.batch = [...this.batch, program];
     },
     handleKeyup($event) {
       this.pressedKey = {
@@ -144,8 +114,8 @@ export default {
   },
   components: {
     ProcessForm,
-    ProcessBatches,
     Processor,
+    Batch,
   },
 };
 </script>
