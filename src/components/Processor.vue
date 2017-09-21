@@ -55,148 +55,15 @@
 
   <div class="columns">
     <div class="column">
-      <h4 class="title is-4 has-text-centered">
-        <span class="icon has-text-info">
-          <i class="fa fa-clock-o"></i>
-        </span>
-        <span>
-          Procesos Listos
-        </span>
-      </h4>
-      <batch :programs="batch">
-        <template slot="item" scope="props">
-          <div class="message is-small is-primary">
-            <div class="message-body">
-              <dl>
-                <div class="tags has-addons is-pulled-right">
-                  <span class="tag">Turno</span>
-                  <span class="tag is-info" >
-                    {{ props.index + 1 }}
-                  </span>
-                </div>
-
-                <div>
-                  <dt class="is-inline"><strong>ID:</strong></dt>
-                  <dd class="is-inline"><strong>{{ props.program.id }}</strong></dd>
-                </div>
-
-                <div>
-                  <dt class="is-inline">Tiempo Maximo:</dt>
-                  <dd class="is-inline">{{ props.program.timeMax }} secs.</dd>
-                </div>
-
-                <div>
-                  <dt class="is-inline">Tiempo Restante:</dt>
-                  <dd class="is-inline">{{ props.program.timeMax - props.program.time }} secs.</dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-        </template>
-      </batch>
+      <ready-processes :processes="batch"></ready-processes>
     </div>
 
     <div class="column">
-      <h4 class="title is-4 has-text-centered">
-        <span class="icon has-text-warning">
-          <i class="fa fa-bolt"></i>
-        </span>
-        <span>
-          Proceso en Ejecución
-        </span>
-      </h4>
-      <transition name="fade">
-        <div class="message is-small is-warning" v-if="currentProcess.id">
-          <div class="message-body">
-            <dl>
-              <div class="tags has-addons is-pulled-right">
-                <span class="tag">Tiempo Restante</span>
-                <span class="tag is-danger" >
-                  {{ currentProcess.timeMax - currentProcess.time }}
-                </span>
-              </div>
-
-              <div>
-                <dt class="is-inline"><strong>ID:</strong></dt>
-                <dd class="is-inline"><strong>{{ currentProcess.id }}</strong></dd>
-              </div>
-
-              <div>
-                <dt class="is-inline">Operación:</dt>
-                <dd class="is-inline">{{ `${currentProcess.operation.operand1} ${currentProcess.operation.operator} ${currentProcess.operation.operand2}` }}</dd>
-              </div>
-
-              <div>
-                <dt class="is-inline">Tiempo Maximo:</dt>
-                <dd class="is-inline">{{ currentProcess.timeMax }} secs.</dd>
-              </div>
-
-              <div>
-                <dt class="is-inline">Tiempo Transcurrido:</dt>
-                <dd class="is-inline">{{ currentProcess.time }} secs.</dd>
-              </div>
-            </dl>
-
-            <progress
-              class="progress is-primary"
-              :value="currentProcess.time"
-              :max="currentProcess.timeMax"
-            >
-              {{ currentProcess.time }} / {{ currentProcess.timeMax }}
-            </progress>
-          </div>
-        </div>
-      </transition>
+      <process-in-progress :currentProcess="currentProcess"></process-in-progress>
     </div>
 
     <div class="column">
-      <h4 class="title is-4 has-text-centered">
-        <span class="icon has-text-success">
-          <i class="fa fa-check"></i>
-        </span>
-        <span>
-          Procesos Finalizados
-        </span>
-      </h4>
-      <batch :programs="processedPrograms">
-        <template slot="item" scope="props">
-          <div
-            class="message is-small"
-            :class="{'is-success': props.program.statusIs('ok'), 'is-danger': props.program.statusIs('error')}"
-          >
-            <div class="message-body">
-              <div class="tags has-addons is-pulled-right">
-                <span class="tag">Status</span>
-                <span
-                  class="tag"
-                  :class="{'is-success': props.program.statusIs('ok'), 'is-danger': props.program.statusIs('error')}"
-                >
-                  {{ props.program.status }}
-                </span>
-              </div>
-
-              <dl>
-                <div>
-                  <dt class="is-inline"><strong>ID:</strong></dt>
-                  <dd class="is-inline"><strong>{{ props.program.id }}</strong></dd>
-                </div>
-
-                <div>
-                  <dt class="is-inline">Operación:</dt>
-                  <dd class="is-inline">
-                    {{ `${props.program.operation.operand1} ${props.program.operation.operator} ${props.program.operation.operand2}` }}
-                  </dd>
-                </div>
-
-                <div v-if="props.program.statusIs('ok')">
-                  <dt class="is-inline">Resultado:</dt>
-                  <dd class="is-inline">{{ props.program.operation.result }}</dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-        </template>
-      </batch>
+      <finished-processes :processes="processedPrograms"></finished-processes>
     </div>
   </div>
   </div>
@@ -205,6 +72,9 @@
 <script>
 import Stopwatch from '@/components/Stopwatch';
 import Batch from '@/components/Batch';
+import FinishedProcesses from '@/components/FinishedProcesses';
+import ReadyProcesses from '@/components/ReadyProcesses';
+import ProcessInProgress from '@/components/ProcessInProgress';
 
 import { PROCESOR_STATUS, PROCESS_STATUS } from '@/const';
 
@@ -325,6 +195,9 @@ export default {
   components: {
     Stopwatch,
     Batch,
+    FinishedProcesses,
+    ReadyProcesses,
+    ProcessInProgress,
   },
 };
 </script>
