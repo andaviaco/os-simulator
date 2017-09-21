@@ -185,27 +185,23 @@ export default {
     },
 
     handlePauseKeyup() {
-      console.log('pause');
       this.currentProcess.pauseProcess();
       this.stopProcessing();
     },
 
     handleContinueKeyup() {
       if (this.status === PROCESOR_STATUS.paused) {
-        console.log('continue');
         this.resumeProcessing();
       }
     },
 
     handleInterruptKeyup() {
       if (this.status === PROCESOR_STATUS.processing) {
-        console.log('interrupt');
         this.interruptCurrentProcess();
       }
     },
 
     handleErrorKeyup() {
-      console.log('error');
       this.cancelCurrentProcess();
     },
 
