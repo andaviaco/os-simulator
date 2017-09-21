@@ -28,6 +28,10 @@ export default class Program {
     this.interval = null;
   }
 
+  get remainingTime() {
+    return this.timeMax - this.time;
+  }
+
   startTimer() {
     if (!this.interval) {
       this.interval = setInterval(() => {

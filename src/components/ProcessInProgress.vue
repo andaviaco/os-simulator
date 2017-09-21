@@ -15,7 +15,7 @@
             <div class="tags has-addons is-pulled-right">
               <span class="tag">Tiempo Restante</span>
               <span class="tag is-danger" >
-                {{ currentProcess.timeMax - currentProcess.time }}
+                {{ currentProcess.remainingTime }}
               </span>
             </div>
 
