@@ -100,8 +100,12 @@ export default {
       this.$refs.timer.start();
 
       this.status = PROCESOR_STATUS.processing;
-      this.batch = this.pendingBatch.splice(0, 5);
+      this.pullProcesses(5);
       this.processNext();
+    },
+
+    pullProcesses(count = 1) {
+      this.batch = [...this.batch, ...this.pendingBatch.splice(0, count)];
     },
 
     async processNext() {
@@ -132,6 +136,7 @@ export default {
       await this.restTime(1000);
 
       this.processedPrograms.push(this.currentProcess);
+      this.pullProcesses(1);
       this.currentProcess = {};
 
       return this.processNext();
@@ -180,6 +185,7 @@ export default {
       this.currentProcess.status = PROCESS_STATUS.error;
       this.processedPrograms.push(this.currentProcess);
       this.currentProcess = {};
+      this.pullProcesses(1);
       this.$refs.timer.start();
       this.processNext();
     },
