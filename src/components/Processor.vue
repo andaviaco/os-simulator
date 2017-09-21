@@ -254,8 +254,9 @@ export default {
     async processCurrent() {
       await this.currentProcess.processOperation();
 
+      await this.restTime(1000);
+
       this.processedPrograms.push(this.currentProcess);
-      console.log('PROCESSED', this.processedPrograms);
       this.currentProcess = {};
 
       return this.processNext();
@@ -311,6 +312,14 @@ export default {
     handleErrorKeyup() {
       console.log('error');
       this.cancelCurrentProcess();
+    },
+
+    async restTime(time = 1000) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, time);
+      });
     },
   },
   components: {
