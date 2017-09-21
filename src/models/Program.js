@@ -23,8 +23,12 @@ export default class Program {
       operator,
       result: 0,
     };
+
     this.time = 0;
     this.blockedTime = 0;
+    this.arrivalTime = null;
+    this.finishTime = null;
+
     this.status = PROCESS_STATUS.pending;
     this.interval = null;
   }

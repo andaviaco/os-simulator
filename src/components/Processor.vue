@@ -106,6 +106,12 @@ export default {
 
     pullProcesses(count = 1) {
       this.batch = [...this.batch, ...this.pendingBatch.splice(0, count)];
+
+      const arrivalTime = this.$refs.timer.seconds;
+
+      /* eslint-disable */
+      this.batch.forEach(p => (p.arrivalTime = arrivalTime));
+      /* eslint-disable */
     },
 
     async processNext() {
@@ -135,11 +141,16 @@ export default {
 
       await this.restTime(1000);
 
+      this.finishProcess();
+
+      return this.processNext();
+    },
+
+    finishProcess() {
+      this.currentProcess.finishTime = this.$refs.timer.seconds;
       this.processedPrograms.push(this.currentProcess);
       this.pullProcesses(1);
       this.currentProcess = {};
-
-      return this.processNext();
     },
 
     resumeProcessing() {
@@ -183,9 +194,7 @@ export default {
     cancelCurrentProcess() {
       this.currentProcess.pauseProcess();
       this.currentProcess.status = PROCESS_STATUS.error;
-      this.processedPrograms.push(this.currentProcess);
-      this.currentProcess = {};
-      this.pullProcesses(1);
+      this.finishProcess();
       this.$refs.timer.start();
       this.processNext();
     },
