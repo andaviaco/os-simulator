@@ -109,6 +109,13 @@
         <div class="message is-small is-warning" v-if="currentProcess.id">
           <div class="message-body">
             <dl>
+              <div class="tags has-addons is-pulled-right">
+                <span class="tag">Tiempo Restante</span>
+                <span class="tag is-danger" >
+                  {{ currentProcess.timeMax - currentProcess.time }}
+                </span>
+              </div>
+
               <div>
                 <dt class="is-inline"><strong>ID:</strong></dt>
                 <dd class="is-inline"><strong>{{ currentProcess.id }}</strong></dd>
@@ -127,11 +134,6 @@
               <div>
                 <dt class="is-inline">Tiempo Transcurrido:</dt>
                 <dd class="is-inline">{{ currentProcess.time }} secs.</dd>
-              </div>
-
-              <div>
-                <dt class="is-inline">Tiempo Restante:</dt>
-                <dd class="is-inline">{{ currentProcess.timeMax - currentProcess.time }} secs.</dd>
               </div>
             </dl>
 
