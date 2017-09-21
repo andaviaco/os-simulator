@@ -13,62 +13,62 @@
             Procesamiento
           </h3>
         </div>
-    </div>
+      </div>
 
-    <div class="level-right">
-      <div class="leve-item">
-        <div class="field is-grouped ">
-          <div class="control">
-            <div class="tags has-addons">
-              <span class="tag is-dark">Procesos Nuevos</span>
-              <span class="tag is-warning">
-                {{ this.pendingBatch.length }}
-              </span>
+      <div class="level-right">
+        <div class="leve-item">
+          <div class="field is-grouped ">
+            <div class="control">
+              <div class="tags has-addons">
+                <span class="tag is-dark">Procesos Nuevos</span>
+                <span class="tag is-warning">
+                  {{ this.pendingBatch.length }}
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div class="control">
-            <div class="tags has-addons">
-              <span class="tag is-dark">Tiempo transcurrido</span>
-              <span class="tag is-info">
-                <stopwatch ref="timer"></stopwatch>
-              </span>
+            <div class="control">
+              <div class="tags has-addons">
+                <span class="tag is-dark">Tiempo transcurrido</span>
+                <span class="tag is-info">
+                  <stopwatch ref="timer"></stopwatch>
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <button
-    class="button is-success"
-    type="button"
-    @click="handleStartClick"
-  >
-    <span class="icon">
-      <i class="fa fa-flash"></i>
-    </span>
-    <span>
-      Procesar
-    </span>
-  </button>
+    <button
+      class="button is-success"
+      type="button"
+      @click="handleStartClick"
+    >
+      <span class="icon">
+        <i class="fa fa-flash"></i>
+      </span>
+      <span>
+        Procesar
+      </span>
+    </button>
 
-  <div class="columns">
-    <div class="column">
-        <blocked-processes :processes="blockedPrograms"></blocked-processes>
-    </div>
-    <div class="column">
-      <ready-processes :processes="batch"></ready-processes>
-    </div>
+    <div class="columns">
+      <div class="column">
+          <blocked-processes :processes="blockedPrograms"></blocked-processes>
+      </div>
+      <div class="column">
+        <ready-processes :processes="batch"></ready-processes>
+      </div>
 
-    <div class="column">
-      <process-in-progress :currentProcess="currentProcess"></process-in-progress>
-    </div>
+      <div class="column">
+        <process-in-progress :currentProcess="currentProcess"></process-in-progress>
+      </div>
 
-    <div class="column">
-      <finished-processes :processes="processedPrograms"></finished-processes>
+      <div class="column">
+        <finished-processes :processes="processedPrograms"></finished-processes>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 
