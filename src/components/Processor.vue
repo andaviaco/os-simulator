@@ -60,7 +60,7 @@
           <i class="fa fa-clock-o"></i>
         </span>
         <span>
-          Lote en ejecución
+          Procesos Listos
         </span>
       </h4>
       <batch :programs="batch">
@@ -102,7 +102,7 @@
           <i class="fa fa-bolt"></i>
         </span>
         <span>
-          Proceso en ejecución
+          Proceso en Ejecución
         </span>
       </h4>
       <transition name="fade">
@@ -155,7 +155,7 @@
           <i class="fa fa-check"></i>
         </span>
         <span>
-          Procesos finalizados
+          Procesos Finalizados
         </span>
       </h4>
       <batch :programs="processedPrograms">
