@@ -55,6 +55,9 @@
 
   <div class="columns">
     <div class="column">
+        <blocked-processes :processes="blockedPrograms"></blocked-processes>
+    </div>
+    <div class="column">
       <ready-processes :processes="batch"></ready-processes>
     </div>
 
@@ -75,6 +78,7 @@ import Batch from '@/components/Batch';
 import FinishedProcesses from '@/components/FinishedProcesses';
 import ReadyProcesses from '@/components/ReadyProcesses';
 import ProcessInProgress from '@/components/ProcessInProgress';
+import BlockedProcesses from '@/components/BlockedProcesses';
 
 import { PROCESOR_STATUS, PROCESS_STATUS } from '@/const';
 
@@ -86,6 +90,7 @@ export default {
       batch: this.initialBatch || [],
       currentProcess: {},
       processedPrograms: [],
+      blockedPrograms: [],
       currentTimeoutId: null,
       status: PROCESOR_STATUS.paused,
     };
@@ -145,7 +150,7 @@ export default {
 
     interruptCurrentProcess() {
       this.currentProcess.pauseProcess();
-      this.batch.push(this.currentProcess);
+      this.blockedPrograms.push(this.currentProcess);
       this.currentProcess = {};
       this.processNext();
     },
@@ -198,6 +203,7 @@ export default {
     FinishedProcesses,
     ReadyProcesses,
     ProcessInProgress,
+    BlockedProcesses,
   },
 };
 </script>
