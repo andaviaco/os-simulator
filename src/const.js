@@ -26,4 +26,7 @@ export const PROCESS_STATUS = {
   ok: 'ok',
   error: 'error',
   pending: 'pending',
+  blocked: 'blocked',
 };
+
+export const DEFAULT_BLOCK_TIME = 8000;

@@ -1,6 +1,6 @@
 import uniqueid from 'uniqueid';
 
-import { OPERATORS, PROCESS_STATUS } from '@/const';
+import { OPERATORS, PROCESS_STATUS, DEFAULT_BLOCK_TIME } from '@/const';
 
 const generateId = uniqueid('P');
 
@@ -24,6 +24,7 @@ export default class Program {
       result: 0,
     };
     this.time = 0;
+    this.blockedTime = 0;
     this.status = PROCESS_STATUS.pending;
     this.interval = null;
   }
@@ -43,6 +44,20 @@ export default class Program {
   stopTimer() {
     clearInterval(this.interval);
     this.interval = null;
+  }
+
+  startBlockedTimer() {
+    if (!this.bloquedInterval) {
+      this.bloquedInterval = setInterval(() => {
+        this.blockedTime += 1;
+      }, 1000);
+    }
+  }
+
+  stopBlockedTimer() {
+    clearInterval(this.bloquedInterval);
+
+    this.bloquedInterval = null;
   }
 
   solverOperation() {
@@ -71,6 +86,27 @@ export default class Program {
   pauseProcess() {
     clearTimeout(this.timeoutId);
     this.stopTimer();
+  }
+
+  stopBlocked() {
+    clearTimeout(this.blockedTimeoutId);
+    this.stopBlockedTimer();
+  }
+
+  startBlocking() {
+    const remainingTime = DEFAULT_BLOCK_TIME - (this.blockedTime * 1000);
+
+    this.status = PROCESS_STATUS.blocked;
+    this.startBlockedTimer();
+
+    return new Promise((resolve) => {
+      this.blockedTimeoutId = setTimeout(() => {
+        this.stopBlockedTimer();
+        this.blockedTime = 0;
+
+        resolve();
+      }, remainingTime);
+    });
   }
 
   statusIs(status) {

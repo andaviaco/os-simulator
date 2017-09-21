@@ -140,17 +140,37 @@ export default {
     resumeProcessing() {
       this.$refs.timer.start();
       this.processCurrent();
+      this.resumeBlockedProcesses();
       this.status = PROCESOR_STATUS.processing;
     },
 
     stopProcessing() {
       this.$refs.timer.stop();
+      this.stopBlockedProcesses();
       this.status = PROCESOR_STATUS.paused;
+    },
+
+    resumeBlockedProcesses() {
+      this.blockedPrograms.forEach(p => this.startBlocking(p));
+    },
+
+    stopBlockedProcesses() {
+      this.blockedPrograms.forEach(p => p.stopBlocked());
+    },
+
+    async startBlocking(program) {
+      await program.startBlocking();
+
+      this.blockedPrograms = this.blockedPrograms.filter(p => p.id !== program.id);
+      this.batch.push(program);
     },
 
     interruptCurrentProcess() {
       this.currentProcess.pauseProcess();
+
       this.blockedPrograms.push(this.currentProcess);
+      this.startBlocking(this.currentProcess);
+
       this.currentProcess = {};
       this.processNext();
     },
