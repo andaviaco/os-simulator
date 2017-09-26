@@ -1,11 +1,5 @@
 <template lang="html">
-  <div
-    tabindex="-1"
-    @keyup.p="handlePauseKeyup"
-    @keyup.c="handleContinueKeyup"
-    @keyup.e="handleInterruptKeyup"
-    @keyup.w="handleErrorKeyup"
-  >
+  <div>
     <div class="level">
       <div class="level-left">
         <div class="level-item">
@@ -53,22 +47,55 @@
       </span>
     </button>
 
-    <div class="columns">
-      <div class="column">
-          <blocked-processes :processes="blockedPrograms"></blocked-processes>
-      </div>
-      <div class="column">
-        <ready-processes :processes="batch"></ready-processes>
-      </div>
-
-      <div class="column">
-        <process-in-progress :currentProcess="currentProcess"></process-in-progress>
-      </div>
-
-      <div class="column">
-        <finished-processes :processes="processedPrograms"></finished-processes>
-      </div>
+    <div class="tabs is-centered is-boxed">
+      <ul>
+        <li :class="{'is-active': currentTab === 'processing'}">
+          <a @click.prevent="toggleTab('processing')">
+            <span class="icon is-small"><i class="fa fa-flash"></i></span>
+            <span>Procesamiento</span>
+          </a>
+        </li>
+        <li :class="{'is-active': currentTab === 'resume'}">
+          <a @click.prevent="toggleTab('resume')">
+            <span class="icon is-small"><i class="fa fa-table"></i></span>
+            <span>Resumen</span>
+          </a>
+        </li>
+      </ul>
     </div>
+
+    <section
+      tabindex="-1"
+      @keyup.p="handlePauseKeyup"
+      @keyup.c="handleContinueKeyup"
+      @keyup.e="handleInterruptKeyup"
+      @keyup.w="handleErrorKeyup"
+      v-if="currentTab === 'processing'"
+    >
+      <div class="columns">
+        <div class="column">
+          <blocked-processes :processes="blockedPrograms"></blocked-processes>
+        </div>
+        <div class="column">
+          <ready-processes :processes="batch"></ready-processes>
+        </div>
+
+        <div class="column">
+          <process-in-progress :currentProcess="currentProcess"></process-in-progress>
+        </div>
+
+        <div class="column">
+          <finished-processes :processes="processedPrograms"></finished-processes>
+        </div>
+      </div>
+    </section>
+
+    <section v-if="currentTab === 'resume'">
+      <process-review-table
+        :processes="processedPrograms"
+        caption="Procesos Finalizados"
+      ></process-review-table>
+    </section>
   </div>
 </template>
 
@@ -79,6 +106,7 @@ import FinishedProcesses from '@/components/FinishedProcesses';
 import ReadyProcesses from '@/components/ReadyProcesses';
 import ProcessInProgress from '@/components/ProcessInProgress';
 import BlockedProcesses from '@/components/BlockedProcesses';
+import ProcessReviewTable from '@/components/ProcessReviewTable';
 
 import { PROCESOR_STATUS, PROCESS_STATUS } from '@/const';
 
@@ -93,6 +121,7 @@ export default {
       blockedPrograms: [],
       currentTimeoutId: null,
       status: PROCESOR_STATUS.paused,
+      currentTab: 'processing',
     };
   },
   methods: {
@@ -233,6 +262,10 @@ export default {
         }, time);
       });
     },
+
+    toggleTab(tab) {
+      this.currentTab = tab;
+    },
   },
   components: {
     Stopwatch,
@@ -241,6 +274,7 @@ export default {
     ReadyProcesses,
     ProcessInProgress,
     BlockedProcesses,
+    ProcessReviewTable,
   },
 };
 </script>
