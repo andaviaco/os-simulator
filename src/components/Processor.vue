@@ -161,9 +161,11 @@ export default {
     },
 
     stopProcessing() {
-      this.$refs.timer.stop();
-      this.stopBlockedProcesses();
-      this.status = PROCESOR_STATUS.paused;
+      if (!this.blockedPrograms.length) {
+        this.$refs.timer.stop();
+        this.stopBlockedProcesses();
+        this.status = PROCESOR_STATUS.paused;
+      }
     },
 
     resumeBlockedProcesses() {
@@ -179,6 +181,10 @@ export default {
 
       this.blockedPrograms = this.blockedPrograms.filter(p => p.id !== program.id);
       this.batch.push(program);
+
+      if (this.batch.length === 1 && !this.currentProcess.id) {
+        this.processNext();
+      }
     },
 
     interruptCurrentProcess() {
