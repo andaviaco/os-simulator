@@ -191,10 +191,14 @@ export default {
 
     stopProcessing() {
       if (!this.blockedPrograms.length) {
-        this.$refs.timer.stop();
-        this.stopBlockedProcesses();
-        this.status = PROCESOR_STATUS.paused;
+        this.pauseProcessing();
       }
+    },
+
+    pauseProcessing() {
+      this.$refs.timer.stop();
+      this.stopBlockedProcesses();
+      this.status = PROCESOR_STATUS.paused;
     },
 
     resumeBlockedProcesses() {
@@ -236,7 +240,7 @@ export default {
 
     handlePauseKeyup() {
       this.currentProcess.pauseProcess();
-      this.stopProcessing();
+      this.pauseProcessing();
     },
 
     handleContinueKeyup() {
