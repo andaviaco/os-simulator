@@ -134,13 +134,14 @@ export default {
     },
 
     pullProcesses(count = 1) {
-      this.batch = [...this.batch, ...this.pendingBatch.splice(0, count)];
-
+      const newProcesses = this.pendingBatch.splice(0, count);
       const arrivalTime = this.$refs.timer.seconds;
 
       /* eslint-disable */
-      this.batch.forEach(p => (p.arrivalTime = arrivalTime));
+      newProcesses.forEach(p => (p.arrivalTime = arrivalTime));
       /* eslint-disable */
+
+      this.batch = [...this.batch, ...newProcesses];
     },
 
     async processNext() {
