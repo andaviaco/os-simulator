@@ -163,6 +163,10 @@ export default {
     },
 
     runSelected() {
+      if (!this.currentProcess.responseTime) {
+        this.currentProcess.responseTime = this.$refs.timer.seconds;
+      }
+
       return this.processCurrent();
     },
 

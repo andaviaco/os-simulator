@@ -28,6 +28,7 @@ export default class Program {
     this.blockedTime = 0;
     this.arrivalTime = null;
     this.finishTime = null;
+    this.responseTime = null;
 
     this.status = PROCESS_STATUS.pending;
     this.interval = null;
