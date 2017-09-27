@@ -1,133 +1,52 @@
 <template lang="html">
-  <div>
-    <div class="level">
-      <div class="level-left">
-        <div class="level-item">
-          <h3 class="title is-3">
-            Procesamiento
-          </h3>
-        </div>
+  <div
+    tabindex="-1"
+    @keyup.p="handlePauseKeyup"
+    @keyup.c="handleContinueKeyup"
+    @keyup.e="handleInterruptKeyup"
+    @keyup.w="handleErrorKeyup"
+  >
+    <div class="columns">
+      <div class="column">
+        <blocked-processes :processes="blockedPrograms"></blocked-processes>
+      </div>
+      <div class="column">
+        <ready-processes :processes="batch"></ready-processes>
       </div>
 
-      <div class="level-right">
-        <div class="leve-item">
-          <div class="field is-grouped ">
-            <div class="control">
-              <div class="tags has-addons">
-                <span class="tag is-dark">Procesos Nuevos</span>
-                <span class="tag is-warning">
-                  {{ this.pendingBatch.length }}
-                </span>
-              </div>
-            </div>
+      <div class="column">
+        <process-in-progress :currentProcess="currentProcess"></process-in-progress>
+      </div>
 
-            <div class="control">
-              <div class="tags has-addons">
-                <span class="tag is-dark">Tiempo transcurrido</span>
-                <span class="tag is-info">
-                  <stopwatch ref="timer"></stopwatch>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="column">
+        <finished-processes :processes="processedPrograms"></finished-processes>
       </div>
     </div>
-
-    <button
-      class="button is-success"
-      type="button"
-      @click="handleStartClick"
-    >
-      <span class="icon">
-        <i class="fa fa-flash"></i>
-      </span>
-      <span>
-        Procesar
-      </span>
-    </button>
-
-    <div class="tabs is-centered is-boxed">
-      <ul>
-        <li :class="{'is-active': currentTab === 'processing'}">
-          <a @click.prevent="toggleTab('processing')">
-            <span class="icon is-small"><i class="fa fa-flash"></i></span>
-            <span>Procesamiento</span>
-          </a>
-        </li>
-        <li :class="{'is-active': currentTab === 'resume'}">
-          <a @click.prevent="toggleTab('resume')">
-            <span class="icon is-small"><i class="fa fa-table"></i></span>
-            <span>Resumen</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <section
-      tabindex="-1"
-      @keyup.p="handlePauseKeyup"
-      @keyup.c="handleContinueKeyup"
-      @keyup.e="handleInterruptKeyup"
-      @keyup.w="handleErrorKeyup"
-      v-if="currentTab === 'processing'"
-    >
-      <div class="columns">
-        <div class="column">
-          <blocked-processes :processes="blockedPrograms"></blocked-processes>
-        </div>
-        <div class="column">
-          <ready-processes :processes="batch"></ready-processes>
-        </div>
-
-        <div class="column">
-          <process-in-progress :currentProcess="currentProcess"></process-in-progress>
-        </div>
-
-        <div class="column">
-          <finished-processes :processes="processedPrograms"></finished-processes>
-        </div>
-      </div>
-    </section>
-
-    <section v-if="currentTab === 'resume'">
-      <process-review-table
-        :processes="processedPrograms"
-        caption="Procesos Finalizados"
-      ></process-review-table>
-    </section>
   </div>
 </template>
 
 <script>
-import Stopwatch from '@/components/Stopwatch';
-import Batch from '@/components/Batch';
 import FinishedProcesses from '@/components/FinishedProcesses';
 import ReadyProcesses from '@/components/ReadyProcesses';
 import ProcessInProgress from '@/components/ProcessInProgress';
 import BlockedProcesses from '@/components/BlockedProcesses';
-import ProcessReviewTable from '@/components/ProcessReviewTable';
 
 import { PROCESOR_STATUS, PROCESS_STATUS } from '@/const';
 
 export default {
   name: 'processor',
-  props: ['initialBatch', 'pendingBatch'],
+  props: ['initialBatch', 'pendingBatch', 'currentTime'],
   data() {
     return {
       batch: this.initialBatch || [],
       currentProcess: {},
       processedPrograms: [],
       blockedPrograms: [],
-      currentTimeoutId: null,
       status: PROCESOR_STATUS.paused,
-      currentTab: 'processing',
     };
   },
   methods: {
-    async handleStartClick() {
-      this.$refs.timer.start();
-
+    async start() {
       this.status = PROCESOR_STATUS.processing;
       this.pullProcesses(5);
       this.processNext();
@@ -135,7 +54,7 @@ export default {
 
     pullProcesses(count = 1) {
       const newProcesses = this.pendingBatch.splice(0, count);
-      const arrivalTime = this.$refs.timer.seconds;
+      const arrivalTime = this.currentTime;
 
       /* eslint-disable */
       newProcesses.forEach(p => (p.arrivalTime = arrivalTime));
@@ -164,7 +83,7 @@ export default {
 
     runSelected() {
       if (!this.currentProcess.responseTime) {
-        this.currentProcess.responseTime = this.$refs.timer.seconds;
+        this.currentProcess.responseTime = this.currentTime;
       }
 
       return this.processCurrent();
@@ -179,14 +98,18 @@ export default {
     },
 
     finishProcess() {
-      this.currentProcess.finishTime = this.$refs.timer.seconds;
+      this.currentProcess.finishTime = this.currentTime;
       this.processedPrograms.push(this.currentProcess);
+
+      this.$emit('finish-process', this.currentProcess);
+
       this.pullProcesses(1);
       this.currentProcess = {};
     },
 
     resumeProcessing() {
-      this.$refs.timer.start();
+      this.$emit('resume-processing');
+
       this.processCurrent();
       this.resumeBlockedProcesses();
       this.status = PROCESOR_STATUS.processing;
@@ -199,7 +122,8 @@ export default {
     },
 
     pauseProcessing() {
-      this.$refs.timer.stop();
+      this.$emit('pause-processing');
+
       this.stopBlockedProcesses();
       this.status = PROCESOR_STATUS.paused;
     },
@@ -237,7 +161,7 @@ export default {
       this.currentProcess.pauseProcess();
       this.currentProcess.status = PROCESS_STATUS.error;
       this.finishProcess();
-      this.$refs.timer.start();
+      // this.$refs.timer.start();
       this.processNext();
     },
 
@@ -261,19 +185,12 @@ export default {
     handleErrorKeyup() {
       this.cancelCurrentProcess();
     },
-
-    toggleTab(tab) {
-      this.currentTab = tab;
-    },
   },
   components: {
-    Stopwatch,
-    Batch,
     FinishedProcesses,
     ReadyProcesses,
     ProcessInProgress,
     BlockedProcesses,
-    ProcessReviewTable,
   },
 };
 </script>

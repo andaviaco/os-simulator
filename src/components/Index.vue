@@ -44,7 +44,7 @@
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <article class="tile is-child box">
-            <processor ref="processor" :pendingBatch.sync="batch"></processor>
+            <processor-manager :pendingBatch.sync="batch"></processor-manager>
           </article>
         </div>
       </div>
@@ -80,7 +80,7 @@
 
 <script>
 import ProcessForm from '@/components/ProcessForm';
-import Processor from '@/components/Processor';
+import ProcessorManager from '@/components/ProcessorManager';
 import Batch from '@/components/Batch';
 
 import Program from '@/models/Program';
@@ -117,7 +117,7 @@ export default {
   },
   components: {
     ProcessForm,
-    Processor,
+    ProcessorManager,
     Batch,
   },
 };
