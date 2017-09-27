@@ -43,7 +43,7 @@
           <progress
             class="progress is-primary"
             :value="currentProcess.time"
-            :max="currentProcess.timeMax"
+            :max="currentProcess.timeMax - 1"
           >
             {{ currentProcess.time }} / {{ currentProcess.timeMax }}
           </progress>

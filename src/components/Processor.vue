@@ -173,8 +173,6 @@ export default {
     async processCurrent() {
       await this.currentProcess.processOperation();
 
-      await this.restTime(1000);
-
       this.finishProcess();
 
       return this.processNext();
@@ -262,14 +260,6 @@ export default {
 
     handleErrorKeyup() {
       this.cancelCurrentProcess();
-    },
-
-    async restTime(time = 1000) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, time);
-      });
     },
 
     toggleTab(tab) {
