@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title is-1">OS Simulator</h1>
-          <h2 class="subtitle is-2">Práctica 2</h2>
+          <h2 class="subtitle is-2">Práctica 3</h2>
         </div>
       </div>
     </div>
@@ -97,13 +97,16 @@ export default {
     };
   },
   methods: {
-    handleProgramSubmit(programData) {
-      const program = new Program(
-        programData.operation,
-        programData.timeMax,
-      );
+    handleProgramSubmit(programsData) {
+      let newPrograms = programsData;
 
-      this.batch = [...this.batch, program];
+      if (!Array.isArray(newPrograms)) {
+        newPrograms = [newPrograms];
+      }
+
+      newPrograms = newPrograms.map(data => new Program(data.operation, data.timeMax));
+
+      this.batch = [...this.batch, ...newPrograms];
     },
     handleKeyup($event) {
       this.pressedKey = {
