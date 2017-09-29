@@ -10,6 +10,9 @@
 ### v0.2
 ![Second review: v0.2](/../screenshots/os-simulator-v0.2-fullpage.png?raw=true "OS-Simulator v0.2")
 
+### v0.3
+![Third review: v0.3](/../screenshots/os-simulator-v0.3-fullpage.png?raw=true "OS-Simulator v0.3")
+
 
 ## Build Setup
 
