@@ -25,7 +25,7 @@
         <td class="has-text-centered">{{ program.arrivalTime }}</td>
         <td class="has-text-centered">{{ program.finishTime }}</td>
         <td class="has-text-centered">{{ getReturnTime(program) }}</td>
-        <td class="has-text-centered">{{ program.responseTime }}</td>
+        <td class="has-text-centered">{{ getRelativeResponseTime(program) }}</td>
         <td class="has-text-centered">{{ getWaitingTime(program) }}</td>
         <td class="has-text-centered">{{ program.time }}</td>
       </tr>
@@ -57,6 +57,9 @@ export default {
     },
     getWaitingTime(program) {
       return this.getReturnTime(program) - program.time;
+    },
+    getRelativeResponseTime(program) {
+      return program.responseTime - program.arrivalTime;
     },
   },
   components: {
