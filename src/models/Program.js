@@ -1,6 +1,8 @@
-import shortid from 'shortid';
+import uniqueid from 'uniqueid';
 
-import { OPERATORS, PROCESS_STATUS } from '@/const';
+import { OPERATORS, PROCESS_STATUS, DEFAULT_BLOCK_TIME } from '@/const';
+
+const generateId = uniqueid('P');
 
 const operations = {
   [OPERATORS.plus]: (a, b) => a + b,
@@ -13,7 +15,7 @@ const operations = {
 
 export default class Program {
   constructor({ operand1, operand2, operator }, timeMax = 0) {
-    this.id = shortid.generate();
+    this.id = generateId();
     this.timeMax = timeMax;
     this.operation = {
       operand1,
@@ -21,9 +23,19 @@ export default class Program {
       operator,
       result: 0,
     };
+
     this.time = 0;
+    this.blockedTime = 0;
+    this.arrivalTime = null;
+    this.finishTime = null;
+    this.responseTime = null;
+
     this.status = PROCESS_STATUS.pending;
     this.interval = null;
+  }
+
+  get remainingTime() {
+    return this.timeMax - this.time;
   }
 
   startTimer() {
@@ -37,6 +49,20 @@ export default class Program {
   stopTimer() {
     clearInterval(this.interval);
     this.interval = null;
+  }
+
+  startBlockedTimer() {
+    if (!this.bloquedInterval) {
+      this.bloquedInterval = setInterval(() => {
+        this.blockedTime += 1;
+      }, 1000);
+    }
+  }
+
+  stopBlockedTimer() {
+    clearInterval(this.bloquedInterval);
+
+    this.bloquedInterval = null;
   }
 
   solverOperation() {
@@ -65,6 +91,27 @@ export default class Program {
   pauseProcess() {
     clearTimeout(this.timeoutId);
     this.stopTimer();
+  }
+
+  stopBlocked() {
+    clearTimeout(this.blockedTimeoutId);
+    this.stopBlockedTimer();
+  }
+
+  startBlocking() {
+    const remainingTime = DEFAULT_BLOCK_TIME - (this.blockedTime * 1000);
+
+    this.status = PROCESS_STATUS.blocked;
+    this.startBlockedTimer();
+
+    return new Promise((resolve) => {
+      this.blockedTimeoutId = setTimeout(() => {
+        this.stopBlockedTimer();
+        this.blockedTime = 0;
+
+        resolve();
+      }, remainingTime);
+    });
   }
 
   statusIs(status) {

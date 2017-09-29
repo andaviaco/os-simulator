@@ -6,251 +6,153 @@
     @keyup.e="handleInterruptKeyup"
     @keyup.w="handleErrorKeyup"
   >
-    <h3 class="title is-3">Procesamiento</h3>
-    <div class="level">
-        <div class="level-left">
-          <div class="level-item">
-            <button
-              class="button is-success"
-              type="button"
-              @click="handleStartClick"
-              >
-              <span class="icon">
-                <i class="fa fa-flash"></i>
-              </span>
-              <span>
-                Procesar
-              </span>
-            </button>
-          </div>
+    <div class="columns">
+      <div class="column">
+        <blocked-processes :processes="blockedPrograms"></blocked-processes>
+      </div>
+      <div class="column">
+        <ready-processes :processes="batch"></ready-processes>
       </div>
 
-      <div class="level-right">
-        <div class="leve-item">
-          <div class="field is-grouped ">
-            <div class="control">
-              <div class="tags has-addons">
-                <span class="tag is-dark">Lotes restantes</span>
-                <span class="tag is-warning">
-                  {{ this.batches.length }}
-                </span>
-              </div>
-            </div>
+      <div class="column">
+        <process-in-progress :currentProcess="currentProcess"></process-in-progress>
+      </div>
 
-            <div class="control">
-              <div class="tags has-addons">
-                <span class="tag is-dark">Tiempo transcurrido</span>
-                <span class="tag is-info">
-                  <stopwatch ref="timer"></stopwatch>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="column">
+        <finished-processes :processes="processedPrograms"></finished-processes>
       </div>
     </div>
-
-  <div class="columns">
-    <div class="column">
-      <h4 class="title is-4 has-text-centered">Lote en ejecución</h4>
-      <batch :programs="currentBatch">
-        <template slot="item" scope="props">
-          <div class="message is-small is-primary">
-            <div class="message-body">
-              <dl>
-                <div>
-                  <dt class="is-inline"><strong>ID:</strong></dt>
-                  <dd class="is-inline"><strong>{{ props.program.id }}</strong></dd>
-                </div>
-
-                <div>
-                  <dt class="is-inline">Tiempo Maximo:</dt>
-                  <dd class="is-inline">{{ props.program.timeMax }} secs.</dd>
-                </div>
-
-                <div>
-                  <dt class="is-inline">Tiempo Restante:</dt>
-                  <dd class="is-inline">{{ props.program.timeMax - props.program.time }} secs.</dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-        </template>
-      </batch>
-    </div>
-
-    <div class="column">
-      <h4 class="title is-4 has-text-centered">Proceso en ejecución</h4>
-      <transition name="fade">
-        <div class="message is-small is-warning" v-if="currentProcess.id">
-          <div class="message-body">
-            <dl>
-              <div>
-                <dt class="is-inline"><strong>ID:</strong></dt>
-                <dd class="is-inline"><strong>{{ currentProcess.id }}</strong></dd>
-              </div>
-
-              <div>
-                <dt class="is-inline">Operación:</dt>
-                <dd class="is-inline">{{ `${currentProcess.operation.operand1} ${currentProcess.operation.operator} ${currentProcess.operation.operand2}` }}</dd>
-              </div>
-
-              <div>
-                <dt class="is-inline">Tiempo Maximo:</dt>
-                <dd class="is-inline">{{ currentProcess.timeMax }} secs.</dd>
-              </div>
-
-              <div>
-                <dt class="is-inline">Tiempo Transcurrido:</dt>
-                <dd class="is-inline">{{ currentProcess.time }} secs.</dd>
-              </div>
-
-              <div>
-                <dt class="is-inline">Tiempo Restante:</dt>
-                <dd class="is-inline">{{ currentProcess.timeMax - currentProcess.time }} secs.</dd>
-              </div>
-            </dl>
-
-            <progress
-              class="progress is-primary"
-              :value="currentProcess.time"
-              :max="currentProcess.timeMax"
-            >
-              {{ currentProcess.time }} / {{ currentProcess.timeMax }}
-            </progress>
-          </div>
-        </div>
-      </transition>
-    </div>
-
-    <div class="column">
-      <h4 class="title is-4 has-text-centered">Procesos terminados</h4>
-      <process-batches
-        :batches="processedBatches"
-      >
-        <template slot="program" scope="batchScope">
-          <div
-            class="message is-small"
-            :class="{'is-success': batchScope.program.statusIs('ok'), 'is-danger': batchScope.program.statusIs('error')}"
-          >
-            <div class="message-body">
-              <div class="tags has-addons is-pulled-right">
-                <span class="tag">Status</span>
-                <span
-                  class="tag"
-                  :class="{'is-success': batchScope.program.statusIs('ok'), 'is-danger': batchScope.program.statusIs('error')}"
-                >
-                  {{ batchScope.program.status }}
-                </span>
-              </div>
-
-              <dl>
-                <div>
-                  <dt class="is-inline"><strong>ID:</strong></dt>
-                  <dd class="is-inline"><strong>{{ batchScope.program.id }}</strong></dd>
-                </div>
-
-                <div>
-                  <dt class="is-inline">Operación:</dt>
-                  <dd class="is-inline">
-                    {{ `${batchScope.program.operation.operand1} ${batchScope.program.operation.operator} ${batchScope.program.operation.operand2}` }}
-                  </dd>
-                </div>
-
-                <div v-if="batchScope.program.statusIs('ok')">
-                  <dt class="is-inline">Resultado:</dt>
-                  <dd class="is-inline">{{ batchScope.program.operation.result }}</dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-        </template>
-      </process-batches>
-    </div>
-  </div>
   </div>
 </template>
 
 <script>
-import Stopwatch from '@/components/Stopwatch';
-import ProcessBatches from '@/components/ProcessBatches';
-import Batch from '@/components/Batch';
-
-import ProgramBatcher from '@/models/ProgramBatcher';
+import FinishedProcesses from '@/components/FinishedProcesses';
+import ReadyProcesses from '@/components/ReadyProcesses';
+import ProcessInProgress from '@/components/ProcessInProgress';
+import BlockedProcesses from '@/components/BlockedProcesses';
 
 import { PROCESOR_STATUS, PROCESS_STATUS } from '@/const';
 
-const processedPrograms = new ProgramBatcher();
-
 export default {
   name: 'processor',
-  props: ['batches'],
+  props: ['initialBatch', 'pendingBatch', 'currentTime'],
   data() {
     return {
-      currentBatch: [],
+      batch: this.initialBatch || [],
       currentProcess: {},
-      processedBatches: processedPrograms.batches,
-      currentTimeoutId: null,
+      processedPrograms: [],
+      blockedPrograms: [],
       status: PROCESOR_STATUS.paused,
     };
   },
   methods: {
-    async handleStartClick() {
-      this.$refs.timer.start();
-
+    async start() {
       this.status = PROCESOR_STATUS.processing;
-      await this.loadNextBatch();
+      this.pullProcesses(5);
+      this.processNext();
     },
 
-    async loadNextBatch() {
-      if (this.batches.length > 0) {
-        this.currentBatch = this.batches[0];
-        this.$emit('batch-start');
+    pullProcesses(count = 1) {
+      const newProcesses = this.pendingBatch.splice(0, count);
+      const arrivalTime = this.currentTime;
 
-        return this.processNext();
+      /* eslint-disable */
+      newProcesses.forEach(p => (p.arrivalTime = arrivalTime));
+      /* eslint-disable */
+
+      this.batch = [...this.batch, ...newProcesses];
+    },
+
+    async processNext() {
+      if (this.batch.length > 0) {
+        this.selectNext();
+
+        return this.runSelected();
       }
 
       this.stopProcessing();
       return Promise.resolve();
     },
 
-    async processNext() {
-      if (this.currentBatch.length > 0) {
-        this.currentProcess = this.currentBatch.shift();
+    selectNext() {
+      const nextProcess = this.batch[0];
 
-        return this.processCurrent();
+      this.currentProcess = nextProcess;
+      this.batch = this.batch.filter(program => program.id !== nextProcess.id);
+    },
+
+    runSelected() {
+      if (!this.currentProcess.responseTime) {
+        this.currentProcess.responseTime = this.currentTime;
       }
 
-      return this.loadNextBatch();
+      return this.processCurrent();
     },
 
     async processCurrent() {
-      return new Promise(async (resolve) => {
-        await this.currentProcess.processOperation();
+      await this.currentProcess.processOperation();
 
-        processedPrograms.addProgram(this.currentProcess);
-        this.currentProcess = {};
+      this.finishProcess();
 
-        this.processNext();
+      return this.processNext();
+    },
 
-        resolve();
-      });
+    finishProcess() {
+      this.currentProcess.finishTime = this.currentTime;
+      this.processedPrograms.push(this.currentProcess);
+
+      this.$emit('finish-process', this.currentProcess);
+
+      this.pullProcesses(1);
+      this.currentProcess = {};
     },
 
     resumeProcessing() {
-      this.$refs.timer.start();
+      this.$emit('resume-processing');
+
       this.processCurrent();
+      this.resumeBlockedProcesses();
       this.status = PROCESOR_STATUS.processing;
     },
 
     stopProcessing() {
-      this.$refs.timer.stop();
+      if (!this.blockedPrograms.length) {
+        this.pauseProcessing();
+      }
+    },
+
+    pauseProcessing() {
+      this.$emit('pause-processing');
+
+      this.stopBlockedProcesses();
       this.status = PROCESOR_STATUS.paused;
+    },
+
+    resumeBlockedProcesses() {
+      this.blockedPrograms.forEach(p => this.startBlocking(p));
+    },
+
+    stopBlockedProcesses() {
+      this.blockedPrograms.forEach(p => p.stopBlocked());
+    },
+
+    async startBlocking(program) {
+      await program.startBlocking();
+
+      this.blockedPrograms = this.blockedPrograms.filter(p => p.id !== program.id);
+      this.batch.push(program);
+
+      if (this.batch.length === 1 && !this.currentProcess.id) {
+        this.processNext();
+      }
     },
 
     interruptCurrentProcess() {
       this.currentProcess.pauseProcess();
-      this.currentBatch.push(this.currentProcess);
+
+      this.blockedPrograms.push(this.currentProcess);
+      this.startBlocking(this.currentProcess);
+
       this.currentProcess = {};
       this.processNext();
     },
@@ -258,41 +160,37 @@ export default {
     cancelCurrentProcess() {
       this.currentProcess.pauseProcess();
       this.currentProcess.status = PROCESS_STATUS.error;
-      processedPrograms.addProgram(this.currentProcess);
-      this.currentProcess = {};
-      this.$refs.timer.start();
+      this.finishProcess();
+      // this.$refs.timer.start();
       this.processNext();
     },
 
     handlePauseKeyup() {
-      console.log('pause');
       this.currentProcess.pauseProcess();
-      this.stopProcessing();
+      this.pauseProcessing();
     },
 
     handleContinueKeyup() {
       if (this.status === PROCESOR_STATUS.paused) {
-        console.log('continue');
         this.resumeProcessing();
       }
     },
 
     handleInterruptKeyup() {
       if (this.status === PROCESOR_STATUS.processing) {
-        console.log('interrupt');
         this.interruptCurrentProcess();
       }
     },
 
     handleErrorKeyup() {
-      console.log('error');
       this.cancelCurrentProcess();
     },
   },
   components: {
-    Stopwatch,
-    ProcessBatches,
-    Batch,
+    FinishedProcesses,
+    ReadyProcesses,
+    ProcessInProgress,
+    BlockedProcesses,
   },
 };
 </script>

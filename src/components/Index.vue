@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title is-1">OS Simulator</h1>
-          <h2 class="subtitle is-2">Práctica 2</h2>
+          <h2 class="subtitle is-2">Práctica 3</h2>
         </div>
       </div>
     </div>
@@ -19,25 +19,22 @@
               <process-form
               ref="processForm"
               @submit-program="handleProgramSubmit"
-              @id-change="handleIdChange"
               ></process-form>
             </article>
           </div>
 
           <div class="tile is-parent">
             <article class="tile is-child box">
-              <h3 class="title">Lotes</h3>
-              <process-batches
-                :batches="batches"
-              >
-                <template slot="program" scope="batchScope">
+              <h3 class="title">Procesos Nuevos</h3>
+              <batch :programs="batch">
+                <template slot="item" scope="props">
                   <div class="message is-dark is-small is-primary">
                     <div class="message-body">
-                      ID: {{ batchScope.program.id }}
+                      ID: {{ props.program.id }}
                     </div>
                   </div>
                 </template>
-              </process-batches>
+              </batch>
             </article>
           </div>
         </div>
@@ -47,7 +44,7 @@
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <article class="tile is-child box">
-            <processor :batches="batches" @batch-start="handleBatchStart"></processor>
+            <processor-manager :pendingBatch.sync="batch"></processor-manager>
           </article>
         </div>
       </div>
@@ -83,38 +80,16 @@
 
 <script>
 import ProcessForm from '@/components/ProcessForm';
-import ProcessBatches from '@/components/ProcessBatches';
-import Processor from '@/components/Processor';
+import ProcessorManager from '@/components/ProcessorManager';
+import Batch from '@/components/Batch';
 
-import ProgramBatcher from '@/models/ProgramBatcher';
 import Program from '@/models/Program';
-
-
-const batcher = new ProgramBatcher([
-  new Program(
-    {
-      operand1: 5,
-      operator: '*',
-      operand2: 6,
-    },
-    3,
-  ),
-
-  new Program(
-    {
-      operand1: 3,
-      operator: '/',
-      operand2: 6,
-    },
-    4,
-  ),
-]);
 
 export default {
   name: 'index',
   data() {
     return {
-      batches: batcher.batches,
+      batch: [],
       pressedKey: {
         key: null,
         keyCode: null,
@@ -122,18 +97,16 @@ export default {
     };
   },
   methods: {
-    handleProgramSubmit(programData) {
-      const program = new Program(
-        programData.operation,
-        programData.timeMax,
-      );
-      batcher.addProgram(program);
-    },
-    handleIdChange(id) {
-      this.$refs.processForm.setIdValidity(batcher.isIdAvailable(id));
-    },
-    handleBatchStart() {
-      batcher.dequeueBatch();
+    handleProgramSubmit(programsData) {
+      let newPrograms = programsData;
+
+      if (!Array.isArray(newPrograms)) {
+        newPrograms = [newPrograms];
+      }
+
+      newPrograms = newPrograms.map(data => new Program(data.operation, data.timeMax));
+
+      this.batch = [...this.batch, ...newPrograms];
     },
     handleKeyup($event) {
       this.pressedKey = {
@@ -144,8 +117,8 @@ export default {
   },
   components: {
     ProcessForm,
-    ProcessBatches,
-    Processor,
+    ProcessorManager,
+    Batch,
   },
 };
 </script>
