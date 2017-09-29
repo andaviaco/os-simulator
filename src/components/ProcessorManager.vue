@@ -64,7 +64,7 @@
       </ul>
     </div>
 
-    <section v-if="currentTab === 'processing'">
+    <section v-show="currentTab === 'processing'">
       <processor
         ref="processor"
         :pendingBatch.sync="pendingBatch"
@@ -75,7 +75,7 @@
       ></processor>
     </section>
 
-    <section v-if="currentTab === 'resume'">
+    <section v-show="currentTab === 'resume'">
       <process-review-table
         :processes="processedPrograms"
         caption="Procesos Finalizados"
