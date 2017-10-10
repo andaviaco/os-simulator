@@ -5,6 +5,7 @@
     @keyup.c="handleContinueKeyup"
     @keyup.e="handleInterruptKeyup"
     @keyup.w="handleErrorKeyup"
+    @keyup.b="handleProcessesModalKeyup"
   >
     <div class="columns">
       <div class="column">
@@ -180,6 +181,11 @@ export default {
       if (this.status === PROCESOR_STATUS.processing) {
         this.interruptCurrentProcess();
       }
+    },
+
+    handleProcessesModalKeyup(e) {
+      this.handlePauseKeyup();
+      this.$emit('open-processes-modal');
     },
 
     handleErrorKeyup() {
