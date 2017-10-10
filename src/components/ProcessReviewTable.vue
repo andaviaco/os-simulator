@@ -27,7 +27,7 @@
         <td class="has-text-centered">
           <span
             class="tag"
-            :class="{'is-success': program.statusIs('ok'), 'is-danger': program.statusIs('error')}"
+            :class="program.statusClass()"
           >
             {{ program.status }}
           </span>

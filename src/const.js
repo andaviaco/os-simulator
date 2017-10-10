@@ -31,6 +31,13 @@ export const PROCESS_STATUS = {
   ready: 'ready',
   new: 'new',
 };
+
+export const PROCESS_STATUS_CLASS = {
+  [PROCESS_STATUS.ok]: 'is-success',
+  [PROCESS_STATUS.error]: 'is-danger',
+  [PROCESS_STATUS.blocked]: 'is-info',
+  [PROCESS_STATUS.inProcess]: 'is-warning',
+  [PROCESS_STATUS.ready]: 'is-primary',
 };
 
 export const DEFAULT_BLOCK_TIME = 8000;

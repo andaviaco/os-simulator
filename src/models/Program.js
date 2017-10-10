@@ -1,6 +1,11 @@
 import uniqueid from 'uniqueid';
 
-import { OPERATORS, PROCESS_STATUS, DEFAULT_BLOCK_TIME } from '@/const';
+import {
+  OPERATORS,
+  PROCESS_STATUS,
+  DEFAULT_BLOCK_TIME,
+  PROCESS_STATUS_CLASS,
+} from '@/const';
 
 const generateId = uniqueid('P');
 
@@ -118,6 +123,10 @@ export default class Program {
 
   statusIs(status) {
     return this.status === PROCESS_STATUS[status];
+  }
+
+  statusClass() {
+    return PROCESS_STATUS_CLASS[this.status];
   }
 
   setReady() {
