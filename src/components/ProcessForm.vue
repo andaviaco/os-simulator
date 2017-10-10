@@ -166,6 +166,7 @@
 
 <script>
 import { OPERATORS, OPERATORS_REP } from '@/const';
+import { generateProcessValues } from '@/util';
 
 function initialState() {
   return {
@@ -206,11 +207,11 @@ export default {
     },
 
     handleRandomClick() {
-      this.process = this.generateProcessValues();
+      this.process = generateProcessValues();
     },
 
     handleGeneratorSubmit() {
-      const generated = Array.from(Array(this.generate), this.generateProcessValues);
+      const generated = Array.from(Array(this.generate), generateProcessValues);
 
       this.$emit('submit-program', generated);
     },
@@ -231,26 +232,6 @@ export default {
       } else {
         this.operationError = null;
       }
-    },
-
-    generateProcessValues() {
-      const operators = Object.values(OPERATORS);
-
-      return {
-        timeMax: this.getRandom(5, 8),
-        operation: {
-          operand1: this.getRandom(1, 50),
-          operator: operators[this.getRandom(0, operators.length - 1)],
-          operand2: this.getRandom(1, 50),
-        },
-      };
-    },
-
-    getRandom(min, max) {
-      const minCeil = Math.ceil(min);
-      const maxFloor = Math.floor(max);
-
-      return Math.floor(Math.random() * ((maxFloor - minCeil) + 1)) + minCeil;
     },
   },
 };
