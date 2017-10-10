@@ -100,7 +100,6 @@ export default class Program {
   }
 
   stopBlocked() {
-    this.status = PROCESS_STATUS.ready;
     clearTimeout(this.blockedTimeoutId);
     this.stopBlockedTimer();
   }
@@ -115,6 +114,7 @@ export default class Program {
       this.blockedTimeoutId = setTimeout(() => {
         this.stopBlockedTimer();
         this.blockedTime = 0;
+        this.status = PROCESS_STATUS.ready;
 
         resolve();
       }, remainingTime);
@@ -131,6 +131,5 @@ export default class Program {
 
   setReady() {
     this.status = PROCESS_STATUS.ready;
-    console.log('ready', PROCESS_STATUS.ready);
   }
 }
