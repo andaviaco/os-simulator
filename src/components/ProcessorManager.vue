@@ -72,6 +72,7 @@
         @finish-process="handleProcessFinish"
         @resume-processing="handleProcessingResume"
         @pause-processing="handleProcessingPause"
+        @open-processes-modal="handleProccessesModalOpen"
       ></processor>
     </section>
 
@@ -81,6 +82,20 @@
         caption="Procesos Finalizados"
       ></process-review-table>
     </section>
+
+    <modal-card ref="processesModal">
+      <template slot="title">
+        Tabla de Procesos
+      </template>
+      <template slot="body">
+        <div class="content">
+          <process-review-table
+          :processes="allProcesses()"
+          caption="Todos los Procesos"
+          ></process-review-table>
+        </div>
+      </template>
+    </modal-card>
   </div>
 </template>
 
@@ -88,6 +103,7 @@
 import Stopwatch from '@/components/Stopwatch';
 import Processor from '@/components/Processor';
 import ProcessReviewTable from '@/components/ProcessReviewTable';
+import ModalCard from '@/components/ModalCard';
 
 export default {
   name: 'processor-manager',
@@ -119,14 +135,35 @@ export default {
       this.$refs.timer.stop();
     },
 
+    handleProccessesModalOpen() {
+      this.$refs.processesModal.open();
+    },
+
     toggleTab(tab) {
       this.currentTab = tab;
+    },
+
+    allProcesses() {
+      if (!this.$refs.processor) {
+        return [];
+      }
+
+      const { batch, currentProcess, blockedPrograms } = this.$refs.processor;
+
+      return [
+        ...this.pendingBatch,
+        ...batch,
+        currentProcess,
+        ...blockedPrograms,
+        ...this.processedPrograms,
+      ];
     },
   },
   components: {
     Stopwatch,
     Processor,
     ProcessReviewTable,
+    ModalCard,
   },
 };
 </script>
