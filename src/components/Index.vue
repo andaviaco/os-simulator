@@ -26,7 +26,7 @@
           <div class="tile is-parent">
             <article class="tile is-child box">
               <h3 class="title">Procesos Nuevos</h3>
-              <batch :programs="batch">
+              <batch class="new-process-list":programs="batch">
                 <template slot="item" scope="props">
                   <div class="message is-dark is-small is-primary">
                     <div class="message-body">
@@ -141,21 +141,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-/*h1, h2 {
-  font-weight: normal;
+
+.new-process-list {
+  max-height: 330px;
+  overflow-y: scroll;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}*/
 </style>
