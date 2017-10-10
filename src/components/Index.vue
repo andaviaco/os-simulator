@@ -144,7 +144,7 @@ export default {
 
 .new-process-list {
   max-height: 330px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 </style>
