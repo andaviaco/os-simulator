@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="modal" :class="{'is-active': isOpen}">
     <div class="modal-background"></div>
-    <div class="modal-card">
+    <div class="modal-card" :class="sizeClass">
       <header class="modal-card-head">
         <p class="modal-card-title">
           <slot name="title">
@@ -24,10 +24,18 @@
 <script>
 export default {
   name: 'modal-card',
+  props: ['size'],
   data() {
     return {
       isOpen: false,
     };
+  },
+  computed: {
+    sizeClass() {
+      return {
+        'is-large': this.size === 'large',
+      };
+    },
   },
   methods: {
     handleCloseClick() {
@@ -42,3 +50,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+
+.is-large {
+  width: 90%;
+}
+
+</style>

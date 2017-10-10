@@ -84,7 +84,7 @@
       ></process-review-table>
     </section>
 
-    <modal-card ref="processesModal">
+    <modal-card ref="processesModal" size="large">
       <template slot="title">
         Tabla de Procesos
       </template>
