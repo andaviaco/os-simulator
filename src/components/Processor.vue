@@ -91,7 +91,7 @@ export default {
     },
 
     runSelected() {
-      if (!this.currentProcess.responseTime) {
+      if (this.currentProcess.responseTime === null) {
         this.currentProcess.responseTime = this.currentTime;
       }
 
