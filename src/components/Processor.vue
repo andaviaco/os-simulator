@@ -51,6 +51,20 @@ export default {
       status: PROCESOR_STATUS.paused,
     };
   },
+  computed: {
+    processesInMemory() {
+      let inMemory = [
+        ...this.blockedPrograms,
+        ...this.batch,
+      ];
+
+      if (this.currentProcess.id) {
+        inMemory = [this.currentProcess, ...inMemory];
+      }
+
+      return inMemory;
+    },
+  },
   methods: {
     async start() {
       this.status = PROCESOR_STATUS.processing;
