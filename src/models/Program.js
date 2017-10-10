@@ -30,7 +30,7 @@ export default class Program {
     this.finishTime = null;
     this.responseTime = null;
 
-    this.status = PROCESS_STATUS.pending;
+    this.status = PROCESS_STATUS.new;
     this.interval = null;
   }
 
@@ -75,6 +75,7 @@ export default class Program {
     const processTime = this.timeMax - this.time;
 
     this.startTimer();
+    this.status = PROCESS_STATUS.inProcess;
 
     return new Promise((resolve) => {
       this.timeoutId = setTimeout(() => {
@@ -94,6 +95,7 @@ export default class Program {
   }
 
   stopBlocked() {
+    this.status = PROCESS_STATUS.ready;
     clearTimeout(this.blockedTimeoutId);
     this.stopBlockedTimer();
   }
@@ -116,5 +118,10 @@ export default class Program {
 
   statusIs(status) {
     return this.status === PROCESS_STATUS[status];
+  }
+
+  setReady() {
+    this.status = PROCESS_STATUS.ready;
+    console.log('ready', PROCESS_STATUS.ready);
   }
 }

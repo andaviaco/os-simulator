@@ -58,7 +58,10 @@ export default {
       const arrivalTime = this.currentTime;
 
       /* eslint-disable */
-      newProcesses.forEach(p => (p.arrivalTime = arrivalTime));
+      newProcesses.forEach(p => {
+        p.setReady();
+        p.arrivalTime = arrivalTime;
+      });
       /* eslint-disable */
 
       this.batch = [...this.batch, ...newProcesses];
