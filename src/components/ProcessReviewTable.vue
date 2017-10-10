@@ -6,12 +6,12 @@
       <tr>
         <th>ID</th>
         <th class="has-text-centered">Estado</th>
-        <th class="has-text-centered">Tiempo de Llegada</th>
-        <th class="has-text-centered">Tiempo de Finalización</th>
-        <th class="has-text-centered">Tiempo de Retorno</th>
-        <th class="has-text-centered">Tiempo de Respuesta</th>
-        <th class="has-text-centered">Tiempo de Espera</th>
-        <th class="has-text-centered">Tiempo de Servicio</th>
+        <th class="has-text-centered">T. Llegada</th>
+        <th class="has-text-centered">T. Finalización</th>
+        <th class="has-text-centered">T. Retorno</th>
+        <th class="has-text-centered">T. Respuesta</th>
+        <th class="has-text-centered">T. Espera</th>
+        <th class="has-text-centered">T. Servicio</th>
       </tr>
     </thead>
 
