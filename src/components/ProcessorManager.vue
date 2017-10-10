@@ -151,11 +151,11 @@ export default {
       const { batch, currentProcess, blockedPrograms } = this.$refs.processor;
 
       return [
-        ...this.pendingBatch,
-        ...batch,
-        currentProcess,
-        ...blockedPrograms,
         ...this.processedPrograms,
+        currentProcess,
+        ...batch,
+        ...blockedPrograms,
+        ...this.pendingBatch,
       ];
     },
   },
