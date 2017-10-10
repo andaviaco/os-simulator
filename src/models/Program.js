@@ -43,6 +43,30 @@ export default class Program {
     return this.timeMax - this.time;
   }
 
+  get returnTime() {
+    if (this.finishTime === null) {
+      return null;
+    }
+
+    return this.finishTime - this.arrivalTime;
+  }
+
+  get waitingTime() {
+    if (this.returnTime === null) {
+      return null;
+    }
+
+    return this.returnTime - this.time;
+  }
+
+  get relativeResponseTime() {
+    if (this.responseTime === null) {
+      return null;
+    }
+
+    return this.responseTime - this.arrivalTime;
+  }
+
   startTimer() {
     if (!this.interval) {
       this.interval = setInterval(() => {

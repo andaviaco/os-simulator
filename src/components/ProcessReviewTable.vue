@@ -34,9 +34,9 @@
         </td>
         <td class="has-text-centered">{{ program.arrivalTime }}</td>
         <td class="has-text-centered">{{ program.finishTime }}</td>
-        <td class="has-text-centered">{{ getReturnTime(program) }}</td>
-        <td class="has-text-centered">{{ getRelativeResponseTime(program) }}</td>
-        <td class="has-text-centered">{{ getWaitingTime(program) }}</td>
+        <td class="has-text-centered">{{ program.returnTime }}</td>
+        <td class="has-text-centered">{{ program.relativeResponseTime }}</td>
+        <td class="has-text-centered">{{ program.waitingTime }}</td>
         <td class="has-text-centered">{{ program.time }}</td>
       </tr>
     </tbody>
@@ -61,15 +61,6 @@ export default {
       } else {
         this.selectedRow = index;
       }
-    },
-    getReturnTime(program) {
-      return program.finishTime - program.arrivalTime;
-    },
-    getWaitingTime(program) {
-      return this.getReturnTime(program) - program.time;
-    },
-    getRelativeResponseTime(program) {
-      return program.responseTime - program.arrivalTime;
     },
   },
   components: {
