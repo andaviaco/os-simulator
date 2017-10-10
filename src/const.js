@@ -23,19 +23,19 @@ export const PROCESOR_STATUS = {
 };
 
 export const PROCESS_STATUS = {
-  ok: 'ok',
-  error: 'error',
-  pending: 'pending',
-  blocked: 'blocked',
-  inProcess: 'in process',
-  ready: 'ready',
-  new: 'new',
+  ok: 'Ok',
+  error: 'Error',
+  pending: 'Pending',
+  blocked: 'Blocked',
+  inProcess: 'In process',
+  ready: 'Ready',
+  new: 'New',
 };
 
 export const PROCESS_STATUS_CLASS = {
   [PROCESS_STATUS.ok]: 'is-success',
   [PROCESS_STATUS.error]: 'is-danger',
-  [PROCESS_STATUS.blocked]: 'is-info',
+  [PROCESS_STATUS.blocked]: 'is-dark',
   [PROCESS_STATUS.inProcess]: 'is-warning',
   [PROCESS_STATUS.ready]: 'is-primary',
 };

@@ -10,7 +10,7 @@
     </h4>
     <batch :programs="processes">
       <template slot="item" scope="props">
-        <div class="message is-small is-info">
+        <div class="message is-small is-dark">
           <div class="message-body">
             <dl>
               <div>
