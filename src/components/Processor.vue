@@ -33,7 +33,11 @@ import ReadyProcesses from '@/components/ReadyProcesses';
 import ProcessInProgress from '@/components/ProcessInProgress';
 import BlockedProcesses from '@/components/BlockedProcesses';
 
-import { PROCESOR_STATUS, PROCESS_STATUS } from '@/const';
+import {
+  PROCESOR_STATUS,
+  PROCESS_STATUS,
+  MAX_PROCESSES_IN_MEMORY,
+} from '@/const';
 
 export default {
   name: 'processor',
@@ -50,7 +54,7 @@ export default {
   methods: {
     async start() {
       this.status = PROCESOR_STATUS.processing;
-      this.pullProcesses(5);
+      this.pullProcesses(MAX_PROCESSES_IN_MEMORY);
       this.processNext();
     },
 

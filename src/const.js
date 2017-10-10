@@ -41,3 +41,5 @@ export const PROCESS_STATUS_CLASS = {
 };
 
 export const DEFAULT_BLOCK_TIME = 8000;
+
+export const MAX_PROCESSES_IN_MEMORY = 5;
