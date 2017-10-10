@@ -17,8 +17,8 @@
             <article class="tile is-child box">
               <h3 class="title">Crear Proceso</h3>
               <process-form
-              ref="processForm"
-              @submit-program="handleProgramSubmit"
+                ref="processForm"
+                @submit-program="handleProgramSubmit"
               ></process-form>
             </article>
           </div>
@@ -44,7 +44,10 @@
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <article class="tile is-child box">
-            <processor-manager :pendingBatch.sync="batch"></processor-manager>
+            <processor-manager
+              :pendingBatch.sync="batch"
+              @request-new-process="handleNewProcessRequest"
+            ></processor-manager>
           </article>
         </div>
       </div>
@@ -100,6 +103,7 @@ import ProcessorManager from '@/components/ProcessorManager';
 import Batch from '@/components/Batch';
 
 import Program from '@/models/Program';
+import { generateProcessValues } from '@/util';
 
 export default {
   name: 'index',
@@ -129,6 +133,11 @@ export default {
         key: $event.key,
         keyCode: $event.keyCode,
       };
+    },
+    handleNewProcessRequest() {
+      const processData = generateProcessValues();
+
+      this.batch = [...this.batch, new Program(processData.operation, processData.processData)];
     },
   },
   components: {

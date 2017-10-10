@@ -6,6 +6,7 @@
     @keyup.e="handleInterruptKeyup"
     @keyup.w="handleErrorKeyup"
     @keyup.b="handleProcessesModalKeyup"
+    @keyup.u="handleRequestProcessKeyup"
   >
     <div class="columns">
       <div class="column">
@@ -193,6 +194,10 @@ export default {
 
     handleErrorKeyup() {
       this.cancelCurrentProcess();
+    },
+
+    handleRequestProcessKeyup() {
+      this.$emit('request-new-process');
     },
   },
   components: {

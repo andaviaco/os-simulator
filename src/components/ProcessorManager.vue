@@ -73,6 +73,7 @@
         @resume-processing="handleProcessingResume"
         @pause-processing="handleProcessingPause"
         @open-processes-modal="handleProccessesModalOpen"
+        @request-new-process="handleNewProcessRequest"
       ></processor>
     </section>
 
@@ -157,6 +158,10 @@ export default {
         ...blockedPrograms,
         ...this.pendingBatch,
       ];
+    },
+
+    handleNewProcessRequest() {
+      this.$emit('request-new-process');
     },
   },
   components: {
