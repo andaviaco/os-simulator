@@ -30,6 +30,7 @@
             :class="program.statusClass()"
           >
             {{ program.status }}
+            <span v-if="program.statusIs('blocked')">: {{ program.blockedTime }}</span>
           </span>
         </td>
         <td class="has-text-centered">{{ program.arrivalTime }}</td>
