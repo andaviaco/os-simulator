@@ -20,9 +20,11 @@ Validator.addLocale(esLocale);
 Vue.use(VeeValidate, veeValidateConfig);
 
 Vue.config.keyCodes = {
-  p: 80,
+  b: 66,
   c: 67,
   e: 69,
+  p: 80,
+  u: 85,
   w: 87,
 };
 Vue.config.productionTip = false;
