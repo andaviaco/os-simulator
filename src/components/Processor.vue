@@ -65,6 +65,21 @@ export default {
       return inMemory;
     },
   },
+  watch: {
+    pendingBatch(newVal, oldVal) {
+      if (this.status === PROCESOR_STATUS.processing) {
+        const diff = newVal.length - oldVal.length;
+
+        if (diff > 0 && this.processesInMemory.length < MAX_PROCESSES_IN_MEMORY) {
+          this.pullProcesses(diff);
+
+          if (!this.currentProcess.id) {
+            this.processNext();
+          }
+        }
+      }
+    },
+  },
   methods: {
     async start() {
       this.status = PROCESOR_STATUS.processing;
