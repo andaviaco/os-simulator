@@ -57,10 +57,7 @@
       <div
         class="message is-primary"
         tabindex="-1"
-        @keyup.p="handleKeyup($event)"
-        @keyup.c="handleKeyup($event)"
-        @keyup.e="handleKeyup($event)"
-        @keyup.w="handleKeyup($event)"
+        @keyup="handleKeyup($event)"
     >
         <div class="message-header">
           Comandos
@@ -73,6 +70,8 @@
               <li><strong>C</strong>: Continuar</li>
               <li><strong>E</strong>: Entrada/Salida</li>
               <li><strong>W</strong>: Error</li>
+              <li><strong>U</strong>: Crear nuevo proceso (datos aleatorios)</li>
+              <li><strong>B</strong>: Mostrar tabla de procesos</li>
             </ul>
           </div>
         </div>
