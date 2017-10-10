@@ -75,6 +75,22 @@
         </div>
       </div>
     </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="content has-text-centered">
+          <p>
+            <strong>OS-Simulator</strong> by <a href="http://andaviaco.com">Andrés Ávila</a>. The source code is licensed
+            <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+          </p>
+          <p>
+            <a class="icon" href="https://github.com/andaviaco/os-simulator">
+              <i class="fa fa-github"></i>
+            </a>
+          </p>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
