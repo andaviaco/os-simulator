@@ -5,6 +5,7 @@
     <thead>
       <tr>
         <th>ID</th>
+        <th class="has-text-centered">Estado</th>
         <th class="has-text-centered">Tiempo de Llegada</th>
         <th class="has-text-centered">Tiempo de Finalización</th>
         <th class="has-text-centered">Tiempo de Retorno</th>
@@ -17,11 +18,20 @@
     <tbody>
       <tr
         v-for="(program, i) in processes"
+        v-if="program.id"
         :class="{'is-selected': i === selectedRow}"
         :key="program.id"
         @click="selectRow(i)"
       >
         <td><strong>{{ program.id }}</strong></td>
+        <td class="has-text-centered">
+          <span
+            class="tag"
+            :class="{'is-success': program.statusIs('ok'), 'is-danger': program.statusIs('error')}"
+          >
+            {{ program.status }}
+          </span>
+        </td>
         <td class="has-text-centered">{{ program.arrivalTime }}</td>
         <td class="has-text-centered">{{ program.finishTime }}</td>
         <td class="has-text-centered">{{ getReturnTime(program) }}</td>
