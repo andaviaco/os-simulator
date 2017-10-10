@@ -137,7 +137,7 @@ export default {
     handleNewProcessRequest() {
       const processData = generateProcessValues();
 
-      this.batch = [...this.batch, new Program(processData.operation, processData.processData)];
+      this.batch = [...this.batch, new Program(processData.operation, processData.timeMax)];
     },
   },
   components: {
