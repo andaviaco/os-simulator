@@ -54,25 +54,17 @@
     </div>
 
     <section class="section">
-      <div
-        class="message is-primary"
-        tabindex="-1"
-        @keyup="handleKeyup($event)"
-    >
-        <div class="message-header">
-          Comandos
-        </div>
-        <div class="message-body">
-          <div class="content">
-            <p v-show="pressedKey.key">Presionaste: <strong>{{ pressedKey.key }}</strong></p>
-            <ul>
-              <li><strong>P</strong>: Pausa</li>
-              <li><strong>C</strong>: Continuar</li>
-              <li><strong>E</strong>: Entrada/Salida</li>
-              <li><strong>W</strong>: Error</li>
-              <li><strong>U</strong>: Crear nuevo proceso (datos aleatorios)</li>
-              <li><strong>B</strong>: Mostrar tabla de procesos</li>
-            </ul>
+      <div class="tile is-ancestor">
+        <div class="tile">
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+            </article>
+          </div>
+
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <commands-info></commands-info>
+            </article>
           </div>
         </div>
       </div>
@@ -100,6 +92,7 @@
 import ProcessForm from '@/components/ProcessForm';
 import ProcessorManager from '@/components/ProcessorManager';
 import Batch from '@/components/Batch';
+import CommandsInfo from '@/components/CommandsInfo';
 
 import Program from '@/models/Program';
 import { generateProcessValues } from '@/util';
@@ -109,10 +102,6 @@ export default {
   data() {
     return {
       batch: [],
-      pressedKey: {
-        key: null,
-        keyCode: null,
-      },
     };
   },
   methods: {
@@ -127,12 +116,6 @@ export default {
 
       this.batch = [...this.batch, ...newPrograms];
     },
-    handleKeyup($event) {
-      this.pressedKey = {
-        key: $event.key,
-        keyCode: $event.keyCode,
-      };
-    },
     handleNewProcessRequest() {
       const processData = generateProcessValues();
 
@@ -143,6 +126,7 @@ export default {
     ProcessForm,
     ProcessorManager,
     Batch,
+    CommandsInfo,
   },
 };
 </script>
