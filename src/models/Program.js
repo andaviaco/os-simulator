@@ -100,11 +100,15 @@ export default class Program {
     return operations[operator](operand1, operand2);
   }
 
-  processOperation() {
-    const processTime = this.timeMax - this.time;
+  processOperation(maxProcessTime) {
+    const remainigTime = this.timeMax - this.time;
 
-    this.startTimer();
+    if (maxProcessTime && maxProcessTime < remainigTime) {
+      return this.progressProcessing(maxProcessTime);
+    }
+
     this.status = PROCESS_STATUS.inProcess;
+    this.startTimer();
 
     return new Promise((resolve) => {
       this.timeoutId = setTimeout(() => {
@@ -114,7 +118,7 @@ export default class Program {
         this.stopTimer();
 
         resolve(this.operation.result);
-      }, processTime * 1000);
+      }, remainigTime * 1000);
     });
   }
 
@@ -155,5 +159,17 @@ export default class Program {
 
   setReady() {
     this.status = PROCESS_STATUS.ready;
+  }
+
+  progressProcessing(processTime) {
+    this.status = PROCESS_STATUS.inProcess;
+    this.startTimer();
+
+    return new Promise((resolve) => {
+      this.timeoutId = setTimeout(() => {
+        this.stopTimer();
+        resolve(null);
+      }, processTime * 1000);
+    });
   }
 }

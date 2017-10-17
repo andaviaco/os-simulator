@@ -128,9 +128,17 @@ export default {
     },
 
     async processCurrent() {
-      await this.currentProcess.processOperation();
+      const processingTime = this.quantum;
 
-      this.finishProcess();
+      const result = await this.currentProcess.processOperation(processingTime);
+
+      if (result === null) {
+        // enqueue again
+        this.batch = [...this.batch, this.currentProcess];
+        this.currentProcess = {};
+      } else {
+        this.finishProcess();
+      }
 
       return this.processNext();
     },
