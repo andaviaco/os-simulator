@@ -40,24 +40,27 @@
         </div>
       </div>
 
-
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <article class="tile is-child box">
             <processor-manager
               :pendingBatch.sync="batch"
+              :config="config"
               @request-new-process="handleNewProcessRequest"
             ></processor-manager>
           </article>
         </div>
       </div>
-    </div>
 
-    <section class="section">
       <div class="tile is-ancestor">
         <div class="tile">
           <div class="tile is-parent">
             <article class="tile is-child box">
+              <h3 class="title">Configuración</h3>
+              <config-form
+                :initialConfig="config"
+                @quantum-change="handleQuantumChange"
+              ></config-form>
             </article>
           </div>
 
@@ -68,7 +71,8 @@
           </div>
         </div>
       </div>
-    </section>
+
+    </div>
 
     <footer class="footer">
       <div class="container">
@@ -92,6 +96,7 @@
 import ProcessForm from '@/components/ProcessForm';
 import ProcessorManager from '@/components/ProcessorManager';
 import Batch from '@/components/Batch';
+import ConfigForm from '@/components/ConfigForm';
 import CommandsInfo from '@/components/CommandsInfo';
 
 import Program from '@/models/Program';
@@ -102,6 +107,9 @@ export default {
   data() {
     return {
       batch: [],
+      config: {
+        quantum: 4,
+      },
     };
   },
   methods: {
@@ -121,11 +129,15 @@ export default {
 
       this.batch = [...this.batch, new Program(processData.operation, processData.timeMax)];
     },
+    handleQuantumChange(value) {
+      this.config.quantum = value;
+    },
   },
   components: {
     ProcessForm,
     ProcessorManager,
     Batch,
+    ConfigForm,
     CommandsInfo,
   },
 };

@@ -21,6 +21,15 @@
               </div>
             </div>
 
+              <div class="control">
+                <div class="tags has-addons">
+                  <span class="tag is-dark">Quantum</span>
+                  <span class="tag is-danger">
+                    {{ config.quantum }}
+                  </span>
+                </div>
+              </div>
+
             <div class="control">
               <div class="tags has-addons">
                 <span class="tag is-dark">Tiempo transcurrido</span>
@@ -69,6 +78,7 @@
         ref="processor"
         :pendingBatch.sync="pendingBatch"
         :currentTime="timer.seconds"
+        :quantum="config.quantum"
         @finish-process="handleProcessFinish"
         @resume-processing="handleProcessingResume"
         @pause-processing="handleProcessingPause"
@@ -108,7 +118,7 @@ import ModalCard from '@/components/ModalCard';
 
 export default {
   name: 'processor-manager',
-  props: ['pendingBatch'],
+  props: ['pendingBatch', 'config'],
   data() {
     return {
       processedPrograms: [],

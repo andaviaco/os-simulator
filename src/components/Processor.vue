@@ -41,7 +41,7 @@ import {
 
 export default {
   name: 'processor',
-  props: ['initialBatch', 'pendingBatch', 'currentTime'],
+  props: ['initialBatch', 'pendingBatch', 'currentTime', 'quantum'],
   data() {
     return {
       batch: this.initialBatch || [],
