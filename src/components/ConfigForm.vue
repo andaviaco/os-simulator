@@ -4,15 +4,25 @@
       <label class="label">Quantum</label>
       <div class="control has-icons-right">
         <input
-          class="input"
           type="number"
+          name="quantum"
+          min="1"
+          :class="['input', { 'is-danger': errors.has('quantum') }]"
           v-bind:value="quantum"
           v-on:input="handleQantumChange"
+          v-validate="'required|numeric|min_value:1'"
         />
         <span class="icon is-small is-right">
           <i class="fa fa-warning"></i>
         </span>
       </div>
+
+      <p
+        class="help is-danger"
+        v-show="errors.has('quantum')"
+      >
+        {{ errors.first('quantum') }}
+      </p>
     </div>
   </form>
 </template>
