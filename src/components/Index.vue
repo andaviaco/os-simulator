@@ -25,6 +25,20 @@
 
           <div class="tile is-parent">
             <article class="tile is-child box">
+              <h3 class="title">Configuración</h3>
+              <config-form
+                :initialConfig="config"
+                @quantum-change="handleQuantumChange"
+              ></config-form>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile is-ancestor">
+        <div class="tile">
+          <div class="tile is-parent">
+            <article class="tile is-child box">
               <h3 class="title">Procesos Nuevos</h3>
               <batch class="new-process-list":programs="batch">
                 <template slot="item" scope="props">
@@ -35,6 +49,12 @@
                   </div>
                 </template>
               </batch>
+            </article>
+          </div>
+
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <commands-info></commands-info>
             </article>
           </div>
         </div>
@@ -49,26 +69,6 @@
               @request-new-process="handleNewProcessRequest"
             ></processor-manager>
           </article>
-        </div>
-      </div>
-
-      <div class="tile is-ancestor">
-        <div class="tile">
-          <div class="tile is-parent">
-            <article class="tile is-child box">
-              <h3 class="title">Configuración</h3>
-              <config-form
-                :initialConfig="config"
-                @quantum-change="handleQuantumChange"
-              ></config-form>
-            </article>
-          </div>
-
-          <div class="tile is-parent">
-            <article class="tile is-child box">
-              <commands-info></commands-info>
-            </article>
-          </div>
         </div>
       </div>
 
