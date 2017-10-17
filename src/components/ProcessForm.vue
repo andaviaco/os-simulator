@@ -81,7 +81,7 @@
           <div class="field">
             <div class="control">
               <input
-              id="time-max"
+                id="time-max"
                 :class="[{ 'is-danger': errors.has('time-max') }, 'input']"
                 type="number"
                 name="time-max"

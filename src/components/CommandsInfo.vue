@@ -13,7 +13,7 @@
         <ul>
           <li><strong>P</strong>: Pausa</li>
           <li><strong>C</strong>: Continuar</li>
-          <li><strong>E</strong>: Entrada/Salida</li>
+          <li><strong>E</strong>: Bloquear (E/S)</li>
           <li><strong>W</strong>: Error</li>
           <li><strong>U</strong>: Crear nuevo proceso (datos aleatorios)</li>
           <li><strong>B</strong>: Mostrar tabla de procesos</li>
