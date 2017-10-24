@@ -101,8 +101,9 @@
       <template slot="body">
         <div class="content">
           <process-review-table
-          :processes="allProcesses()"
           caption="Todos los Procesos"
+          :processes="allProcesses()"
+          :currentTime="timer.seconds"
           ></process-review-table>
         </div>
       </template>

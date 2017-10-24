@@ -51,8 +51,12 @@ export default class Program {
     return this.finishTime - this.arrivalTime;
   }
 
-  get waitingTime() {
+  waitingTime(currentTime) {
     if (this.returnTime === null) {
+      if (this.arrivalTime !== null && currentTime) {
+        return currentTime - this.arrivalTime - this.time;
+      }
+
       return null;
     }
 
@@ -168,6 +172,8 @@ export default class Program {
     return new Promise((resolve) => {
       this.timeoutId = setTimeout(() => {
         this.stopTimer();
+        this.status = PROCESS_STATUS.ready;
+
         resolve(null);
       }, processTime * 1000);
     });

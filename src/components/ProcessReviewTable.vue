@@ -37,7 +37,7 @@
         <td class="has-text-centered">{{ program.finishTime }}</td>
         <td class="has-text-centered">{{ program.returnTime }}</td>
         <td class="has-text-centered">{{ program.relativeResponseTime }}</td>
-        <td class="has-text-centered">{{ program.waitingTime }}</td>
+        <td class="has-text-centered">{{ program.waitingTime(currentTime) }}</td>
         <td class="has-text-centered">{{ program.time }}</td>
       </tr>
     </tbody>
@@ -49,7 +49,7 @@ import Batch from '@/components/Batch';
 
 export default {
   name: 'process-review-table',
-  props: ['processes', 'caption'],
+  props: ['processes', 'caption', 'currentTime'],
   data() {
     return {
       selectedRow: null,
