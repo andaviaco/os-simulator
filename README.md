@@ -17,6 +17,8 @@
 ![Fourth review: v0.4](/../screenshots/os-simulator-v0.4-fullpage.png?raw=true "OS-Simulator v0.4")
 ![v0.4: Processes Table](/../screenshots/os-simulator-v0.4-table.png?raw=true "OS-Simulator v0.4: Processes Table")
 
+### v0.5
+![Fifth review: v0.5](/../screenshots/os-simulator-v0.5-fullpage.png?raw=true "OS-Simulator v0.5")
 
 ## Build Setup
 
