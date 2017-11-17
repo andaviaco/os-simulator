@@ -12,6 +12,7 @@ export function generateProcessValues() {
   const operators = Object.values(OPERATORS);
 
   return {
+    memory: getRandom(2, 10),
     timeMax: getRandom(5, 8),
     operation: {
       operand1: getRandom(1, 50),

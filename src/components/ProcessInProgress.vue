@@ -30,6 +30,11 @@
             </div>
 
             <div>
+              <dt class="is-inline">Memoria:</dt>
+              <dd class="is-inline">{{ currentProcess.memory }}</dd>
+            </div>
+
+            <div>
               <dt class="is-inline">Tiempo Maximo:</dt>
               <dd class="is-inline">{{ currentProcess.timeMax }} secs.</dd>
             </div>

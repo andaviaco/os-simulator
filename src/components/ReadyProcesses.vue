@@ -26,6 +26,11 @@
               </div>
 
               <div>
+                <dt class="is-inline">Memoria:</dt>
+                <dd class="is-inline">{{ props.program.memory }}</dd>
+              </div>
+
+              <div>
                 <dt class="is-inline">Tiempo Maximo:</dt>
                 <dd class="is-inline">{{ props.program.timeMax }} secs.</dd>
               </div>

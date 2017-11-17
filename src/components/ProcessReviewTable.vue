@@ -6,6 +6,7 @@
       <tr>
         <th>ID</th>
         <th class="has-text-centered">Estado</th>
+        <th class="has-text-centered">Memoria</th>
         <th class="has-text-centered">T. Llegada</th>
         <th class="has-text-centered">T. Finalización</th>
         <th class="has-text-centered">T. Retorno</th>
@@ -33,6 +34,7 @@
             <span v-if="program.statusIs('blocked')">: {{ program.blockedTime }}</span>
           </span>
         </td>
+        <td class="has-text-centered">{{ program.memory }}</td>
         <td class="has-text-centered">{{ program.arrivalTime }}</td>
         <td class="has-text-centered">{{ program.finishTime }}</td>
         <td class="has-text-centered">{{ program.returnTime }}</td>

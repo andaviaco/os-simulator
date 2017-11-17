@@ -19,8 +19,9 @@ const operations = {
 };
 
 export default class Program {
-  constructor({ operand1, operand2, operator }, timeMax = 0) {
+  constructor({ operand1, operand2, operator }, timeMax = 0, memory = 1) {
     this.id = generateId();
+    this.memory = memory;
     this.timeMax = timeMax;
     this.operation = {
       operand1,

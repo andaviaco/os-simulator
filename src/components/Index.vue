@@ -44,7 +44,7 @@
                 <template slot="item" scope="props">
                   <div class="message is-dark is-small is-primary">
                     <div class="message-body">
-                      ID: {{ props.program.id }}
+                      ID: {{ props.program.id }} | Memory: {{ props.program.memory }}
                     </div>
                   </div>
                 </template>
@@ -120,7 +120,7 @@ export default {
         newPrograms = [newPrograms];
       }
 
-      newPrograms = newPrograms.map(data => new Program(data.operation, data.timeMax));
+      newPrograms = newPrograms.map(data => new Program(data.operation, data.timeMax, data.memory));
 
       this.batch = [...this.batch, ...newPrograms];
     },
