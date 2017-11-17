@@ -9,6 +9,10 @@
     @keyup.u="handleRequestProcessKeyup"
   >
     <div class="columns">
+      <aside class="column is-2">
+        <memory-table></memory-table>
+      </aside>
+
       <div class="column">
         <blocked-processes :processes="blockedPrograms"></blocked-processes>
       </div>
@@ -32,6 +36,7 @@ import FinishedProcesses from '@/components/FinishedProcesses';
 import ReadyProcesses from '@/components/ReadyProcesses';
 import ProcessInProgress from '@/components/ProcessInProgress';
 import BlockedProcesses from '@/components/BlockedProcesses';
+import MemoryTable from '@/components/MemoryTable';
 
 import {
   PROCESOR_STATUS,
@@ -246,6 +251,7 @@ export default {
     ReadyProcesses,
     ProcessInProgress,
     BlockedProcesses,
+    MemoryTable,
   },
 };
 </script>
