@@ -7,6 +7,7 @@
     @keyup.w="handleErrorKeyup"
     @keyup.b="handleProcessesModalKeyup"
     @keyup.u="handleRequestProcessKeyup"
+    @keyup.t="handlePauseKeyup"
   >
     <div class="columns">
       <aside class="column is-2">
@@ -264,7 +265,7 @@ export default {
       }
     },
 
-    handleProcessesModalKeyup(e) {
+    handleProcessesModalKeyup() {
       this.handlePauseKeyup();
       this.$emit('open-processes-modal');
     },
