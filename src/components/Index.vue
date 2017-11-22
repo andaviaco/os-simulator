@@ -4,13 +4,12 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title is-1">OS Simulator</h1>
-          <h2 class="subtitle is-2">Práctica 5</h2>
+          <h2 class="subtitle is-2">Práctica 7</h2>
         </div>
       </div>
     </div>
 
     <div class="section">
-
       <div class="tile is-ancestor">
         <div class="tile">
           <div class="tile is-parent">
@@ -71,7 +70,6 @@
           </article>
         </div>
       </div>
-
     </div>
 
     <footer class="footer">
