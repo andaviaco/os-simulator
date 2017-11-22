@@ -10,7 +10,12 @@
   >
     <div class="columns">
       <aside class="column is-2">
-        <memory-table></memory-table>
+        <memory-table
+          :memory="memory"
+          :runingPid="currentProcessPid"
+          :readyPids="readyProgramsPid"
+          :blockedPids="blockedProgramsPid"
+        ></memory-table>
       </aside>
 
       <div class="column">
@@ -75,6 +80,18 @@ export default {
       }
 
       return inMemory;
+    },
+
+    currentProcessPid() {
+      return this.currentProcess.id;
+    },
+
+    blockedProgramsPid() {
+      return this.blockedPrograms.map(proc => proc.id);
+    },
+
+    readyProgramsPid() {
+      return this.batch.map(proc => proc.id);
     },
   },
   watch: {
