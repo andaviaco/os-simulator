@@ -31,7 +31,7 @@ export default {
       default: [],
     },
     runingPid: {
-      type: Number,
+      type: String,
       default: null,
     },
     readyPids: {
