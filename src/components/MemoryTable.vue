@@ -53,6 +53,8 @@ export default {
         return 'is-primary';
       } else if (this.blockedPids.find(ipid => ipid === pid)) {
         return 'is-info';
+      } else if (pid === 'OS') {
+        return 'is-dark';
       }
 
       return '';

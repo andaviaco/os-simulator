@@ -46,3 +46,4 @@ export const MAX_PROCESSES_IN_MEMORY = 5;
 
 export const FRAMES_QTY = 30;
 export const FRAME_SIZE = 4;
+export const OS_FRAME_MEMORY = 3;

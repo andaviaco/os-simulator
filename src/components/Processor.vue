@@ -51,10 +51,13 @@ import {
   PROCESS_STATUS,
   FRAMES_QTY,
   FRAME_SIZE,
+  OS_FRAME_MEMORY,
 } from '@/const';
 
 
 const memory = new Memory(FRAMES_QTY, FRAME_SIZE);
+memory.add('OS', OS_FRAME_MEMORY * FRAME_SIZE);
+
 export default {
   name: 'processor',
   props: ['initialBatch', 'pendingBatch', 'currentTime', 'quantum'],
