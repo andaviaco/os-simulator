@@ -181,6 +181,7 @@ export default {
     finishProcess() {
       this.currentProcess.finishTime = this.currentTime;
       this.processedPrograms.push(this.currentProcess);
+      this.memory.remove(this.currentProcess.id);
 
       this.$emit('finish-process', this.currentProcess);
 
