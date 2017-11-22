@@ -38,12 +38,18 @@ import ProcessInProgress from '@/components/ProcessInProgress';
 import BlockedProcesses from '@/components/BlockedProcesses';
 import MemoryTable from '@/components/MemoryTable';
 
+import Memory from '@/models/Memory';
+
 import {
   PROCESOR_STATUS,
   PROCESS_STATUS,
   MAX_PROCESSES_IN_MEMORY,
+  FRAMES_QTY,
+  FRAME_SIZE,
 } from '@/const';
 
+
+const memory = new Memory(FRAMES_QTY, FRAME_SIZE);
 export default {
   name: 'processor',
   props: ['initialBatch', 'pendingBatch', 'currentTime', 'quantum'],
@@ -54,6 +60,7 @@ export default {
       processedPrograms: [],
       blockedPrograms: [],
       status: PROCESOR_STATUS.paused,
+      memory: memory.data,
     };
   },
   computed: {
