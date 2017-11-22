@@ -13,7 +13,7 @@
       <aside class="column is-2">
         <memory-table
           :memory="memory.data"
-          :runingPid="currentProcessPid"
+          :runningPid="currentProcessPid"
           :readyPids="readyProgramsPid"
           :blockedPids="blockedProgramsPid"
         ></memory-table>

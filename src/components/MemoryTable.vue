@@ -30,7 +30,7 @@ export default {
       type: Array,
       default: [],
     },
-    runingPid: {
+    runningPid: {
       type: String,
       default: null,
     },
@@ -47,7 +47,7 @@ export default {
     tagClass(pid) {
       if (!pid) return '';
 
-      if (this.runingPid === pid) {
+      if (this.runningPid === pid) {
         return 'is-warning';
       } else if (this.readyPids.find(ipid => ipid === pid)) {
         return 'is-primary';
