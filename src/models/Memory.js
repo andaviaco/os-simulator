@@ -8,6 +8,39 @@ export default class Memory {
     ));
   }
 
+  add(pid, memory) {
+    const freePosition = this.freePosition(memory);
+
+    if (freePosition === null) {
+      return null;
+    }
+
+    return this.insert(freePosition, memory, pid);
+  }
+
+  insert(frameIndex, memory, pid) {
+    const wholeFrames = Math.floor(memory / this.frameSize);
+    const pratialFrame = memory % this.frameSize;
+    const lastPosition = frameIndex + wholeFrames;
+
+
+    /* eslint-disable */
+    for (let i = frameIndex; i < lastPosition && i < this.data.length; i++) {
+      this.data[i] = Array.from(Array(this.frameSize), () => pid);
+    }
+    /* eslint-enable */
+
+    if (lastPosition < this.data.length) {
+      const frame = this.data[lastPosition];
+
+      for (let i = 0; i < pratialFrame; i++) { // eslint-disable-line no-plusplus
+        frame[i] = pid;
+      }
+    }
+
+    return frameIndex;
+  }
+
   /**
    * Get available position given a required space
    * @param  {int}    memory required memory space
