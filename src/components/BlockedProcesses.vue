@@ -19,6 +19,11 @@
               </div>
 
               <div>
+                <dt class="is-inline">Memoria:</dt>
+                <dd class="is-inline">{{ props.program.memory }}</dd>
+              </div>
+
+              <div>
                 <dt class="is-inline">Tiempo Transcurrido:</dt>
                 <dd class="is-inline">{{ props.program.time }} secs.</dd>
               </div>
