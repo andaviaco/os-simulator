@@ -11,7 +11,7 @@
     <div class="columns">
       <aside class="column is-2">
         <memory-table
-          :memory="memory"
+          :memory="memory.data"
           :runingPid="currentProcessPid"
           :readyPids="readyProgramsPid"
           :blockedPids="blockedProgramsPid"
@@ -48,7 +48,6 @@ import Memory from '@/models/Memory';
 import {
   PROCESOR_STATUS,
   PROCESS_STATUS,
-  MAX_PROCESSES_IN_MEMORY,
   FRAMES_QTY,
   FRAME_SIZE,
 } from '@/const';
@@ -65,7 +64,7 @@ export default {
       processedPrograms: [],
       blockedPrograms: [],
       status: PROCESOR_STATUS.paused,
-      memory: memory.data,
+      memory,
     };
   },
   computed: {
@@ -99,8 +98,8 @@ export default {
       if (this.status === PROCESOR_STATUS.processing) {
         const diff = newVal.length - oldVal.length;
 
-        if (diff > 0 && this.processesInMemory.length < MAX_PROCESSES_IN_MEMORY) {
-          this.pullProcesses(diff);
+        if (diff > 0) {
+          this.pullProcesses();
 
           if (!this.currentProcess.id) {
             this.processNext();
@@ -112,22 +111,29 @@ export default {
   methods: {
     async start() {
       this.status = PROCESOR_STATUS.processing;
-      this.pullProcesses(MAX_PROCESSES_IN_MEMORY);
+      this.pullProcesses();
       this.processNext();
     },
 
-    pullProcesses(count = 1) {
-      const newProcesses = this.pendingBatch.splice(0, count);
-      const arrivalTime = this.currentTime;
+    pullProcesses() {
+      let newProcess;
+      let arrivalTime;
 
-      /* eslint-disable */
-      newProcesses.forEach(p => {
-        p.setReady();
-        p.arrivalTime = arrivalTime;
-      });
-      /* eslint-disable */
+      for (const proc of [...this.pendingBatch]) {
+        if (!this.memory.fits(proc.memory)) {
+          break;
+        }
 
-      this.batch = [...this.batch, ...newProcesses];
+        newProcess = this.pendingBatch.shift();
+        arrivalTime = this.currentTime;
+
+        this.memory.add(newProcess.id, newProcess.memory);
+
+        newProcess.setReady();
+        newProcess.arrivalTime = arrivalTime;
+
+        this.batch = [...this.batch, newProcess];
+      }
     },
 
     async processNext() {
@@ -178,7 +184,7 @@ export default {
 
       this.$emit('finish-process', this.currentProcess);
 
-      this.pullProcesses(1);
+      this.pullProcesses();
       this.currentProcess = {};
     },
 
