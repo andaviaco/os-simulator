@@ -3,9 +3,7 @@ export default class Memory {
   constructor(frames, frameSize) {
     this.frames = frames;
     this.frameSize = frameSize;
-    this.data = Array.from(Array(frames), () => (
-      Array.from(Array(frameSize), () => null)
-    ));
+    this.data = Array.from(Array(frames), () => this.createEmptyFrame());
   }
 
   add(pid, memory) {
@@ -16,6 +14,17 @@ export default class Memory {
     }
 
     return this.insert(freePosition, memory, pid);
+  }
+
+  remove(pid) {
+    const frameIndexes = [...this.data.entries()]
+      .filter(([, frame]) => frame[0] === pid)
+      .map(([i]) => i);
+
+    for (const index of frameIndexes) {
+      const emptyFrame = this.createEmptyFrame();
+      this.data.splice(index, 1, emptyFrame);
+    }
   }
 
   insert(frameIndex, memory, pid) {
@@ -90,5 +99,9 @@ export default class Memory {
     }
 
     return false;
+  }
+
+  createEmptyFrame() {
+    return Array.from(Array(this.frameSize), () => null);
   }
 }
