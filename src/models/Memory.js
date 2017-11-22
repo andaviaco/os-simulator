@@ -80,4 +80,13 @@ export default class Memory {
     return freePosition;
   }
 
+  fits(memory) {
+    const freePosition = this.freePosition(memory);
+
+    if (freePosition !== null) {
+      return true;
+    }
+
+    return false;
+  }
 }
