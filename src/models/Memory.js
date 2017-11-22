@@ -26,7 +26,9 @@ export default class Memory {
 
     /* eslint-disable */
     for (let i = frameIndex; i < lastPosition && i < this.data.length; i++) {
-      this.data[i] = Array.from(Array(this.frameSize), () => pid);
+      const newData = Array.from(Array(this.frameSize), () => pid);
+
+      this.data.splice(i, 1, newData);
     }
     /* eslint-enable */
 
