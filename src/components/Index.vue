@@ -124,8 +124,9 @@ export default {
     },
     handleNewProcessRequest() {
       const processData = generateProcessValues();
+      const proc = new Program(processData.operation, processData.timeMax, processData.memory);
 
-      this.batch = [...this.batch, new Program(processData.operation, processData.timeMax)];
+      this.batch = [...this.batch, proc];
     },
     handleQuantumChange(value) {
       this.config.quantum = value;
