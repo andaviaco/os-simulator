@@ -8,15 +8,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="i in 30" :key="i">
+      <tr v-for="(frame, i) in memory" :key="i">
         <td><strong>{{ i }}</strong></td>
-        <td><em>{{ i + 1 }}</em></td>
+        <td><em>{{ frame[0] || '-' }}</em></td>
         <td>
           <div class="tags">
-            <span class="tag is-dark"></span>
-            <span class="tag is-warning"></span>
-            <span class="tag is-primary"></span>
-            <span class="tag is-info"></span>
+            <span v-for="(slot, j) in frame" :key="j" :class="['tag', tagClass(slot)]"></span>
           </div>
         </td>
       </tr>
@@ -28,6 +25,39 @@
 
 export default {
   name: 'memory-table',
+  props: {
+    memory: {
+      type: Array,
+      default: [],
+    },
+    runingPid: {
+      type: Number,
+      default: null,
+    },
+    readyPids: {
+      type: Array,
+      default: [],
+    },
+    blockedPids: {
+      type: Array,
+      default: [],
+    },
+  },
+  methods: {
+    tagClass(pid) {
+      if (!pid) return '';
+
+      if (this.runingPid === pid) {
+        return 'is-warning';
+      } else if (this.readyPids.find(ipid => ipid === pid)) {
+        return 'is-primary';
+      } else if (this.blockedPids.find(ipid => ipid === pid)) {
+        return 'is-info';
+      }
+
+      return '';
+    },
+  },
 };
 
 </script>
