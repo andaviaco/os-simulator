@@ -10,7 +10,7 @@
     @keyup.t="handlePauseKeyup"
   >
     <div class="columns">
-      <aside class="column is-2">
+      <aside class="column is-3">
         <memory-table
           :memory="memory.data"
           :runningPid="currentProcessPid"
