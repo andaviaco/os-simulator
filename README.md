@@ -20,6 +20,9 @@
 ### v0.5
 ![Fifth review: v0.5](/../screenshots/os-simulator-v0.5-fullpage.png?raw=true "OS-Simulator v0.5")
 
+### v0.6
+![Fifth review: v0.6](/../screenshots/os-simulator-v0.6-fullpage.png?raw=true "OS-Simulator v0.6")
+
 ## Build Setup
 
 ``` bash
