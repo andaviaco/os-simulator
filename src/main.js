@@ -36,7 +36,9 @@ Vue.$notify.setTypes(notificationTypes);
 Vue.config.keyCodes = {
   b: 66,
   c: 67,
+  d: 68,
   e: 69,
+  g: 71,
   p: 80,
   t: 84,
   u: 85,

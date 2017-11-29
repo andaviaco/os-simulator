@@ -166,6 +166,10 @@ export default class Program {
     this.status = PROCESS_STATUS.ready;
   }
 
+  setSuspended() {
+    this.status = PROCESS_STATUS.suspended;
+  }
+
   progressProcessing(processTime) {
     this.status = PROCESS_STATUS.inProcess;
     this.startTimer();

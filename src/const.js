@@ -30,6 +30,7 @@ export const PROCESS_STATUS = {
   inProcess: 'In process',
   ready: 'Ready',
   new: 'New',
+  suspended: 'Suspended',
 };
 
 export const PROCESS_STATUS_CLASS = {
@@ -38,6 +39,7 @@ export const PROCESS_STATUS_CLASS = {
   [PROCESS_STATUS.blocked]: 'is-dark',
   [PROCESS_STATUS.inProcess]: 'is-warning',
   [PROCESS_STATUS.ready]: 'is-primary',
+  [PROCESS_STATUS.suspended]: 'is-light',
 };
 
 export const DEFAULT_BLOCK_TIME = 8000;

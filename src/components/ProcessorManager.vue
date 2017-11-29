@@ -178,8 +178,12 @@ export default {
     },
 
     handleDownloadClick() {
-      this.$notify.info('Donloading file');
+      const suspendedPrograms = this.$refs.processor.suspendedPrograms;
+
+      console.log('SUSPENDED', suspendedPrograms);
+
       const blob = new Blob(['Procesos Suspendidos'], { type: 'text/plain;charset=utf-8' });
+      this.$notify.info('Donloading file');
       FilseSaver.saveAs(blob, 'suspendidos.txt');
     },
 
@@ -192,7 +196,12 @@ export default {
         return [];
       }
 
-      const { batch, currentProcess, blockedPrograms } = this.$refs.processor;
+      const {
+        batch,
+        currentProcess,
+        blockedPrograms,
+        suspendedPrograms,
+      } = this.$refs.processor;
 
       return [
         ...this.processedPrograms,
@@ -200,6 +209,7 @@ export default {
         ...batch,
         ...blockedPrograms,
         ...this.pendingBatch,
+        ...suspendedPrograms,
       ];
     },
 

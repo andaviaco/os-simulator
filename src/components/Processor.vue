@@ -8,6 +8,8 @@
     @keyup.b="handleProcessesModalKeyup"
     @keyup.u="handleRequestProcessKeyup"
     @keyup.t="handlePauseKeyup"
+    @keyup.d="handleSuspendKeyup"
+    @keyup.g="handleReturnKeyup"
   >
     <div class="columns">
       <aside class="column is-3">
@@ -67,6 +69,7 @@ export default {
       currentProcess: {},
       processedPrograms: [],
       blockedPrograms: [],
+      suspendedPrograms: [],
       status: PROCESOR_STATUS.paused,
       memory,
     };
@@ -252,7 +255,10 @@ export default {
     },
 
     handlePauseKeyup() {
-      this.currentProcess.pauseProcess();
+      if (this.currentProcess.id) {
+        this.currentProcess.pauseProcess();
+      }
+
       this.pauseProcessing();
     },
 
@@ -279,6 +285,21 @@ export default {
 
     handleRequestProcessKeyup() {
       this.$emit('request-new-process');
+    },
+
+    handleSuspendKeyup() {
+      if (this.blockedPrograms.length) {
+        const blocked = this.blockedPrograms.shift();
+
+        blocked.stopBlocked();
+        blocked.setSuspended();
+
+        this.suspendedPrograms.push(blocked);
+      }
+    },
+
+    handleReturnKeyup() {
+
     },
   },
   components: {
