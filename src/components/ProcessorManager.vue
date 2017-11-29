@@ -178,6 +178,7 @@ export default {
     },
 
     handleDownloadClick() {
+      this.$notify.info('Donloading file');
       const blob = new Blob(['Procesos Suspendidos'], { type: 'text/plain;charset=utf-8' });
       FilseSaver.saveAs(blob, 'suspendidos.txt');
     },

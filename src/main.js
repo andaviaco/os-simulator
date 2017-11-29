@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import VeeValidate, { Validator } from 'vee-validate';
+import Notify from 'vue2-notify';
 import esLocale from 'vee-validate/dist/locale/es';
 
 import 'bulma/css/bulma.css';
@@ -15,9 +16,22 @@ const veeValidateConfig = {
   locale: 'es',
 };
 
+const notificationTypes = {
+  info: { itemClass: 'is-info', iconClass: 'fa fa-lg fa-exclamation-circle' },
+  error: { itemClass: 'is-danger', iconClass: 'fa fa-lg fa-exclamation' },
+  warning: { itemClass: 'is-warning', iconClass: 'fa fa-lg fa-exclamation-triangle' },
+  success: { itemClass: 'is-success', iconClass: 'fa fa-lg fa-check-circle' },
+};
+
 Validator.addLocale(esLocale);
 
 Vue.use(VeeValidate, veeValidateConfig);
+Vue.use(Notify, {
+  itemClass: 'notification',
+  position: 'bottom-right',
+});
+
+Vue.$notify.setTypes(notificationTypes);
 
 Vue.config.keyCodes = {
   b: 66,
