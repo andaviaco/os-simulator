@@ -179,11 +179,10 @@ export default {
 
     handleDownloadClick() {
       const suspendedPrograms = this.$refs.processor.suspendedPrograms;
+      const text = JSON.stringify(suspendedPrograms, null, 2);
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
 
-      console.log('SUSPENDED', suspendedPrograms);
-
-      const blob = new Blob(['Procesos Suspendidos'], { type: 'text/plain;charset=utf-8' });
-      this.$notify.info('Donloading file');
+      this.$notify.success('Descargando suspendidos...');
       FilseSaver.saveAs(blob, 'suspendidos.txt');
     },
 

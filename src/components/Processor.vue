@@ -293,6 +293,9 @@ export default {
 
         blocked.stopBlocked();
         blocked.setSuspended();
+        this.memory.remove(blocked.id);
+
+        this.$notify.info(`Supendiendo proceso ${blocked.id}`);
 
         this.suspendedPrograms.push(blocked);
       }
