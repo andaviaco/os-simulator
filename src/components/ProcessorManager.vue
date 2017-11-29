@@ -43,18 +43,42 @@
       </div>
     </div>
 
-    <button
-      class="button is-success"
-      type="button"
-      @click="handleStartClick"
-    >
-      <span class="icon">
-        <i class="fa fa-flash"></i>
-      </span>
-      <span>
-        Procesar
-      </span>
-    </button>
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <button
+            class="button is-success"
+            type="button"
+            @click="handleStartClick"
+          >
+            <span class="icon">
+              <i class="fa fa-flash"></i>
+            </span>
+            <span>
+              Procesar
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div class="level-right">
+        <div class="leve-item">
+          <button
+            class="button is-primary"
+            type="button"
+            @click="handleDownloadClick"
+          >
+            <span class="icon">
+              <i class="fa fa-download"></i>
+            </span>
+            <span>
+              Descargar supendidos
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+
 
     <div class="tabs is-centered is-boxed">
       <ul>
@@ -112,10 +136,12 @@
 </template>
 
 <script>
+import FilseSaver from 'file-saver';
 import Stopwatch from '@/components/Stopwatch';
 import Processor from '@/components/Processor';
 import ProcessReviewTable from '@/components/ProcessReviewTable';
 import ModalCard from '@/components/ModalCard';
+
 
 export default {
   name: 'processor-manager',
@@ -149,6 +175,11 @@ export default {
 
     handleProccessesModalOpen() {
       this.$refs.processesModal.open();
+    },
+
+    handleDownloadClick() {
+      const blob = new Blob(['Procesos Suspendidos'], { type: 'text/plain;charset=utf-8' });
+      FilseSaver.saveAs(blob, 'suspendidos.txt');
     },
 
     toggleTab(tab) {

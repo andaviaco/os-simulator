@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "bulma": "^0.5.1",
+    "file-saver": "^1.3.3",
     "font-awesome": "^4.7.0",
     "moment": "^2.18.1",
     "uniqueid": "^1.0.0",
