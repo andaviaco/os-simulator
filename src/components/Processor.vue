@@ -20,6 +20,9 @@
           :blockedPids="blockedProgramsPid"
         ></memory-table>
       </aside>
+      <div class="column">
+        <suspended-processes :processes="suspendedPrograms"></suspended-processes>
+      </div>
 
       <div class="column">
         <blocked-processes :processes="blockedPrograms"></blocked-processes>
@@ -44,6 +47,7 @@ import FinishedProcesses from '@/components/FinishedProcesses';
 import ReadyProcesses from '@/components/ReadyProcesses';
 import ProcessInProgress from '@/components/ProcessInProgress';
 import BlockedProcesses from '@/components/BlockedProcesses';
+import SuspendedProcesses from '@/components/SuspendedProcesses';
 import MemoryTable from '@/components/MemoryTable';
 
 import Memory from '@/models/Memory';
@@ -339,6 +343,7 @@ export default {
     ReadyProcesses,
     ProcessInProgress,
     BlockedProcesses,
+    SuspendedProcesses,
     MemoryTable,
   },
 };
