@@ -199,8 +199,8 @@ export default {
     resumeProcessing() {
       this.$emit('resume-processing');
 
-      this.processCurrent();
       this.resumeBlockedProcesses();
+      this.processCurrent();
       this.status = PROCESOR_STATUS.processing;
     },
 
@@ -254,6 +254,29 @@ export default {
       this.processNext();
     },
 
+    returnSuspended() {
+      let nextSuspended = this.suspendedPrograms[0];
+
+      if (!this.memory.fits(nextSuspended.memory)) {
+        this.$notify.error(`No hay suficiente memoria para el proceso ${nextSuspended.id} (${nextSuspended.memory}).`);
+      } else {
+        this.$notify.warning(`Regresando proceso ${nextSuspended.id}.`);
+
+        nextSuspended = this.suspendedPrograms.shift();
+
+        this.memory.add(nextSuspended.id, nextSuspended.memory);
+
+        nextSuspended.setReady();
+        this.batch = [...this.batch, nextSuspended];
+
+        if (this.status === PROCESOR_STATUS.paused) {
+          this.$emit('resume-processing');
+          this.status = PROCESOR_STATUS.processing;
+          this.processNext();
+        }
+      }
+    },
+
     handlePauseKeyup() {
       if (this.currentProcess.id) {
         this.currentProcess.pauseProcess();
@@ -295,14 +318,20 @@ export default {
         blocked.setSuspended();
         this.memory.remove(blocked.id);
 
-        this.$notify.info(`Supendiendo proceso ${blocked.id}`);
+        this.$notify.info(`Supendiendo proceso ${blocked.id}.`);
 
         this.suspendedPrograms.push(blocked);
+
+        this.pullProcesses();
       }
     },
 
     handleReturnKeyup() {
-
+      if (this.suspendedPrograms.length) {
+        this.returnSuspended();
+      } else {
+        this.$notify.warning('No hay procesos suspendidos.');
+      }
     },
   },
   components: {
