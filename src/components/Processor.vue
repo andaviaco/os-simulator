@@ -209,7 +209,7 @@ export default {
     },
 
     stopProcessing() {
-      if (!this.blockedPrograms.length) {
+      if (!this.blockedPrograms.length && !this.suspendedPrograms.length) {
         this.pauseProcessing();
       }
     },
@@ -264,7 +264,7 @@ export default {
       if (!this.memory.fits(nextSuspended.memory)) {
         this.$notify.error(`No hay suficiente memoria para el proceso ${nextSuspended.id} (${nextSuspended.memory}).`);
       } else {
-        this.$notify.warning(`Regresando proceso ${nextSuspended.id}.`);
+        // this.$notify.warning(`Regresando proceso ${nextSuspended.id}.`);
 
         nextSuspended = this.suspendedPrograms.shift();
 
@@ -273,9 +273,7 @@ export default {
         nextSuspended.setReady();
         this.batch = [...this.batch, nextSuspended];
 
-        if (this.status === PROCESOR_STATUS.paused) {
-          this.$emit('resume-processing');
-          this.status = PROCESOR_STATUS.processing;
+        if (!this.currentProcess.id) {
           this.processNext();
         }
       }
@@ -322,7 +320,7 @@ export default {
         blocked.setSuspended();
         this.memory.remove(blocked.id);
 
-        this.$notify.info(`Supendiendo proceso ${blocked.id}.`);
+        // this.$notify.info(`Supendiendo proceso ${blocked.id}.`);
 
         this.suspendedPrograms.push(blocked);
 
