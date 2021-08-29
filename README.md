@@ -1,6 +1,6 @@
 # os-simulator
 
-> Operative System Simulator
+Process manager simulator.
 
 ## Screenshots
 
